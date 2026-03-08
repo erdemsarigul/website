@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <rect width="300" height="300" fill="#0d2137"/>
+  <rect x="70" y="60" width="160" height="180" rx="12" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="82" y="80" width="136" height="120" rx="5" fill="#0a1628"/>
+  <rect x="88" y="86" width="124" height="108" rx="3" fill="#1e3a5f" opacity="0.4"/>
+  <circle cx="100" cy="130" r="18" fill="#3b82f6" opacity="0.9"/>
+  <polygon points="96,122 96,138 112,130" fill="white"/>
+  <text x="175" y="124" text-anchor="middle" fill="#93c5fd" font-size="9" font-family="Arial">Akıllı Saat</text>
+  <text x="175" y="137" text-anchor="middle" fill="#3b82f6" font-size="9" font-family="Arial">Smart Watch</text>
+  <rect x="105" y="240" width="90" height="10" rx="5" fill="#3b82f6"/>
+  <text x="150" y="270" text-anchor="middle" fill="#93c5fd" font-size="11" font-family="Arial">Akıllı Saat Pro</text>
+  <text x="150" y="285" text-anchor="middle" fill="#3b82f6" font-size="10" font-family="Arial">Fitness Tracker</text>
+</svg>

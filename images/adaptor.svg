@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <rect width="300" height="300" fill="#0f172a"/>
+  <rect x="50" y="70" width="200" height="160" rx="10" fill="#1e293b" stroke="#06b6d4" stroke-width="2"/>
+  <rect x="65" y="85" width="170" height="130" rx="5" fill="#0f172a"/>
+  <rect x="100" y="110" width="40" height="40" rx="5" fill="#164e63"/>
+  <text x="120" y="134" text-anchor="middle" fill="#06b6d4" font-size="10" font-family="Arial">BT</text>
+  <rect x="160" y="110" width="40" height="40" rx="5" fill="#164e63"/>
+  <text x="180" y="128" text-anchor="middle" fill="#06b6d4" font-size="7" font-family="Arial">WiFi</text>
+  <text x="180" y="143" text-anchor="middle" fill="#06b6d4" font-size="7" font-family="Arial">Adapt.</text>
+  <text x="150" y="185" text-anchor="middle" fill="#67e8f9" font-size="9" font-family="Arial">Bluetooth Adaptör</text>
+  <text x="150" y="265" text-anchor="middle" fill="#67e8f9" font-size="11" font-family="Arial">Adaptörler</text>
+  <text x="150" y="280" text-anchor="middle" fill="#06b6d4" font-size="10" font-family="Arial">BT & WiFi</text>
+</svg>
