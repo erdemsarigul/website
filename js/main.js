@@ -6,7 +6,7 @@
   'use strict';
 
   /* ---- Config ------------------------------------------- */
-  const PHONE_NUMBER   = '905551234567';  // WhatsApp numarası (ülke kodu dahil, + veya boşluk olmadan)
+  const PHONE_NUMBER   = '905427447550';  // WhatsApp numarası (ülke kodu dahil, + veya boşluk olmadan)
   const EMAIL_ADDRESS  = 'info@sarigulticaret.com';
   const COOKIE_KEY     = 'sg_cookie_consent';
 
