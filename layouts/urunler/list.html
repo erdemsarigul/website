@@ -6,7 +6,7 @@
       <h1>Ürün <span style="color:var(--primary)">Kataloğumuz</span></h1>
       <p>500'den fazla ürün çeşidi – toptan ve perakende fiyatlarıyla</p>
       <div class="breadcrumb">
-        <a href="{{ "/" | relURL }}">Ana Sayfa</a>
+        <a href="{{ "" | relURL }}">Ana Sayfa</a>
         <span class="breadcrumb-sep">›</span>
         <span>Ürünler</span>
       </div>
@@ -42,7 +42,7 @@
         <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
           <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20tam%20urun%20listesi%20almak%20istiyorum."
              target="_blank" rel="noopener" class="btn btn-whatsapp">💬 WhatsApp ile Yazın</a>
-          <a href="{{ "/iletisim/" | relURL }}" class="btn btn-outline">📩 İletişim Formu</a>
+          <a href="{{ "iletisim/" | relURL }}" class="btn btn-outline">📩 İletişim Formu</a>
         </div>
       </div>
 
