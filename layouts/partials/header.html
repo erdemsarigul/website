@@ -2,7 +2,7 @@
     <div class="container">
       <div class="nav-wrapper">
         <a href="{{ "" | relURL }}" class="logo">
-          <img src="{{ "images/logo.png" | relURL }}" alt="Sarıgül Ticaret Logo" width="120" height="40" />
+          <img src="{{ "images/logo.svg" | relURL }}" alt="Sarıgül Ticaret Logo" width="210" height="72" />
         </a>
         <button class="hamburger" id="hamburger" aria-label="Menüyü Aç/Kapat" aria-expanded="false" aria-controls="main-nav">
           <span></span><span></span><span></span>
@@ -18,6 +18,12 @@
                  target="_blank" rel="noopener" class="btn btn-whatsapp" style="padding:0.4rem 0.9rem;font-size:0.85rem;">
                 💬 WhatsApp
               </a>
+            </li>
+            <li>
+              <button class="theme-toggle" id="theme-toggle" aria-label="Temayı Değiştir">
+                <span class="theme-toggle-dot"></span>
+                <span id="theme-toggle-label">Altın Tema</span>
+              </button>
             </li>
           </ul>
         </nav>
