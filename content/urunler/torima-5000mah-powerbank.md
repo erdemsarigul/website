@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Torima TRM-1005, 5000 mAh kompakt powerbank, hafif ve taşınabilir."
 featured: false
 weight: 52
+code: "SRJ-026"
+images:
+  - "IMG-20260308-WA0052.jpg"
 ---

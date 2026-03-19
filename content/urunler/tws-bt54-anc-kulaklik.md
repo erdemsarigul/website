@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Bluetooth 5.4 TWS kulaklık, ANC & ENC gürültü engelleme, dokunmatik kontrol, USB-C şarj."
 featured: false
 weight: 33
+code: "SES-010"
+images:
+  - "IMG-20260308-WA0033.jpg"
 ---

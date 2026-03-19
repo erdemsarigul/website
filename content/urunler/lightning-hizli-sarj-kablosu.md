@@ -10,4 +10,7 @@ badgeLabel: "Popüler"
 description: "3 kat daha uzun ömürlü Lightning hızlı şarj kablosu, hızlı veri aktarım destekli."
 featured: false
 weight: 21
+code: "SRJ-008"
+images:
+  - "IMG-20260308-WA0021.jpg"
 ---

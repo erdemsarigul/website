@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Çift yönlü 2-in-1 AUX ses aktarım adaptörü, 3.5mm evrensel uyumlu."
 featured: false
 weight: 39
+code: "AKS-001"
+images:
+  - "IMG-20260308-WA0039.jpg"
 ---

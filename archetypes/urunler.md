@@ -10,4 +10,9 @@ badgeLabel: ""
 description: "Ürün açıklaması buraya gelecek."
 featured: false
 weight: 100
+code: "AKS-000"
+images:
+  - "IMG-20260308-WA0001.jpg"
 ---
+
+Ürün detaylı açıklaması buraya yazılır.

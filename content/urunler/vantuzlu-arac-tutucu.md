@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "270° döndürülebilir vantuzlu araç telefon tutucu, tek elle kullanım."
 featured: false
 weight: 58
+code: "AKS-019"
+images:
+  - "IMG-20260308-WA0058.jpg"
 ---

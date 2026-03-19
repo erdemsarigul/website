@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "i7 Pro model Bluetooth TWS kulak içi kulaklık, ergonomik tasarım."
 featured: true
 weight: 11
+code: "SES-002"
+images:
+  - "IMG-20260308-WA0011.jpg"
 ---

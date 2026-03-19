@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Lucatech L215, 3.5mm to 3.5mm AUX ses aktarım kablosu, kesintisiz bağlantı."
 featured: false
 weight: 40
+code: "AKS-007"
+images:
+  - "IMG-20260308-WA0040.jpg"
 ---

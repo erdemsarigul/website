@@ -10,4 +10,7 @@ badgeLabel: "Popüler"
 description: "Tek tuşla açılan vantuzlu evrensel araç telefon tutucu, LHRB2 model."
 featured: false
 weight: 57
+code: "AKS-015"
+images:
+  - "IMG-20260308-WA0057.jpg"
 ---

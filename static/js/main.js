@@ -19,6 +19,7 @@
     initCatalogFilter();
     setActiveNav();
     initWhatsAppLinks();
+    initProductSlider();
   });
 
   /* ---- Mobil Menü --------------------------------------- */
@@ -208,5 +209,69 @@
     const msg = encodeURIComponent('Merhaba! "' + productName + '" ürünü hakkında bilgi almak istiyorum.');
     window.open('https://wa.me/' + PHONE_NUMBER + '?text=' + msg, '_blank', 'noopener');
   };
+
+  /* ---- Ürün Detay Slider -------------------------------- */
+  function initProductSlider() {
+    const slider = document.getElementById('productSlider');
+    if (!slider) return;
+
+    const slides = slider.querySelectorAll('.slide');
+    const dots = slider.querySelectorAll('.slider-dot');
+    const thumbs = slider.querySelectorAll('.slider-thumb');
+    const prevBtn = slider.querySelector('.slider-prev');
+    const nextBtn = slider.querySelector('.slider-next');
+    let current = 0;
+
+    if (slides.length <= 1) return;
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      if (dots[current]) dots[current].classList.remove('active');
+      if (thumbs[current]) thumbs[current].classList.remove('active');
+
+      current = (index + slides.length) % slides.length;
+
+      slides[current].classList.add('active');
+      if (dots[current]) dots[current].classList.add('active');
+      if (thumbs[current]) thumbs[current].classList.add('active');
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', function () { goTo(current - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { goTo(current + 1); });
+
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        goTo(parseInt(dot.getAttribute('data-index'), 10));
+      });
+    });
+
+    thumbs.forEach(function (thumb) {
+      thumb.addEventListener('click', function () {
+        goTo(parseInt(thumb.getAttribute('data-index'), 10));
+      });
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function (e) {
+      var rect = slider.getBoundingClientRect();
+      var inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inView) return;
+      if (e.key === 'ArrowLeft') goTo(current - 1);
+      if (e.key === 'ArrowRight') goTo(current + 1);
+    });
+
+    // Touch/swipe support
+    let touchStartX = 0;
+    slider.addEventListener('touchstart', function (e) {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    slider.addEventListener('touchend', function (e) {
+      var delta = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(delta) > 40) {
+        if (delta < 0) goTo(current + 1);
+        else goTo(current - 1);
+      }
+    }, { passive: true });
+  }
 
 })();

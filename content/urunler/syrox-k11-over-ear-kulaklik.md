@@ -10,4 +10,7 @@ badgeLabel: "Toptan"
 description: "Extra bass, yumuşak kulak yastıkları, ayarlanabilir kafa bandı, kablolu over-ear kulaklık."
 featured: false
 weight: 35
+code: "SES-008"
+images:
+  - "IMG-20260308-WA0035.jpg"
 ---

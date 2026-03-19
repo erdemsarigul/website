@@ -1,0 +1,134 @@
+{{ define "main" }}
+
+  {{ $images := .Params.images }}
+  {{ $mainImage := .Params.image }}
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>{{ .Title }}</h1>
+      <div class="breadcrumb">
+        <a href="{{ "" | relURL }}">Ana Sayfa</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="{{ "urunler/" | relURL }}">Ürünler</a>
+        {{ with .Params.category }}
+        <span class="breadcrumb-sep">›</span>
+        <a href="{{ (printf "kategoriler/%s/" .) | relURL }}">{{ $.Params.categoryLabel }}</a>
+        {{ end }}
+        <span class="breadcrumb-sep">›</span>
+        <span>{{ .Title }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÜRÜN DETAY -->
+  <section class="product-detail-section">
+    <div class="container">
+      <div class="product-detail-grid">
+
+        <!-- Sol: Resim Slider -->
+        <div class="product-detail-gallery">
+          {{ if and $images (gt (len $images) 0) }}
+            <div class="product-slider" id="productSlider">
+              <div class="slider-track">
+                {{ range $i, $img := $images }}
+                <div class="slide{{ if eq $i 0 }} active{{ end }}">
+                <img src="{{ (printf "images/%s" $img) | relURL }}" alt="{{ $.Title }}{{ if gt (len $images) 1 }} - Fotograf {{ add $i 1 }}{{ end }}" loading="{{ if eq $i 0 }}eager{{ else }}lazy{{ end }}" />
+                </div>
+                {{ end }}
+              </div>
+
+              {{ if gt (len $images) 1 }}
+              <button class="slider-btn slider-prev" aria-label="Önceki fotoğraf">&#8249;</button>
+              <button class="slider-btn slider-next" aria-label="Sonraki fotoğraf">&#8250;</button>
+              <div class="slider-dots">
+                {{ range $i, $img := $images }}
+                <button class="slider-dot{{ if eq $i 0 }} active{{ end }}" data-index="{{ $i }}" aria-label="Fotoğraf {{ add $i 1 }}"></button>
+                {{ end }}
+              </div>
+              <div class="slider-thumbnails">
+                {{ range $i, $img := $images }}
+                <div class="slider-thumb{{ if eq $i 0 }} active{{ end }}" data-index="{{ $i }}">
+                  <img src="{{ (printf "images/%s" $img) | relURL }}" alt="{{ $.Title }} küçük resim {{ add $i 1 }}" loading="lazy" />
+                </div>
+                {{ end }}
+              </div>
+              {{ end }}
+            </div>
+          {{ else }}
+            <div class="product-detail-image-single">
+              <img src="{{ (printf "images/%s" $mainImage) | relURL }}" alt="{{ .Title }}" loading="eager" />
+            </div>
+          {{ end }}
+        </div>
+
+        <!-- Sağ: Ürün Bilgileri -->
+        <div class="product-detail-info">
+          <div class="product-detail-meta">
+            <span class="product-category-tag">
+              <a href="{{ (printf "kategoriler/%s/" .Params.category) | relURL }}">{{ .Params.categoryLabel }}</a>
+            </span>
+            {{ with .Params.badge }}
+            <span class="product-badge badge-{{ . }}">{{ $.Params.badgeLabel }}</span>
+            {{ end }}
+          </div>
+
+          <h1 class="product-detail-title">{{ .Title }}</h1>
+
+          {{ with .Params.code }}
+          <div class="product-code">
+            <span class="product-code-label">Ürün Kodu:</span>
+            <span class="product-code-value">{{ . }}</span>
+          </div>
+          {{ end }}
+
+          <p class="product-detail-desc">{{ .Params.description }}</p>
+
+          {{ if .Content }}
+          <div class="product-detail-content">
+            {{ .Content }}
+          </div>
+          {{ end }}
+
+          <div class="product-detail-actions">
+            <button class="btn btn-primary btn-lg" onclick="askProduct('{{ .Title | safeJS }}')">
+              💬 WhatsApp ile Sor
+            </button>
+            <a href="mailto:{{ .Site.Params.email }}?subject={{ .Title | urlize }}%20Hakkında%20Bilgi" class="btn btn-outline btn-lg">
+              ✉ E-posta Gönder
+            </a>
+          </div>
+
+          <div class="product-detail-contact-note">
+            <p>📦 Toptan fiyat ve stok bilgisi için bizimle iletişime geçin.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- KATEGORİDEKİ DİĞER ÜRÜNLER -->
+  {{ $category := .Params.category }}
+  {{ $currentSlug := .File.ContentBaseName }}
+  {{ $related := where (where .Site.RegularPages "Section" "urunler") ".Params.category" $category }}
+  {{ $related = where $related ".File.ContentBaseName" "ne" $currentSlug }}
+  {{ if gt (len $related) 0 }}
+  <section class="related-products-section">
+    <div class="container">
+      <h2 class="section-title">{{ .Params.categoryLabel }} <span>Kategorisindeki Diğer Ürünler</span></h2>
+      <div class="products-grid">
+        {{ range first 4 $related }}
+          {{ partial "product-card.html" . }}
+        {{ end }}
+      </div>
+      <div style="text-align:center;margin-top:2rem;">
+        <a href="{{ (printf "kategoriler/%s/" $category) | relURL }}" class="btn btn-outline">
+          Tüm {{ $.Params.categoryLabel }} Ürünleri →
+        </a>
+      </div>
+    </div>
+  </section>
+  {{ end }}
+
+{{ end }}

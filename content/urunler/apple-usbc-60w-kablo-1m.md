@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Apple orijinal 60W USB-C şarj ve veri kablosu, 1m uzunluk."
 featured: false
 weight: 24
+code: "SRJ-003"
+images:
+  - "IMG-20260308-WA0024.jpg"
 ---

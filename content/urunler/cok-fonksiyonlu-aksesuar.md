@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Kullanışlı çok fonksiyonlu aksesuar ürünü."
 featured: false
 weight: 43
+code: "AKS-002"
+images:
+  - "IMG-20260308-WA0043.jpg"
 ---

@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "CHARGE BOOST yüksek hızlı USB-A duvar şarj adaptörü, evrensel uyumlu."
 featured: false
 weight: 15
+code: "SRJ-006"
+images:
+  - "IMG-20260308-WA0015.jpg"
 ---

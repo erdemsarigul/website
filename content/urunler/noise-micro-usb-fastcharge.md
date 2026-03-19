@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Noise FastCharge Micro USB kablosu, Android cihazlar için hızlı şarj destekli."
 featured: false
 weight: 28
+code: "SRJ-017"
+images:
+  - "IMG-20260308-WA0028.jpg"
 ---

@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "USB-C + USB-A çift portlu araç şarj cihazı, 45W PD hızlı şarj desteği."
 featured: true
 weight: 4
+code: "SRJ-013"
+images:
+  - "IMG-20260308-WA0004.jpg"
 ---

@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Kensa marka hızlı şarj uyumlu dayanıklı şarj kablosu."
 featured: false
 weight: 19
+code: "SRJ-007"
+images:
+  - "IMG-20260308-WA0019.jpg"
 ---

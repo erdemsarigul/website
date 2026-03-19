@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Subzero Power Series kompakt taşınabilir powerbank."
 featured: false
 weight: 42
+code: "SRJ-025"
+images:
+  - "IMG-20260308-WA0042.jpg"
 ---

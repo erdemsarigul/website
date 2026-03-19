@@ -10,4 +10,7 @@ badgeLabel: "Toptan"
 description: "USB-C to Type-C esnek kablo, 45W hızlı şarj ve veri transferi, 1.2m uzunluk. Made in Türkiye. Model PDTN-120."
 featured: false
 weight: 5
+code: "SRJ-015"
+images:
+  - "IMG-20260308-WA0005.jpg"
 ---

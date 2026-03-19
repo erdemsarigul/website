@@ -10,4 +10,7 @@ badgeLabel: "Popüler"
 description: "Torima kompakt taşınabilir kablosuz Bluetooth hoparlör, güçlü ses kalitesi."
 featured: false
 weight: 31
+code: "SES-009"
+images:
+  - "IMG-20260308-WA0031.jpg"
 ---

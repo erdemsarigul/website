@@ -10,4 +10,7 @@ badgeLabel: "Toptan"
 description: "Qualcomm Quick Charge 3.0 destekli Noise şarj adaptörü, kutu içinde."
 featured: false
 weight: 23
+code: "SRJ-019"
+images:
+  - "IMG-20260308-WA0023.jpg"
 ---

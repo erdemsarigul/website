@@ -10,4 +10,7 @@ badgeLabel: "Toptan"
 description: "Renkli ve şık aksesuar ürünü."
 featured: false
 weight: 56
+code: "AKS-010"
+images:
+  - "IMG-20260308-WA0056.jpg"
 ---

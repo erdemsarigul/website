@@ -10,4 +10,7 @@ badgeLabel: "Çok Satan"
 description: "Çantanda yer kaplamayan mini kapsül şemsiye, küçük ama güçlü, 3 renk seçeneği."
 featured: true
 weight: 1
+code: "AKS-005"
+images:
+  - "IMG-20260308-WA0001.jpg"
 ---

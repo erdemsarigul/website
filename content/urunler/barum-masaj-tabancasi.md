@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "4 başlıklı masaj tabancası, sessiz motor, uzun ömürlü şarjlı pil, spor ve günlük kullanım. Model DNC2025."
 featured: false
 weight: 3
+code: "ELK-001"
+images:
+  - "IMG-20260308-WA0003.jpg"
 ---

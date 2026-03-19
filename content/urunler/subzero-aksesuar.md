@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Subzero marka kaliteli aksesuar ürünü."
 featured: false
 weight: 34
+code: "AKS-012"
+images:
+  - "IMG-20260308-WA0034.jpg"
 ---

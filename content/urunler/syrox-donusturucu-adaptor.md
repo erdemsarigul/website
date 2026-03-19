@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Syrox marka dönüştürücü adaptör ürünü."
 featured: false
 weight: 45
+code: "AKS-013"
+images:
+  - "IMG-20260308-WA0045.jpg"
 ---

@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Klipsli kablosuz yaka mikrofonu, içerik üretici ve konferans kullanımı için ideal."
 featured: false
 weight: 50
+code: "SES-004"
+images:
+  - "IMG-20260308-WA0050.jpg"
 ---

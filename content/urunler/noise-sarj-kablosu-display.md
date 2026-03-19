@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "USB-C ve Lightning hızlı şarj kabloları, Made in Türkiye, retail display, toptan satış."
 featured: false
 weight: 18
+code: "SRJ-020"
+images:
+  - "IMG-20260308-WA0018.jpg"
 ---
