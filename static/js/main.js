@@ -54,10 +54,14 @@
 
   /* ---- Aktif Navigasyon --------------------------------- */
   function setActiveNav() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const currentPath = window.location.pathname;
     document.querySelectorAll('nav a').forEach(function (link) {
       const href = link.getAttribute('href');
-      if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+      if (!href || href.startsWith('http') || href.startsWith('#')) return;
+      // Exact match, or prefix match on a complete path segment (href must end with '/')
+      const isExact = href === currentPath;
+      const isSection = href !== '/' && href.endsWith('/') && currentPath.startsWith(href);
+      if (isExact || isSection) {
         link.classList.add('active');
       }
     });
