@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Noise USB-C çıkışlı 25W PD hızlı şarj adaptörü, kompakt tasarım."
 featured: true
 weight: 59
+code: "SRJ-012"
+images:
+  - "IMG-20260308-WA0059.jpg"
 ---

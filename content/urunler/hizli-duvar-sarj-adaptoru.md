@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Kompakt hızlı şarj duvar adaptörü, geniş cihaz uyumlu."
 featured: false
 weight: 16
+code: "SRJ-004"
+images:
+  - "IMG-20260308-WA0016.jpg"
 ---

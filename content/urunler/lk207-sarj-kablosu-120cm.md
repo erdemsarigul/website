@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "18W 3.4A akıllı çipli şarj kablosu, 120cm uzunluk, hızlı şarj uyumlu."
 featured: false
 weight: 26
+code: "SRJ-010"
+images:
+  - "IMG-20260308-WA0026.jpg"
 ---

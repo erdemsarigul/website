@@ -10,4 +10,7 @@ badgeLabel: "Toptan"
 description: "Micro USB + Lightning + Type-C üç başlıklı şarj kablosu, 65W Type-C destekli."
 featured: false
 weight: 41
+code: "SRJ-001"
+images:
+  - "IMG-20260308-WA0041.jpg"
 ---

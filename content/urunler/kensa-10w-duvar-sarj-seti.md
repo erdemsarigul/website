@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "USB-A portlu duvar adaptörü + Lightning kablo seti, 2.1A, Max 10W."
 featured: false
 weight: 8
+code: "SRJ-005"
+images:
+  - "IMG-20260308-WA0008.jpg"
 ---

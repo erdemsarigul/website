@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Qualcomm Quick Charge 3.0 destekli duvar adaptörü + örgülü kablo dahil."
 featured: false
 weight: 13
+code: "SRJ-024"
+images:
+  - "IMG-20260308-WA0013.jpg"
 ---

@@ -1,0 +1,62 @@
+{{ define "main" }}
+
+  {{ $catKey := .Params.categoryKey }}
+  {{ $products := where (where .Site.RegularPages "Section" "urunler") ".Params.category" $catKey }}
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>{{ .Params.icon }} {{ .Title }}</h1>
+      <p>{{ .Params.description }}</p>
+      <div class="breadcrumb">
+        <a href="{{ "" | relURL }}">Ana Sayfa</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="{{ "kategoriler/" | relURL }}">Kategoriler</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>{{ .Title }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- KATEGORİ AÇIKLAMASI -->
+  {{ if .Content }}
+  <section style="padding: 2rem 0 0;">
+    <div class="container">
+      <div class="category-description">
+        {{ .Content }}
+      </div>
+    </div>
+  </section>
+  {{ end }}
+
+  <!-- ÜRÜNLER -->
+  <section class="catalog-section">
+    <div class="container">
+      {{ if gt (len $products) 0 }}
+      <div class="catalog-grid">
+        {{ range $products }}
+          {{ partial "product-card.html" . }}
+        {{ end }}
+      </div>
+      {{ else }}
+      <div style="text-align:center;padding:4rem 0;">
+        <p style="color:var(--text-muted);font-size:1.1rem;">Bu kategoride henüz ürün bulunmamaktadır.</p>
+        <a href="{{ "urunler/" | relURL }}" class="btn btn-primary" style="margin-top:1.5rem;">Tüm Ürünleri Gör</a>
+      </div>
+      {{ end }}
+
+      <!-- CTA -->
+      <div class="text-center mt-2" style="background:var(--dark2);border-radius:var(--radius);padding:2.5rem;margin-top:3rem;border:1px solid rgba(255,255,255,0.06);">
+        <h3 style="color:var(--white);margin-bottom:0.5rem;">Aradığınız ürünü bulamadınız mı?</h3>
+        <p style="color:var(--text-muted);margin-bottom:1.5rem;">500+ ürünlük stoğumuz için bizimle iletişime geçin.</p>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20{{ .Title | urlize }}%20kategorisinde%20urun%20aramak%20istiyorum."
+             target="_blank" rel="noopener" class="btn btn-whatsapp">💬 WhatsApp ile Yazın</a>
+          <a href="{{ "iletisim/" | relURL }}" class="btn btn-outline">📩 İletişim Formu</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+{{ end }}

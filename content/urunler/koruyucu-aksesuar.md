@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Dayanıklı koruyucu aksesuar ürünü."
 featured: false
 weight: 46
+code: "AKS-006"
+images:
+  - "IMG-20260308-WA0046.jpg"
 ---

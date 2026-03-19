@@ -10,4 +10,7 @@ badgeLabel: "Toptan"
 description: "Noise marka çift portlu araç şarj cihazı, 45W toplam güç, hızlı şarj destekli."
 featured: false
 weight: 14
+code: "SRJ-014"
+images:
+  - "IMG-20260308-WA0014.jpg"
 ---

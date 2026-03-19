@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Ergonomik MTL kablosuz Bluetooth TWS kulaklık, şarj kutusu dahil."
 featured: false
 weight: 37
+code: "SES-006"
+images:
+  - "IMG-20260308-WA0037.jpg"
 ---

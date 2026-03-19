@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Torima TR-10 Sound Wave, USB-C to 3.5mm kulaklık jakı dönüştürücü."
 featured: false
 weight: 54
+code: "AKS-016"
+images:
+  - "IMG-20260308-WA0054.jpg"
 ---

@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Noise marka hızlı şarj ve veri aktarım destekli dayanıklı kablo."
 featured: false
 weight: 20
+code: "SRJ-022"
+images:
+  - "IMG-20260308-WA0020.jpg"
 ---

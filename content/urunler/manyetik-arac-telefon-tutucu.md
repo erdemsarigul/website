@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Araç içi kullanım için manyetik tutma sistemli güvenli evrensel telefon tutucu."
 featured: false
 weight: 47
+code: "AKS-008"
+images:
+  - "IMG-20260308-WA0047.jpg"
 ---

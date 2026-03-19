@@ -10,4 +10,7 @@ badgeLabel: "Yeni"
 description: "Paslanmaz çelik, 5 farklı boy bıçak, ergonomik sap, özel sunum kutusu."
 featured: false
 weight: 2
+code: "AKS-009"
+images:
+  - "IMG-20260308-WA0002.jpg"
 ---

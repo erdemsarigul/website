@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "USB-C to 3.5mm + hızlı şarj pass-through, 3.0A, Hi-Fi ses kalitesi."
 featured: false
 weight: 55
+code: "AKS-014"
+images:
+  - "IMG-20260308-WA0055.jpg"
 ---

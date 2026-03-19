@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Yüksek hızlı YUMAX USB-C to USB-A şarj ve data sync kablosu."
 featured: false
 weight: 29
+code: "SRJ-029"
+images:
+  - "IMG-20260308-WA0029.jpg"
 ---

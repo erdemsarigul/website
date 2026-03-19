@@ -10,4 +10,7 @@ badgeLabel: "Popüler"
 description: "Bluetooth 5.0 oyuncu kulaklığı, LED ışıklı, 6mm sürücü, 400mAh şarj kutusu."
 featured: true
 weight: 30
+code: "SES-003"
+images:
+  - "IMG-20260308-WA0030.jpg"
 ---

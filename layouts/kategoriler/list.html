@@ -1,0 +1,36 @@
+{{ define "main" }}
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>Ürün <span style="color:var(--primary)">Kategorileri</span></h1>
+      <p>Aradığınız ürünü kategoriye göre keşfedin</p>
+      <div class="breadcrumb">
+        <a href="{{ "" | relURL }}">Ana Sayfa</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Kategoriler</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- KATEGORİ LİSTESİ -->
+  <section class="catalog-section">
+    <div class="container">
+      <div class="categories-detail-grid">
+        {{ range .Pages }}
+        {{ $catKey := .Params.categoryKey }}
+        {{ $products := where (where $.Site.RegularPages "Section" "urunler") ".Params.category" $catKey }}
+        <a href="{{ .RelPermalink }}" class="category-detail-card">
+          <div class="category-detail-icon">{{ .Params.icon }}</div>
+          <div class="category-detail-info">
+            <h3>{{ .Title }}</h3>
+            <p>{{ .Params.description }}</p>
+            <span class="category-product-count">{{ len $products }} ürün</span>
+          </div>
+        </a>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+{{ end }}

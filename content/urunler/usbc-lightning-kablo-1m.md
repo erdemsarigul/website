@@ -10,4 +10,7 @@ badgeLabel: "Popüler"
 description: "iPhone ve iPad uyumlu USB-C to Lightning şarj ve data kablosu, ~1m uzunluk."
 featured: true
 weight: 7
+code: "SRJ-027"
+images:
+  - "IMG-20260308-WA0007.jpg"
 ---

@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Apple USB-C konnektörlü EarPods kulaklık, iPhone 15 ve üzeri uyumlu."
 featured: true
 weight: 25
+code: "SES-001"
+images:
+  - "IMG-20260308-WA0025.jpg"
 ---

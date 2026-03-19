@@ -10,4 +10,7 @@ badgeLabel: "Toptan"
 description: "Renkli LED ışıklı mini projeksiyon cihazı, ev ve ofis kullanımı."
 featured: false
 weight: 48
+code: "ELK-002"
+images:
+  - "IMG-20260308-WA0048.jpg"
 ---

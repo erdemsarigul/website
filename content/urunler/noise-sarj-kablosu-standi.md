@@ -10,4 +10,7 @@ badgeLabel: "Çok Satan"
 description: "USB-C ve Lightning modeller dahil Noise hızlı şarj kabloları, yerli üretim, kasa önü satış standı."
 featured: false
 weight: 17
+code: "SRJ-021"
+images:
+  - "IMG-20260308-WA0017.jpg"
 ---

@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Renkli ve şık tasarımlı aksesuar ürünü, çeşitli renk seçenekleri."
 featured: false
 weight: 44
+code: "AKS-011"
+images:
+  - "IMG-20260308-WA0044.jpg"
 ---

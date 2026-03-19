@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Çok fonksiyonlu acil durum kiti: manyetik tornavida, düdük, şişe açacağı, elektrikli çakmak ve USB şarj dahil. 3 renk seçeneği."
 featured: false
 weight: 60
+code: "AKS-004"
+images:
+  - "IMG-20260308-WA0060.jpg"
 ---

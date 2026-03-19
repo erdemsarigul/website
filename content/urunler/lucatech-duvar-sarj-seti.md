@@ -10,4 +10,7 @@ badgeLabel: "Popüler"
 description: "Micro USB kablo dahil hızlı duvar şarj seti, 2A çıkış, kompakt tasarım."
 featured: false
 weight: 10
+code: "SRJ-011"
+images:
+  - "IMG-20260308-WA0010.jpg"
 ---

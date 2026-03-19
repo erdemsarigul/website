@@ -10,4 +10,7 @@ badgeLabel: "Çok Satan"
 description: "Lucatech LT-521, Bluetooth 5.4+EDR, derin bas, kablosuz over-ear kulaklık."
 featured: false
 weight: 36
+code: "SES-005"
+images:
+  - "IMG-20260308-WA0036.jpg"
 ---

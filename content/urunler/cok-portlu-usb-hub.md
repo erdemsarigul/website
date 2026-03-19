@@ -10,4 +10,7 @@ badgeLabel: ""
 description: "Çok portlu USB hub, hızlı veri aktarımı ve şarj destekli."
 featured: false
 weight: 38
+code: "AKS-003"
+images:
+  - "IMG-20260308-WA0038.jpg"
 ---
