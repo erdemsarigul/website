@@ -1,0 +1,19 @@
+{{ define "main" }}
+  <section class="page-hero">
+    <div class="container">
+      <h1>{{ .Title }}</h1>
+      <div class="breadcrumb">
+        <a href="{{ "/" | relURL }}">Ana Sayfa</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="{{ "/urunler/" | relURL }}">Ürünler</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>{{ .Title }}</span>
+      </div>
+    </div>
+  </section>
+  <section style="padding:4rem 0;">
+    <div class="container">
+      {{ .Content }}
+    </div>
+  </section>
+{{ end }}

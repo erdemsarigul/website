@@ -1,0 +1,127 @@
+{{ define "main" }}
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Türkiye'nin<br><span>Aksesuar Tedarikçisi</span></h1>
+        <p>Telefon kılıfı, şarj aleti, kulaklık, power bank ve 500'den fazla elektronik ürün. Toptan ve perakende fiyatlarıyla kapınıza kadar.</p>
+        <div class="hero-buttons">
+          <a href="{{ "/urunler/" | relURL }}" class="btn btn-primary">🛍 Ürünleri İncele</a>
+          <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20toptan%20fiyat%20bilgisi%20almak%20istiyorum."
+             target="_blank" rel="noopener" class="btn btn-whatsapp">💬 WhatsApp</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><div class="stat-number">500+</div><div class="stat-label">Ürün Çeşidi</div></div>
+          <div class="stat"><div class="stat-number">5+</div><div class="stat-label">Yıllık Deneyim</div></div>
+          <div class="stat"><div class="stat-number">%100</div><div class="stat-label">Müşteri Memnuniyeti</div></div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="{{ "images/IMG-20260308-WA0017.jpg" | relURL }}" alt="Sarıgül Ticaret Ürünleri" loading="eager" />
+      </div>
+    </div>
+  </section>
+
+  <!-- KATEGORİLER -->
+  <section class="categories">
+    <div class="container">
+      <h2 class="section-title">Ürün <span>Kategorileri</span></h2>
+      <p class="section-sub">İhtiyacınıza göre kategori seçin</p>
+      <div class="categories-grid">
+        <a href="{{ "/urunler/" | relURL }}" class="category-card">
+          <div class="category-icon">📱</div>
+          <h3>Kılıflar</h3>
+          <p>Telefon kılıfları</p>
+        </a>
+        <a href="{{ "/urunler/" | relURL }}" class="category-card">
+          <div class="category-icon">⚡</div>
+          <h3>Şarj Aletleri</h3>
+          <p>Hızlı şarj & kablo</p>
+        </a>
+        <a href="{{ "/urunler/" | relURL }}" class="category-card">
+          <div class="category-icon">🎧</div>
+          <h3>Ses Sistemleri</h3>
+          <p>Kulaklık & hoparlör</p>
+        </a>
+        <a href="{{ "/urunler/" | relURL }}" class="category-card">
+          <div class="category-icon">📺</div>
+          <h3>Elektronik</h3>
+          <p>Akıllı elektronik</p>
+        </a>
+        <a href="{{ "/urunler/" | relURL }}" class="category-card">
+          <div class="category-icon">🔋</div>
+          <h3>Aksesuarlar</h3>
+          <p>Çeşitli aksesuarlar</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÖNE ÇIKAN ÜRÜNLER -->
+  <section class="featured-products">
+    <div class="container">
+      <h2 class="section-title">Öne Çıkan <span>Ürünler</span></h2>
+      <p class="section-sub">En çok tercih edilen ürünlerimiz</p>
+      <div class="products-grid">
+        {{ $featured := where (where .Site.RegularPages "Section" "urunler") ".Params.featured" true }}
+        {{ range first 8 $featured }}
+          {{ partial "product-card.html" . }}
+        {{ end }}
+        {{ if lt (len $featured) 8 }}
+          {{ $all := where .Site.RegularPages "Section" "urunler" }}
+          {{ range first (sub 8 (len $featured)) $all }}
+            {{ partial "product-card.html" . }}
+          {{ end }}
+        {{ end }}
+      </div>
+      <div style="text-align:center;margin-top:2.5rem;">
+        <a href="{{ "/urunler/" | relURL }}" class="btn btn-primary">Tüm Ürünleri Gör →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEDEN BİZ -->
+  <section class="why-us">
+    <div class="container">
+      <h2 class="section-title">Neden <span>Sarıgül Ticaret?</span></h2>
+      <p class="section-sub">Güvenilir tedarikçiniz olmanın avantajları</p>
+      <div class="why-grid">
+        <div class="why-card">
+          <span class="why-icon">🏆</span>
+          <h3>Kaliteli Ürünler</h3>
+          <p>Güvenilir markalardan temin edilen, test edilmiş ürünler.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">💰</span>
+          <h3>Uygun Toptan Fiyat</h3>
+          <p>Hacimli alımlarda rekabetçi toptan fiyat avantajı.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">🚚</span>
+          <h3>Hızlı Teslimat</h3>
+          <p>Siparişleriniz en kısa sürede hazırlanıp kargoya verilir.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">💬</span>
+          <h3>WhatsApp Destek</h3>
+          <p>Sorularınız için WhatsApp üzerinden hızla yanıt alın.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2>Toptan Sipariş İçin Hemen Yazın!</h2>
+      <p>500+ ürünlük stoğumuz için toptan fiyat listesi almak ister misiniz?</p>
+      <div class="cta-buttons">
+        <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20toptan%20fiyat%20listesi%20almak%20istiyorum."
+           target="_blank" rel="noopener" class="btn btn-white">💬 WhatsApp ile Yazın</a>
+        <a href="{{ "/iletisim/" | relURL }}" class="btn btn-white-outline">📩 İletişim Formu</a>
+      </div>
+    </div>
+  </section>
+
+{{ end }}

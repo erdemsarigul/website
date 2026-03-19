@@ -1,0 +1,52 @@
+{{ define "main" }}
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>Ürün <span style="color:var(--primary)">Kataloğumuz</span></h1>
+      <p>500'den fazla ürün çeşidi – toptan ve perakende fiyatlarıyla</p>
+      <div class="breadcrumb">
+        <a href="{{ "/" | relURL }}">Ana Sayfa</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Ürünler</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOG -->
+  <section class="catalog-section">
+    <div class="container">
+
+      <!-- Filtreler -->
+      <div class="catalog-filters">
+        <button class="filter-btn active" data-filter="tumu">Tümü</button>
+        <button class="filter-btn" data-filter="kilif">📱 Kılıflar</button>
+        <button class="filter-btn" data-filter="sarj">⚡ Şarj Aletleri</button>
+        <button class="filter-btn" data-filter="ses">🎧 Ses Sistemleri</button>
+        <button class="filter-btn" data-filter="elektronik">📺 Elektronik</button>
+        <button class="filter-btn" data-filter="aksesuar">🔋 Aksesuarlar</button>
+        <button class="filter-btn" data-filter="ekran">🛡 Ekran Koruyucu</button>
+      </div>
+
+      <!-- Ürün Listesi -->
+      <div class="catalog-grid">
+        {{ range .Pages }}
+          {{ partial "product-card.html" . }}
+        {{ end }}
+      </div>
+
+      <!-- Toptan CTA -->
+      <div class="text-center mt-2" style="background:var(--dark2);border-radius:var(--radius);padding:2.5rem;margin-top:3rem;border:1px solid rgba(255,255,255,0.06);">
+        <h3 style="color:var(--white);margin-bottom:0.5rem;">Aradığınız ürünü bulamadınız mı?</h3>
+        <p style="color:var(--text-muted);margin-bottom:1.5rem;">500+ ürünlük stoğumuz için bizimle iletişime geçin. Toptan fiyat listesi için WhatsApp veya e-posta yoluyla ulaşabilirsiniz.</p>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20tam%20urun%20listesi%20almak%20istiyorum."
+             target="_blank" rel="noopener" class="btn btn-whatsapp">💬 WhatsApp ile Yazın</a>
+          <a href="{{ "/iletisim/" | relURL }}" class="btn btn-outline">📩 İletişim Formu</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+{{ end }}

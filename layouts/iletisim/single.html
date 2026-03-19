@@ -1,53 +1,4 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>İletişim – Sarıgül Ticaret</title>
-  <meta name="description" content="Sarıgül Ticaret ile iletişime geçin. WhatsApp, e-posta veya iletişim formu ile mesaj gönderin. Toptan fiyat bilgisi alın." />
-  <meta name="robots" content="index, follow" />
-  <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-
-  <!-- ÜST BAR -->
-  <div class="top-bar">
-    <div class="container">
-      <span>📦 Toptan siparişlerde özel fiyat – hemen ulaşın!</span>
-      <div class="top-bar-links">
-        <a href="mailto:x_erdemsarigul@hotmail.com">✉ x_erdemsarigul@hotmail.com</a>
-        <a href="https://wa.me/905427447550" target="_blank" rel="noopener">📱 +90 542 744 75 50</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- HEADER -->
-  <header>
-    <div class="container">
-      <div class="nav-wrapper">
-        <a href="index.html" class="logo">
-          <img src="images/logo.svg" alt="Sarıgül Ticaret Logo" width="120" height="40" />
-        </a>
-        <button class="hamburger" id="hamburger" aria-label="Menüyü Aç/Kapat" aria-expanded="false" aria-controls="main-nav">
-          <span></span><span></span><span></span>
-        </button>
-        <nav id="main-nav" aria-label="Ana Navigasyon">
-          <ul>
-            <li><a href="index.html">Ana Sayfa</a></li>
-            <li><a href="urunler.html">Ürünler</a></li>
-            <li><a href="iletisim.html">İletişim</a></li>
-            <li>
-              <a href="https://wa.me/905427447550?text=Merhaba%2C%20toptan%20fiyat%20bilgisi%20almak%20istiyorum."
-                 target="_blank" rel="noopener" class="btn btn-whatsapp" style="padding:0.4rem 0.9rem;font-size:0.85rem;">
-                💬 WhatsApp
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </header>
+{{ define "main" }}
 
   <!-- PAGE HERO -->
   <section class="page-hero">
@@ -55,7 +6,7 @@
       <h1>Bizimle <span style="color:var(--primary)">İletişime</span> Geçin</h1>
       <p>Sorularınız, toptan teklif talepleriniz veya ürün bilgisi için buradayız.</p>
       <div class="breadcrumb">
-        <a href="index.html">Ana Sayfa</a>
+        <a href="{{ "/" | relURL }}">Ana Sayfa</a>
         <span class="breadcrumb-sep">›</span>
         <span>İletişim</span>
       </div>
@@ -68,25 +19,25 @@
 
       <!-- Hızlı İletişim Kartları -->
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-bottom:3rem;">
-        <a href="https://wa.me/905427447550?text=Merhaba%2C%20bilgi%20almak%20istiyorum."
+        <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20bilgi%20almak%20istiyorum."
            target="_blank" rel="noopener"
            style="background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);padding:2rem;text-align:center;text-decoration:none;display:block;transition:border-color 0.25s,transform 0.25s;">
           <div style="font-size:2.5rem;margin-bottom:1rem;">💬</div>
           <h3 style="color:var(--white);margin-bottom:0.3rem;">WhatsApp</h3>
-          <p style="color:var(--text-muted);font-size:0.85rem;">+90 542 744 75 50</p>
+          <p style="color:var(--text-muted);font-size:0.85rem;">{{ .Site.Params.phoneDisplay }}</p>
           <p style="color:var(--whatsapp);font-size:0.82rem;margin-top:0.5rem;">Hemen Yaz →</p>
         </a>
-        <a href="mailto:x_erdemsarigul@hotmail.com"
+        <a href="mailto:{{ .Site.Params.email }}"
            style="background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);padding:2rem;text-align:center;text-decoration:none;display:block;">
           <div style="font-size:2.5rem;margin-bottom:1rem;">✉</div>
           <h3 style="color:var(--white);margin-bottom:0.3rem;">E-posta</h3>
-          <p style="color:var(--text-muted);font-size:0.85rem;">x_erdemsarigul@hotmail.com</p>
+          <p style="color:var(--text-muted);font-size:0.85rem;">{{ .Site.Params.email }}</p>
           <p style="color:var(--primary);font-size:0.82rem;margin-top:0.5rem;">Mail Gönder →</p>
         </a>
         <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);padding:2rem;text-align:center;">
           <div style="font-size:2.5rem;margin-bottom:1rem;">📍</div>
           <h3 style="color:var(--white);margin-bottom:0.3rem;">Adres</h3>
-          <p style="color:var(--text-muted);font-size:0.85rem;">Silahtarağa mahallesi, Adil sokak, No 4, Çorlu, Tekirdağ</p>
+          <p style="color:var(--text-muted);font-size:0.85rem;">{{ .Site.Params.address }}</p>
         </div>
         <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);padding:2rem;text-align:center;">
           <div style="font-size:2.5rem;margin-bottom:1rem;">🕐</div>
@@ -96,47 +47,43 @@
         </div>
       </div>
 
-      <!-- Form + Harita Grid -->
+      <!-- Form + Bilgi Grid -->
       <div class="contact-page-grid">
 
-        <!-- Sol: Bilgi ve Harita -->
+        <!-- Sol: Bilgi -->
         <div>
           <h2 style="color:var(--white);margin-bottom:1rem;font-size:1.5rem;">İletişim Bilgileri</h2>
           <p style="color:var(--text-muted);margin-bottom:2rem;">
-            Toptan alım teklifleri, ürün bilgisi ya da herhangi bir konuda WhatsApp veya e-posta yoluyla bize ulaşabilirsiniz. En kısa sürede geri dönüş yapacağız.
+            Toptan alım teklifleri, ürün bilgisi ya da herhangi bir konuda WhatsApp veya e-posta yoluyla bize ulaşabilirsiniz.
           </p>
-
           <div class="contact-items">
             <div class="contact-item">
               <div class="contact-item-icon">📞</div>
               <div class="contact-item-text">
                 <h4>Telefon / WhatsApp</h4>
-                <a href="https://wa.me/905427447550" target="_blank" rel="noopener">+90 542 744 75 50</a>
+                <a href="https://wa.me/{{ .Site.Params.phone }}" target="_blank" rel="noopener">{{ .Site.Params.phoneDisplay }}</a>
               </div>
             </div>
             <div class="contact-item">
               <div class="contact-item-icon">✉</div>
               <div class="contact-item-text">
                 <h4>E-posta</h4>
-                <a href="mailto:x_erdemsarigul@hotmail.com">x_erdemsarigul@hotmail.com</a>
+                <a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a>
               </div>
             </div>
             <div class="contact-item">
               <div class="contact-item-icon">📍</div>
               <div class="contact-item-text">
                 <h4>Adres</h4>
-                <p>Silahtarağa mahallesi, Adil sokak, No 4, Çorlu, Tekirdağ</p>
+                <p>{{ .Site.Params.address }}</p>
               </div>
             </div>
           </div>
-
-          <!-- Harita Placeholder -->
           <div class="contact-map">
             <div style="text-align:center;padding:2rem;">
               <div style="font-size:3rem;margin-bottom:0.5rem;">🗺</div>
-              <p>Harita entegrasyonu</p>
-              <p style="font-size:0.8rem;color:var(--text-muted);">Silahtarağa mahallesi, Adil sokak, No 4, Çorlu, Tekirdağ</p>
-              <a href="https://maps.google.com/?q=Silahtarağa mahallesi, Adil sokak, No 4, Çorlu, Tekirdağ"
+              <p>{{ .Site.Params.address }}</p>
+              <a href="https://maps.google.com/?q={{ .Site.Params.address | urlquery }}"
                  target="_blank" rel="noopener"
                  style="color:var(--primary);font-size:0.85rem;">Google Maps'te Aç →</a>
             </div>
@@ -149,7 +96,6 @@
           <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="contact" />
             <p style="display:none;"><label>Bot alanı: <input name="bot-field" /></label></p>
-
             <div class="form-group">
               <label for="name">Ad Soyad *</label>
               <input type="text" id="name" name="name" placeholder="Adınız Soyadınız" required autocomplete="name" />
@@ -180,23 +126,21 @@
             </div>
             <div class="form-group">
               <label for="message">Mesajınız *</label>
-              <textarea id="message" name="message" placeholder="Mesajınızı buraya yazın… Toptan talep için ürün adı ve miktarı belirtebilirsiniz." required></textarea>
+              <textarea id="message" name="message" placeholder="Mesajınızı buraya yazın…" required></textarea>
             </div>
             <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;font-size:1rem;">
               ✉ Mesajı Gönder
             </button>
             <div id="form-message" class="form-message"></div>
           </form>
-
-          <!-- Alternatif İletişim -->
           <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06);">
             <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">Veya doğrudan ulaşın:</p>
             <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
-              <a href="https://wa.me/905427447550?text=Merhaba%2C%20bilgi%20almak%20istiyorum."
+              <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20bilgi%20almak%20istiyorum."
                  target="_blank" rel="noopener" class="btn btn-whatsapp" style="flex:1;justify-content:center;">
                 💬 WhatsApp
               </a>
-              <a href="mailto:x_erdemsarigul@hotmail.com" class="btn btn-outline" style="flex:1;justify-content:center;">
+              <a href="mailto:{{ .Site.Params.email }}" class="btn btn-outline" style="flex:1;justify-content:center;">
                 ✉ E-posta
               </a>
             </div>
@@ -209,7 +153,6 @@
       <div style="margin-top:4rem;">
         <h2 class="section-title">Sık Sorulan <span style="color:var(--primary)">Sorular</span></h2>
         <p class="section-sub">Merak ettiğiniz konularda hızlı yanıtlar</p>
-
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem;margin-top:2rem;">
           <div style="background:var(--dark2);border-radius:var(--radius);padding:1.5rem;border:1px solid rgba(255,255,255,0.06);">
             <h4 style="color:var(--white);margin-bottom:0.5rem;">📦 Toptan minimum sipariş miktarı nedir?</h4>
@@ -233,69 +176,4 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="index.html" class="logo">
-            <img src="images/logo.svg" alt="Sarıgül Ticaret" width="120" height="40" />
-          </a>
-          <p>Telefon aksesuar ve elektronik ürünlerde toptan &amp; perakende satışın güvenilir adresi.</p>
-          <div class="social-links">
-            <a href="#" class="social-link" aria-label="Instagram">📸</a>
-            <a href="https://wa.me/905427447550" class="social-link" aria-label="WhatsApp" target="_blank" rel="noopener">💬</a>
-            <a href="mailto:x_erdemsarigul@hotmail.com" class="social-link" aria-label="E-posta">✉</a>
-          </div>
-        </div>
-        <div class="footer-col">
-          <h4>Hızlı Bağlantılar</h4>
-          <ul>
-            <li><a href="index.html">Ana Sayfa</a></li>
-            <li><a href="urunler.html">Ürün Kataloğu</a></li>
-            <li><a href="iletisim.html">İletişim</a></li>
-            <li><a href="gizlilik.html">Gizlilik Politikası</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Kategoriler</h4>
-          <ul>
-            <li><a href="urunler.html?kategori=kilif">Telefon Kılıfları</a></li>
-            <li><a href="urunler.html?kategori=sarj">Şarj Aletleri</a></li>
-            <li><a href="urunler.html?kategori=ses">Kulaklıklar</a></li>
-            <li><a href="urunler.html?kategori=elektronik">Elektronik</a></li>
-            <li><a href="urunler.html?kategori=aksesuar">Aksesuarlar</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>İletişim</h4>
-          <div class="footer-contact-item"><span>📍</span><span>Silahtarağa mahallesi, Adil sokak, No 4, Çorlu, Tekirdağ</span></div>
-          <div class="footer-contact-item"><span>📞</span><a href="https://wa.me/905427447550" target="_blank" rel="noopener" style="color:var(--text-muted);">+90 542 744 75 50</a></div>
-          <div class="footer-contact-item"><span>✉</span><a href="mailto:x_erdemsarigul@hotmail.com" style="color:var(--text-muted);">x_erdemsarigul@hotmail.com</a></div>
-          <div class="footer-contact-item"><span>🕐</span><span>Pzt–pzr 09:00–20:00</span></div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>&copy; 2026 Sarıgül Ticaret. Tüm hakları saklıdır.</span>
-        <span><a href="gizlilik.html">Gizlilik Politikası</a> | <a href="gizlilik.html#cerez">Çerez Politikası</a></span>
-      </div>
-    </div>
-  </footer>
-
-  <!-- COOKIE BANNER -->
-  <div id="cookie-banner" role="alertdialog" aria-live="polite" aria-label="Çerez izni">
-    <p>Bu site çerezler kullanmaktadır. <a href="gizlilik.html#cerez">Çerez Politikası</a></p>
-    <div class="cookie-buttons">
-      <button id="cookie-accept" class="btn-cookie-accept">✓ Kabul Et</button>
-      <button id="cookie-decline" class="btn-cookie-decline">Reddet</button>
-    </div>
-  </div>
-
-  <a href="https://wa.me/905427447550?text=Merhaba%2C%20bilgi%20almak%20istiyorum."
-     class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
-
-  <button id="back-to-top" aria-label="Sayfa başına dön">↑</button>
-
-  <script src="js/main.js"></script>
-</body>
-</html>
+{{ end }}

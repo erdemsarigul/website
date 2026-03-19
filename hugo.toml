@@ -1,0 +1,20 @@
+baseURL = 'https://erdemsarigul.github.io/website/'
+languageCode = 'tr'
+title = 'Sarıgül Ticaret – Telefon Aksesuar & Elektronik'
+defaultContentLanguage = 'tr'
+
+[params]
+  description = "Telefon aksesuar ve elektronik ürünlerde toptan & perakende satışın güvenilir adresi."
+  phone       = "905427447550"
+  phoneDisplay = "+90 542 744 75 50"
+  email       = "x_erdemsarigul@hotmail.com"
+  address     = "Silahtarağa mahallesi Adil sokak No:4 Çorlu / Tekirdağ"
+
+[outputs]
+  home    = ["HTML"]
+  page    = ["HTML"]
+  section = ["HTML"]
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"

@@ -1,0 +1,19 @@
+        <div class="product-card" data-category="{{ .Params.category }}">
+          <div class="product-image-wrap">
+            <div class="product-image">
+              <img src="{{ (printf "images/%s" .Params.image) | relURL }}" alt="{{ .Title }}" loading="lazy" />
+            </div>
+            {{ with .Params.badge }}
+            <span class="product-badge badge-{{ . }}">{{ $.Params.badgeLabel }}</span>
+            {{ end }}
+          </div>
+          <div class="product-info">
+            <span class="product-category">{{ .Params.categoryLabel }}</span>
+            <h3 class="product-name">{{ .Title }}</h3>
+            <p class="product-desc">{{ .Params.description }}</p>
+            <div class="product-footer">
+              <span class="product-price">Toptan fiyat <small>için sorun</small></span>
+              <button class="btn-ask" onclick="askProduct('{{ .Title | safeJS }}')">💬 Sor</button>
+            </div>
+          </div>
+        </div>
