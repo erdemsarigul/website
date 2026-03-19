@@ -12,6 +12,7 @@
 
   /* ---- DOM Hazır ---------------------------------------- */
   document.addEventListener('DOMContentLoaded', function () {
+    initThemeToggle();
     initMobileMenu();
     initCookieBanner();
     initBackToTop();
@@ -21,6 +22,41 @@
     initWhatsAppLinks();
     initProductSlider();
   });
+
+  /* ---- Tema Değiştirici --------------------------------- */
+  var THEME_KEY = 'sg_theme';
+  var THEME_GOLD = 'gold';
+
+  function initThemeToggle() {
+    var btn   = document.getElementById('theme-toggle');
+    var label = document.getElementById('theme-toggle-label');
+    if (!btn) return;
+
+    // Uygula: kayıtlı tema veya varsayılan (navy)
+    var saved = localStorage.getItem(THEME_KEY);
+    applyTheme(saved === THEME_GOLD ? THEME_GOLD : '');
+
+    btn.addEventListener('click', function () {
+      var current = document.documentElement.getAttribute('data-theme');
+      var next = (current === THEME_GOLD) ? '' : THEME_GOLD;
+      applyTheme(next);
+      if (next) {
+        localStorage.setItem(THEME_KEY, next);
+      } else {
+        localStorage.removeItem(THEME_KEY);
+      }
+    });
+
+    function applyTheme(theme) {
+      if (theme === THEME_GOLD) {
+        document.documentElement.setAttribute('data-theme', THEME_GOLD);
+        if (label) label.textContent = 'Lacivert Tema';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        if (label) label.textContent = 'Altın Tema';
+      }
+    }
+  }
 
   /* ---- Mobil Menü --------------------------------------- */
   function initMobileMenu() {
