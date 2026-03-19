@@ -82,7 +82,7 @@
           </div>
           {{ end }}
 
-          <p class="product-detail-desc">{{ .Params.description }}</p>
+          <p class="product-detail-desc">{{ .Params.description | html | replace "\\n" "\n" | replaceRE "\n" "<br>" | safeHTML }}</p>
 
           {{ if .Content }}
           <div class="product-detail-content">
