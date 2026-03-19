@@ -1,0 +1,47 @@
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="{{ "/" | relURL }}" class="logo">
+            <img src="{{ "images/logo.svg" | relURL }}" alt="Sarıgül Ticaret" width="120" height="40" />
+          </a>
+          <p>Telefon aksesuar ve elektronik ürünlerde toptan &amp; perakende satışın güvenilir adresi.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Instagram">📸</a>
+            <a href="https://wa.me/{{ .Site.Params.phone }}" class="social-link" aria-label="WhatsApp" target="_blank" rel="noopener">💬</a>
+            <a href="mailto:{{ .Site.Params.email }}" class="social-link" aria-label="E-posta">✉</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Hızlı Bağlantılar</h4>
+          <ul>
+            <li><a href="{{ "/" | relURL }}">Ana Sayfa</a></li>
+            <li><a href="{{ "/urunler/" | relURL }}">Ürün Kataloğu</a></li>
+            <li><a href="{{ "/iletisim/" | relURL }}">İletişim</a></li>
+            <li><a href="{{ "/gizlilik/" | relURL }}">Gizlilik Politikası</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Kategoriler</h4>
+          <ul>
+            <li><a href="{{ "/urunler/" | relURL }}">Telefon Kılıfları</a></li>
+            <li><a href="{{ "/urunler/" | relURL }}">Şarj Aletleri</a></li>
+            <li><a href="{{ "/urunler/" | relURL }}">Kulaklıklar</a></li>
+            <li><a href="{{ "/urunler/" | relURL }}">Elektronik</a></li>
+            <li><a href="{{ "/urunler/" | relURL }}">Aksesuarlar</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>İletişim</h4>
+          <div class="footer-contact-item"><span>📍</span><span>{{ .Site.Params.address }}</span></div>
+          <div class="footer-contact-item"><span>📞</span><a href="https://wa.me/{{ .Site.Params.phone }}" target="_blank" rel="noopener" style="color:var(--text-muted);">{{ .Site.Params.phoneDisplay }}</a></div>
+          <div class="footer-contact-item"><span>✉</span><a href="mailto:{{ .Site.Params.email }}" style="color:var(--text-muted);">{{ .Site.Params.email }}</a></div>
+          <div class="footer-contact-item"><span>🕐</span><span>Pzt–Cmt 09:00–18:00</span></div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Sarıgül Ticaret. Tüm hakları saklıdır.</span>
+        <span><a href="{{ "/gizlilik/" | relURL }}">Gizlilik Politikası</a> | <a href="{{ "/gizlilik/" | relURL }}#cerez">Çerez Politikası</a></span>
+      </div>
+    </div>
+  </footer>

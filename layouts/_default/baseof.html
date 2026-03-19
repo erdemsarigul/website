@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+
+  {{ partial "top-bar.html" . }}
+  {{ partial "header.html" . }}
+
+  {{ block "main" . }}{{ end }}
+
+  {{ partial "footer.html" . }}
+  {{ partial "cookie-banner.html" . }}
+
+  <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20bilgi%20almak%20istiyorum."
+     class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+
+  <button id="back-to-top" aria-label="Sayfa başına dön">↑</button>
+
+  <script src="{{ "js/main.js" | relURL }}"></script>
+</body>
+</html>

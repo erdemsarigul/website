@@ -1,0 +1,25 @@
+  <header>
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="{{ "/" | relURL }}" class="logo">
+          <img src="{{ "images/logo.svg" | relURL }}" alt="Sarıgül Ticaret Logo" width="120" height="40" />
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menüyü Aç/Kapat" aria-expanded="false" aria-controls="main-nav">
+          <span></span><span></span><span></span>
+        </button>
+        <nav id="main-nav" aria-label="Ana Navigasyon">
+          <ul>
+            <li><a href="{{ "/" | relURL }}">Ana Sayfa</a></li>
+            <li><a href="{{ "/urunler/" | relURL }}">Ürünler</a></li>
+            <li><a href="{{ "/iletisim/" | relURL }}">İletişim</a></li>
+            <li>
+              <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20toptan%20fiyat%20bilgisi%20almak%20istiyorum."
+                 target="_blank" rel="noopener" class="btn btn-whatsapp" style="padding:0.4rem 0.9rem;font-size:0.85rem;">
+                💬 WhatsApp
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>

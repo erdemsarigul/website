@@ -1,0 +1,96 @@
+{{ define "main" }}
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>Gizlilik ve <span style="color:var(--primary)">Çerez</span> Politikası</h1>
+      <p>Son güncelleme: Ocak 2025</p>
+      <div class="breadcrumb">
+        <a href="{{ "/" | relURL }}">Ana Sayfa</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Gizlilik Politikası</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- İÇERİK -->
+  <section style="padding:4rem 0;background:var(--dark);">
+    <div class="container">
+      <div style="max-width:800px;margin:0 auto;line-height:1.8;">
+
+        <div style="background:var(--dark2);border-radius:var(--radius);padding:2rem;border:1px solid rgba(255,255,255,0.06);margin-bottom:2rem;">
+          <h2 style="color:var(--white);margin-bottom:1rem;">1. Gizlilik Politikası</h2>
+          <p style="color:var(--text-muted);">
+            Sarıgül Ticaret olarak kişisel verilerinizin güvenliği konusunda azami özen göstermekteyiz.
+            Bu politika, web sitemiz aracılığıyla toplanan kişisel verilerin nasıl kullanıldığını açıklamaktadır.
+          </p>
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">Toplanan Veriler</h3>
+          <ul style="color:var(--text-muted);padding-left:1.5rem;list-style:disc;">
+            <li>İletişim formu aracılığıyla sağlanan ad, e-posta, telefon bilgileri</li>
+            <li>Teknik veriler: IP adresi, tarayıcı türü, ziyaret tarihi ve saati</li>
+            <li>Çerezler aracılığıyla toplanan tercih bilgileri</li>
+          </ul>
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">Verilerin Kullanım Amacı</h3>
+          <ul style="color:var(--text-muted);padding-left:1.5rem;list-style:disc;">
+            <li>Müşteri hizmetleri ve talep yanıtlama</li>
+            <li>Sipariş yönetimi ve teslimat takibi</li>
+            <li>Site performansını iyileştirme</li>
+            <li>Yasal yükümlülüklerin yerine getirilmesi</li>
+          </ul>
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">Veri Güvenliği</h3>
+          <p style="color:var(--text-muted);">
+            Kişisel verileriniz şifreli bağlantılar (SSL/TLS) üzerinden aktarılır ve güvenli sunucularda saklanır.
+            Üçüncü taraflarla, yasal zorunluluk olmadıkça, paylaşılmamaktadır.
+          </p>
+        </div>
+
+        <div id="cerez" style="background:var(--dark2);border-radius:var(--radius);padding:2rem;border:1px solid rgba(255,255,255,0.06);margin-bottom:2rem;">
+          <h2 style="color:var(--white);margin-bottom:1rem;">2. Çerez Politikası</h2>
+          <p style="color:var(--text-muted);margin-bottom:1rem;">
+            Çerezler, web sitemizi ziyaret ettiğinizde tarayıcınıza yerleştirilen küçük metin dosyalarıdır.
+          </p>
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">Kullandığımız Çerez Türleri</h3>
+          <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;font-size:0.87rem;">
+              <thead>
+                <tr style="background:var(--dark3);">
+                  <th style="padding:0.8rem;text-align:left;color:var(--white);border-bottom:1px solid rgba(255,255,255,0.1);">Çerez Adı</th>
+                  <th style="padding:0.8rem;text-align:left;color:var(--white);border-bottom:1px solid rgba(255,255,255,0.1);">Tür</th>
+                  <th style="padding:0.8rem;text-align:left;color:var(--white);border-bottom:1px solid rgba(255,255,255,0.1);">Amaç</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="padding:0.8rem;color:var(--text-muted);border-bottom:1px solid rgba(255,255,255,0.05);">sg_cookie_consent</td>
+                  <td style="padding:0.8rem;color:var(--text-muted);border-bottom:1px solid rgba(255,255,255,0.05);">Gerekli</td>
+                  <td style="padding:0.8rem;color:var(--text-muted);border-bottom:1px solid rgba(255,255,255,0.05);">Çerez onay tercihini kaydeder</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">Çerezleri Kontrol Etme</h3>
+          <p style="color:var(--text-muted);">
+            Tarayıcı ayarlarınızdan çerezleri devre dışı bırakabilir veya silebilirsiniz.
+          </p>
+          <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap;">
+            <button onclick="localStorage.removeItem('sg_cookie_consent');alert('Çerez tercihiniz sıfırlandı. Sayfayı yenileyin.');"
+                    style="background:var(--primary);color:white;padding:0.6rem 1.2rem;border:none;border-radius:7px;cursor:pointer;font-size:0.88rem;">
+              Çerez Tercihlerimi Sıfırla
+            </button>
+          </div>
+        </div>
+
+        <div style="background:var(--dark2);border-radius:var(--radius);padding:2rem;border:1px solid rgba(255,255,255,0.06);">
+          <h2 style="color:var(--white);margin-bottom:1rem;">3. İletişim</h2>
+          <p style="color:var(--text-muted);">Gizlilik politikamız hakkında sorularınız için:</p>
+          <ul style="color:var(--text-muted);padding-left:1.5rem;list-style:disc;margin-top:0.5rem;">
+            <li>E-posta: <a href="mailto:{{ .Site.Params.email }}" style="color:var(--primary);">{{ .Site.Params.email }}</a></li>
+            <li>Adres: {{ .Site.Params.address }}</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+{{ end }}

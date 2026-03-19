@@ -1,5 +1,9 @@
 [build]
-  publish = "."
+  command   = "hugo --minify"
+  publish   = "public"
+
+[build.environment]
+  HUGO_VERSION = "0.147.0"
 
 [[headers]]
   for = "/*"
@@ -8,13 +12,3 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-
-[[redirects]]
-  from = "/urunler"
-  to = "/urunler.html"
-  status = 200
-
-[[redirects]]
-  from = "/iletisim"
-  to = "/iletisim.html"
-  status = 200
