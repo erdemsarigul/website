@@ -3,5 +3,5 @@
   <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} – {{ .Site.Title }}{{ end }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}" />
   <meta name="robots" content="{{ with .Params.robots }}{{ . }}{{ else }}index, follow{{ end }}" />
-  <link rel="icon" type="image/svg+xml" href="{{ "images/logo.svg" | relURL }}" />
+  <link rel="icon" type="image/png" href="{{ "images/logo.png" | relURL }}" />
   <link rel="stylesheet" href="{{ "css/style.css" | relURL }}" />
