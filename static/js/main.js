@@ -26,24 +26,25 @@
   /* ---- Tema Değiştirici --------------------------------- */
   var THEME_KEY = 'sg_theme';
   var THEME_GOLD = 'gold';
+  var THEME_NAVY = 'navy';
 
   function initThemeToggle() {
     var btn   = document.getElementById('theme-toggle');
     var label = document.getElementById('theme-toggle-label');
     if (!btn) return;
 
-    // Uygula: kayıtlı tema veya varsayılan (navy)
+    // Uygula: kayıtlı tema veya varsayılan (altın)
     var saved = localStorage.getItem(THEME_KEY);
-    applyTheme(saved === THEME_GOLD ? THEME_GOLD : '');
+    applyTheme(saved === THEME_NAVY ? '' : THEME_GOLD);
 
     btn.addEventListener('click', function () {
       var current = document.documentElement.getAttribute('data-theme');
       var next = (current === THEME_GOLD) ? '' : THEME_GOLD;
       applyTheme(next);
-      if (next) {
-        localStorage.setItem(THEME_KEY, next);
-      } else {
+      if (next === THEME_GOLD) {
         localStorage.removeItem(THEME_KEY);
+      } else {
+        localStorage.setItem(THEME_KEY, THEME_NAVY);
       }
     });
 
