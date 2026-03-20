@@ -13,6 +13,8 @@ weight: 14
 code: "SRJ-014"
 images:
   - "IMG-20260308-WA0014.jpg"
+  - "IMG-20260308-WA0014.jpg"
+  - "IMG-20260308-WA0014.jpg"
 ---
 
 ## 🚗🔌 Noise 45W Çift Girişli Araç Şarj Adaptörü (USB + Type-C PD)
