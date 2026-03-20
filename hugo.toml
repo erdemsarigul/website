@@ -9,7 +9,7 @@ defaultContentLanguage = 'tr'
   phoneDisplay = "+90 542 744 75 50"
   email       = "x_erdemsarigul@hotmail.com"
   address     = "Silahtarağa mahallesi Adil sokak No:4 Çorlu / Tekirdağ"
-  googleTagManagerID = "GTM-XXXXXXX"
+  googleTagManagerID = "G-TNZ1Z2YTF1"
 
 [outputs]
   home    = ["HTML"]
