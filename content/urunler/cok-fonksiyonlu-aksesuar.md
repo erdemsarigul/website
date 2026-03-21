@@ -1,5 +1,5 @@
 ---
-title: "Çok Fonksiyonlu Aksesuar"
+title: "# Araç Numaratörü"
 date: 2026-01-01
 draft: false
 category: "aksesuar"
