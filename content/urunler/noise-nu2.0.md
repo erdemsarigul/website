@@ -7,7 +7,7 @@ categoryLabel: "Şarj"
 image: "IMG-20260308-WA0022.jpg"
 badge: ""
 badgeLabel: ""
-description: "Noise NU2.0, destekli USB duvar adaptörü, Made in Türkiye."
+description: "Noise NU2.0, 12w Şarj adaptörü, Made in Türkiye."
 featured: false
 weight: 22
 code: "SRJ-018"

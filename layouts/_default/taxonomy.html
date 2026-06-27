@@ -1,10 +1,41 @@
 {{ define "main" }}
-<section style="padding:4rem 0;">
-  <div class="container">
-    <h1>{{ .Title }}</h1>
-    {{ range .Pages }}
-    <p><a href="{{ .Permalink }}">{{ .Title }}</a></p>
-    {{ end }}
-  </div>
-</section>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>{{ .Title }}</h1>
+      <div class="breadcrumb">
+        <a href="{{ "" | relURL }}">Ana Sayfa</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>{{ .Title }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- KATEGORİLER -->
+  <section class="categories">
+    <div class="container">
+      <div class="categories-grid">
+        {{ $icons := dict
+          "kilif" "📱"
+          "sarj" "⚡"
+          "ses" "🎧"
+          "elektronik" "📺"
+          "aksesuar" "🔋"
+          "ekran" "🛡"
+          "oyuncak" "🧸"
+        }}
+        {{ range .Pages }}
+          {{ $slug := .File.ContentBaseName }}
+          {{ $icon := index $icons $slug }}
+          <a href="{{ .Permalink }}" class="category-card">
+            <div class="category-icon">{{ if $icon }}{{ $icon }}{{ else }}📦{{ end }}</div>
+            <h3>{{ .Title }}</h3>
+            {{ with .Params.description }}<p>{{ . }}</p>{{ end }}
+          </a>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
 {{ end }}

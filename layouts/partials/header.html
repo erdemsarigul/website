@@ -1,4 +1,4 @@
-  <header>
+<header>
     <div class="container">
       <div class="nav-wrapper">
         <a href="{{ "" | relURL }}" class="logo">
@@ -20,6 +20,12 @@
               </a>
             </li>
             <li>
+              <button class="cart-icon-btn" id="cart-icon-btn" aria-label="Sepeti Aç" onclick="sepetiAcKapat()" style="position:relative;background:none;border:none;cursor:pointer;font-size:1.4rem;color:var(--white);display:flex;align-items:center;">
+                🛒
+                <span id="cart-count-badge" style="display:none;position:absolute;top:-6px;right:-10px;background:var(--primary);color:white;font-size:0.7rem;font-weight:bold;border-radius:50%;width:18px;height:18px;align-items:center;justify-content:center;line-height:18px;text-align:center;">0</span>
+              </button>
+            </li>
+            <li>
               <button class="theme-toggle" id="theme-toggle" aria-label="Temayı Değiştir">
                 <span class="theme-toggle-dot"></span>
                 <span id="theme-toggle-label">Altın Tema</span>
@@ -30,3 +36,24 @@
       </div>
     </div>
   </header>
+
+  <!-- SEPET PANELİ -->
+  <div id="cart-panel" class="cart-panel" style="display:none;position:fixed;top:0;right:0;width:380px;max-width:100vw;height:100vh;background:var(--dark2);box-shadow:-4px 0 20px rgba(0,0,0,0.3);z-index:9999;flex-direction:column;">
+    <div style="padding:1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center;">
+      <h3 style="color:var(--white);margin:0;">🛒 Sepetim</h3>
+      <button onclick="sepetiAcKapat()" aria-label="Sepeti Kapat" style="background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <div id="cart-items-container" style="flex:1;overflow-y:auto;padding:1rem 1.5rem;">
+      <!-- Sepet ürünleri JS ile buraya dolacak -->
+    </div>
+    <div style="padding:1.5rem;border-top:1px solid rgba(255,255,255,0.08);">
+      <div style="display:flex;justify-content:space-between;margin-bottom:1rem;">
+        <span style="color:var(--white);font-weight:bold;">Toplam:</span>
+        <span id="cart-total-price" style="color:var(--primary);font-weight:bold;font-size:1.2rem;">0 TL</span>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="siparisiTamamla()">
+        Siparişi Tamamla
+      </button>
+    </div>
+  </div>
+  <div id="cart-overlay" onclick="sepetiAcKapat()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;"></div>

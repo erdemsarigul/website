@@ -1,27 +1,50 @@
-        <div class="product-card" data-category="{{ .Params.category }}">
-          <a href="{{ .RelPermalink }}" class="product-card-link" aria-label="{{ .Title }} detayını gör">
-            <div class="product-image-wrap">
-              <div class="product-image">
-                <img src="{{ (printf "images/%s" .Params.image) | relURL }}" alt="{{ .Title }}" loading="lazy" />
-              </div>
-              {{ with .Params.badge }}
-              <span class="product-badge badge-{{ . }}">{{ $.Params.badgeLabel }}</span>
-              {{ end }}
-            </div>
-            <div class="product-info">
-              <span class="product-category">{{ .Params.categoryLabel }}</span>
-              <h3 class="product-name">{{ .Title }}</h3>
-              <p class="product-desc">{{ .Params.description }}</p>
-              {{ with .Params.code }}
-              <span class="product-code-small">{{ . }}</span>
-              {{ end }}
-            </div>
-          </a>
-          <div class="product-footer">
-            <span class="product-price">Toptan fiyat <small>için sorun</small></span>
-            <div class="product-footer-actions">
-              <a href="{{ .RelPermalink }}" class="btn-detail">🔍 Detay</a>
-              <button class="btn-ask" onclick="askProduct('{{ .Title | safeJS }}')">💬 Sor</button>
-            </div>
-          </div>
-        </div>
+{{ $imgUrl := "" }}
+{{ if hasPrefix .Params.image "http" }}
+  {{ $imgUrl = .Params.image }}
+{{ else }}
+  {{ $imgUrl = printf "images/%s" .Params.image | relURL }}
+{{ end }}
+
+<div class="product-card" data-category="{{ .Params.category }}">
+  <a href="{{ .RelPermalink }}" class="product-card-link" aria-label="{{ .Title }} detayını gör">
+    <div class="product-image-wrap">
+      <div class="product-image">
+        <img src="{{ $imgUrl }}" alt="{{ .Title }}" loading="lazy" />
+      </div>
+      {{ with .Params.badge }}
+      <span class="product-badge badge-{{ . }}">{{ $.Params.badgeLabel }}</span>
+      {{ end }}
+    </div>
+    <div class="product-info">
+      <span class="product-category">{{ .Params.categoryLabel }}</span>
+      <h3 class="product-name">{{ .Title }}</h3>
+      <p class="product-desc">{{ .Params.description }}</p>
+      {{ with .Params.code }}
+      <span class="product-code-small">{{ . }}</span>
+      {{ end }}
+    </div>
+  </a>
+  
+  <div class="product-footer" style="flex-direction: column; align-items: stretch; gap: 10px; padding: 15px;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+      {{ if .Params.price }}
+        <span class="product-price" style="font-weight: bold; font-size: 1.1rem; color: var(--primary);">{{ .Params.price }} TL</span>
+      {{ else }}
+        <span class="product-price" style="font-size: 0.9rem;">Toptan fiyat <small>için sorun</small></span>
+      {{ end }}
+      
+      <div class="product-footer-actions">
+        <a href="{{ .RelPermalink }}" class="btn-detail">🔍 Detay</a>
+        <button class="btn-ask" onclick="askProduct('{{ .Title | safeJS }}')">💬 Sor</button>
+      </div>
+    </div>
+
+    {{ if .Params.price }}
+    <button onclick="sepeteEkle('{{ .Title | safeJS }}', '{{ .Params.price }}', '{{ .Params.code }}', '{{ $imgUrl }}'); event.preventDefault();" style="width: 100%; background-color: #28a745; color: white; border: none; padding: 10px; border-radius: var(--radius, 4px); font-weight: bold; cursor: pointer; transition: background 0.3s; margin-top: 5px;">
+      🛒 Sepete Ekle
+    </button>
+    {{ end }}
+    
+  </div>
+</div>

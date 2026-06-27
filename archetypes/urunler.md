@@ -7,6 +7,7 @@ categoryLabel: "Aksesuar"
 image: "IMG-20260308-WA0001.jpg"
 badge: ""
 badgeLabel: ""
+price: ""
 description: "Ürün açıklaması buraya gelecek."
 featured: false
 weight: 100

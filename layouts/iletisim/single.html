@@ -1,179 +1,108 @@
-{{ define "main" }}
-
-  <!-- PAGE HERO -->
-  <section class="page-hero">
-    <div class="container">
-      <h1>Bizimle <span style="color:var(--primary)">İletişime</span> Geçin</h1>
-      <p>Sorularınız, toptan teklif talepleriniz veya ürün bilgisi için buradayız.</p>
-      <div class="breadcrumb">
-        <a href="{{ "" | relURL }}">Ana Sayfa</a>
-        <span class="breadcrumb-sep">›</span>
-        <span>İletişim</span>
-      </div>
+<!-- Sağ: Form -->
+<div class="contact-form-box">
+  <h3>Mesaj Gönderin</h3>
+  <form id="contact-form" action="https://formspree.io/f/xojodqoj" method="POST">
+    
+    <div class="form-group">
+      <label for="name">Ad Soyad *</label>
+      <input type="text" id="name" name="name" placeholder="Adınız Soyadınız" required autocomplete="name" />
     </div>
-  </section>
-
-  <!-- CONTACT PAGE -->
-  <section class="contact-page">
-    <div class="container">
-
-      <!-- Hızlı İletişim Kartları -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-bottom:3rem;">
-        <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20bilgi%20almak%20istiyorum."
-           target="_blank" rel="noopener"
-           style="background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);padding:2rem;text-align:center;text-decoration:none;display:block;transition:border-color 0.25s,transform 0.25s;">
-          <div style="font-size:2.5rem;margin-bottom:1rem;">💬</div>
-          <h3 style="color:var(--white);margin-bottom:0.3rem;">WhatsApp</h3>
-          <p style="color:var(--text-muted);font-size:0.85rem;">{{ .Site.Params.phoneDisplay }}</p>
-          <p style="color:var(--whatsapp);font-size:0.82rem;margin-top:0.5rem;">Hemen Yaz →</p>
-        </a>
-        <a href="mailto:{{ .Site.Params.email }}"
-           style="background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);padding:2rem;text-align:center;text-decoration:none;display:block;">
-          <div style="font-size:2.5rem;margin-bottom:1rem;">✉</div>
-          <h3 style="color:var(--white);margin-bottom:0.3rem;">E-posta</h3>
-          <p style="color:var(--text-muted);font-size:0.85rem;">{{ .Site.Params.email }}</p>
-          <p style="color:var(--primary);font-size:0.82rem;margin-top:0.5rem;">Mail Gönder →</p>
-        </a>
-        <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);padding:2rem;text-align:center;">
-          <div style="font-size:2.5rem;margin-bottom:1rem;">📍</div>
-          <h3 style="color:var(--white);margin-bottom:0.3rem;">Adres</h3>
-          <p style="color:var(--text-muted);font-size:0.85rem;">{{ .Site.Params.address }}</p>
-        </div>
-        <div style="background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);padding:2rem;text-align:center;">
-          <div style="font-size:2.5rem;margin-bottom:1rem;">🕐</div>
-          <h3 style="color:var(--white);margin-bottom:0.3rem;">Çalışma Saatleri</h3>
-          <p style="color:var(--text-muted);font-size:0.85rem;">Pazartesi – Pazar</p>
-          <p style="color:var(--text-muted);font-size:0.85rem;">09:00 – 20:00</p>
-        </div>
-      </div>
-
-      <!-- Form + Bilgi Grid -->
-      <div class="contact-page-grid">
-
-        <!-- Sol: Bilgi -->
-        <div>
-          <h2 style="color:var(--white);margin-bottom:1rem;font-size:1.5rem;">İletişim Bilgileri</h2>
-          <p style="color:var(--text-muted);margin-bottom:2rem;">
-            Toptan alım teklifleri, ürün bilgisi ya da herhangi bir konuda WhatsApp veya e-posta yoluyla bize ulaşabilirsiniz.
-          </p>
-          <div class="contact-items">
-            <div class="contact-item">
-              <div class="contact-item-icon">📞</div>
-              <div class="contact-item-text">
-                <h4>Telefon / WhatsApp</h4>
-                <a href="https://wa.me/{{ .Site.Params.phone }}" target="_blank" rel="noopener">{{ .Site.Params.phoneDisplay }}</a>
-              </div>
-            </div>
-            <div class="contact-item">
-              <div class="contact-item-icon">✉</div>
-              <div class="contact-item-text">
-                <h4>E-posta</h4>
-                <a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a>
-              </div>
-            </div>
-            <div class="contact-item">
-              <div class="contact-item-icon">📍</div>
-              <div class="contact-item-text">
-                <h4>Adres</h4>
-                <p>{{ .Site.Params.address }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="contact-map">
-            <div style="text-align:center;padding:2rem;">
-              <div style="font-size:3rem;margin-bottom:0.5rem;">🗺</div>
-              <p>{{ .Site.Params.address }}</p>
-              <a href="https://maps.google.com/?q={{ .Site.Params.address | urlquery }}"
-                 target="_blank" rel="noopener"
-                 style="color:var(--primary);font-size:0.85rem;">Google Maps'te Aç →</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sağ: Form -->
-        <div class="contact-form-box">
-          <h3>Mesaj Gönderin</h3>
-          <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-            <input type="hidden" name="form-name" value="contact" />
-            <p style="display:none;"><label>Bot alanı: <input name="bot-field" /></label></p>
-            <div class="form-group">
-              <label for="name">Ad Soyad *</label>
-              <input type="text" id="name" name="name" placeholder="Adınız Soyadınız" required autocomplete="name" />
-            </div>
-            <div class="form-group">
-              <label for="email">E-posta Adresi *</label>
-              <input type="email" id="email" name="email" placeholder="ornek@email.com" required autocomplete="email" />
-            </div>
-            <div class="form-group">
-              <label for="phone">Telefon Numarası</label>
-              <input type="tel" id="phone" name="phone" placeholder="+90 5xx xxx xx xx" autocomplete="tel" />
-            </div>
-            <div class="form-group">
-              <label for="company">Firma Adı</label>
-              <input type="text" id="company" name="company" placeholder="Firma adınız (opsiyonel)" autocomplete="organization" />
-            </div>
-            <div class="form-group">
-              <label for="subject">Konu *</label>
-              <select id="subject" name="subject" required>
-                <option value="">– Konu seçin –</option>
-                <option value="toptan">Toptan Fiyat Talebi</option>
-                <option value="urun">Ürün Hakkında Bilgi</option>
-                <option value="siparis">Sipariş Sorgusu</option>
-                <option value="garanti">Garanti / İade</option>
-                <option value="genel">Genel Bilgi</option>
-                <option value="diger">Diğer</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="message">Mesajınız *</label>
-              <textarea id="message" name="message" placeholder="Mesajınızı buraya yazın…" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;font-size:1rem;">
-              ✉ Mesajı Gönder
-            </button>
-            <div id="form-message" class="form-message"></div>
-          </form>
-          <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06);">
-            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">Veya doğrudan ulaşın:</p>
-            <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
-              <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20bilgi%20almak%20istiyorum."
-                 target="_blank" rel="noopener" class="btn btn-whatsapp" style="flex:1;justify-content:center;">
-                💬 WhatsApp
-              </a>
-              <a href="mailto:{{ .Site.Params.email }}" class="btn btn-outline" style="flex:1;justify-content:center;">
-                ✉ E-posta
-              </a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- SSS -->
-      <div style="margin-top:4rem;">
-        <h2 class="section-title">Sık Sorulan <span style="color:var(--primary)">Sorular</span></h2>
-        <p class="section-sub">Merak ettiğiniz konularda hızlı yanıtlar</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem;margin-top:2rem;">
-          <div style="background:var(--dark2);border-radius:var(--radius);padding:1.5rem;border:1px solid rgba(255,255,255,0.06);">
-            <h4 style="color:var(--white);margin-bottom:0.5rem;">📦 Toptan minimum sipariş miktarı nedir?</h4>
-            <p style="color:var(--text-muted);font-size:0.87rem;">Kategoriye göre değişmekle birlikte genellikle 10–50 adet arası başlar. Detaylı bilgi için WhatsApp'tan ulaşın.</p>
-          </div>
-          <div style="background:var(--dark2);border-radius:var(--radius);padding:1.5rem;border:1px solid rgba(255,255,255,0.06);">
-            <h4 style="color:var(--white);margin-bottom:0.5rem;">🚀 Kargo ne zaman çıkıyor?</h4>
-            <p style="color:var(--text-muted);font-size:0.87rem;">Ödemesi tamamlanan siparişler aynı gün kargoya verilir (mesai saatleri içi). Ertesi gün teslimat mevcuttur.</p>
-          </div>
-          <div style="background:var(--dark2);border-radius:var(--radius);padding:1.5rem;border:1px solid rgba(255,255,255,0.06);">
-            <h4 style="color:var(--white);margin-bottom:0.5rem;">🛡 Ürünlerde garanti var mı?</h4>
-            <p style="color:var(--text-muted);font-size:0.87rem;">Tüm ürünlerimiz garanti kapsamındadır. Arızalı veya kusurlu ürünlerde iade/değişim yapılmaktadır.</p>
-          </div>
-          <div style="background:var(--dark2);border-radius:var(--radius);padding:1.5rem;border:1px solid rgba(255,255,255,0.06);">
-            <h4 style="color:var(--white);margin-bottom:0.5rem;">💳 Hangi ödeme yöntemleri kabul ediliyor?</h4>
-            <p style="color:var(--text-muted);font-size:0.87rem;">Banka havalesi/EFT, nakit ve kapıda ödeme (ek ücret uygulanabilir) seçenekleri mevcuttur.</p>
-          </div>
-        </div>
-      </div>
-
+    
+    <div class="form-group">
+      <label for="email">E-posta Adresi *</label>
+      <input type="email" id="email" name="email" placeholder="ornek@email.com" required autocomplete="email" />
     </div>
-  </section>
+    
+    <div class="form-group">
+      <label for="phone">Telefon Numarası</label>
+      <input type="tel" id="phone" name="phone" placeholder="+90 5xx xxx xx xx" autocomplete="tel" />
+    </div>
+    
+    <div class="form-group">
+      <label for="company">Firma Adı</label>
+      <input type="text" id="company" name="company" placeholder="Firma adınız (opsiyonel)" autocomplete="organization" />
+    </div>
+    
+    <div class="form-group">
+      <label for="subject">Konu *</label>
+      <select id="subject" name="subject" required>
+        <option value="">– Konu seçin –</option>
+        <option value="toptan">Toptan Fiyat Talebi</option>
+        <option value="urun">Ürün Hakkında Bilgi</option>
+        <option value="siparis">Sipariş Sorgusu</option>
+        <option value="garanti">Garanti / İade</option>
+        <option value="genel">Genel Bilgi</option>
+        <option value="diger">Diğer</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="message">Mesajınız *</label>
+      <textarea id="message" name="message" placeholder="Mesajınızı buraya yazın…" required></textarea>
+    </div>
+    
+    <input type="hidden" name="_subject" value="Sarıgül Ticaret - Yeni İletişim Formu Mesajı">
+    <input type="hidden" name="_language" value="tr">
 
-{{ end }}
+    <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;font-size:1rem;">
+      ✉ Mesajı Gönder
+    </button>
+    
+    <div id="form-message" class="form-message" style="display:none; margin-top:1.5rem; padding:1rem; border-radius:var(--radius); text-align:center; font-weight:bold;"></div>
+  </form>
+  
+  <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06);">
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">Veya doğrudan ulaşın:</p>
+    <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+      <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20bilgi%20almak%20istiyorum."
+         target="_blank" rel="noopener" class="btn btn-whatsapp" style="flex:1;justify-content:center;">
+        💬 WhatsApp
+      </a>
+      <a href="mailto:{{ .Site.Params.email }}" class="btn btn-outline" style="flex:1;justify-content:center;">
+        ✉ E-posta
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- AJAX Form Gönderme Scripti -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var form = document.getElementById("contact-form");
+    var formMessage = document.getElementById("form-message");
+
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      
+      var data = new FormData(event.target);
+      
+      try {
+        var response = await fetch(event.target.action, {
+          method: form.method,
+          body: data,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          formMessage.style.display = "block";
+          formMessage.style.backgroundColor = "rgba(40, 167, 69, 0.1)";
+          formMessage.style.color = "#28a745";
+          formMessage.innerHTML = "✓ Mesajınız başarıyla gönderildi! En kısa sürede dönüş yapacağız.";
+          form.reset();
+        } else {
+          formMessage.style.display = "block";
+          formMessage.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
+          formMessage.style.color = "#dc3545";
+          formMessage.innerHTML = "⚠ Gönderim sırasında bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
+        }
+      } catch (error) {
+        formMessage.style.display = "block";
+        formMessage.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
+        formMessage.style.color = "#dc3545";
+        formMessage.innerHTML = "⚠ Bağlantı hatası. Lütfen internet bağlantınızı kontrol edin.";
+      }
+    });
+  });
+</script>
