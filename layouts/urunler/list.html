@@ -1,119 +1,190 @@
 {{ define "main" }}
 
+
+
   <!-- PAGE HERO -->
+
   <section class="page-hero">
+
     <div class="container">
+
       <h1>Ürün <span style="color:var(--primary)">Kataloğumuz</span></h1>
+
       <p>500'den fazla ürün çeşidi – toptan ve perakende fiyatlarıyla</p>
+
       <div class="breadcrumb">
+
         <a href="{{ "" | relURL }}">Ana Sayfa</a>
+
         <span class="breadcrumb-sep">›</span>
+
         <span>Ürünler</span>
+
       </div>
+
     </div>
+
   </section>
+
+
 
   <!-- CATALOG -->
+
   <section class="catalog-section">
+
     <div class="container">
 
+
+
       <!-- Filtreler -->
+
       <div class="catalog-filters">
+
         <button class="filter-btn active" data-filter="tumu">Tümü</button>
+
         <button class="filter-btn" data-filter="kilif">📱 Kılıflar</button>
+
         <button class="filter-btn" data-filter="sarj">⚡ Şarj Aletleri</button>
+
         <button class="filter-btn" data-filter="ses">🎧 Ses Sistemleri</button>
+
         <button class="filter-btn" data-filter="elektronik">📺 Elektronik</button>
+
         <button class="filter-btn" data-filter="aksesuar">🔋 Aksesuarlar</button>
+
         <button class="filter-btn" data-filter="ekran">🛡 Ekran Koruyucu</button>
+
+        <button class="filter-btn" data-filter="oyuncak">🧸 Oyuncak</button>
+
       </div>
+
+
 
       <!-- Ürün Listesi -->
+
       <div class="catalog-grid" id="catalogGrid">
+
         {{ $products := where .Pages "Type" "urunler" }}
+
         {{ if eq (len $products) 0 }}
+
           {{ $products = .Pages }}
+
         {{ end }}
+
         {{ range $products }}
+
           <div class="catalog-item" data-category="{{ .Params.category }}">
+
             {{ partial "product-card.html" . }}
+
           </div>
+
         {{ end }}
+
       </div>
+
+
 
       <!-- Sonuç bulunamadı mesajı (JS ile gösterilir/gizlenir) -->
+
       <p id="noResultsMsg" style="display:none;text-align:center;color:var(--text-muted);margin-top:2rem;">
+
         Bu kategoride henüz ürün bulunmuyor. Tüm ürünler için bizimle iletişime geçebilirsiniz.
+
       </p>
 
+
+
       <!-- Toptan CTA -->
+
       <div class="text-center mt-2" style="background:var(--dark2);border-radius:var(--radius);padding:2.5rem;margin-top:3rem;border:1px solid rgba(255,255,255,0.06);">
+
         <h3 style="color:var(--white);margin-bottom:0.5rem;">Aradığınız ürünü bulamadınız mı?</h3>
+
         <p style="color:var(--text-muted);margin-bottom:1.5rem;">500+ ürünlük stoğumuz için bizimle iletişime geçin. Toptan fiyat listesi için WhatsApp veya e-posta yoluyla ulaşabilirsiniz.</p>
+
         <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+
           {{ if .Site.Params.phone }}
+
           <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20tam%20urun%20listesi%20almak%20istiyorum."
+
              target="_blank" rel="noopener" class="btn btn-whatsapp">💬 WhatsApp ile Yazın</a>
+
           {{ end }}
+
           <a href="{{ "iletisim/" | relURL }}" class="btn btn-outline">📩 İletişim Formu</a>
+
         </div>
+
       </div>
 
+
+
     </div>
+
   </section>
 
+
+
   <!-- FİLTRELEME SCRIPT -->
+
   <script>
+
     document.addEventListener('DOMContentLoaded', function () {
+
       var filterBtns = document.querySelectorAll('.filter-btn');
+
       var items = document.querySelectorAll('#catalogGrid .catalog-item');
+
       var noResultsMsg = document.getElementById('noResultsMsg');
 
+
+
       filterBtns.forEach(function (btn) {
+
         btn.addEventListener('click', function () {
+
           // Aktif buton stilini güncelle
+
           filterBtns.forEach(function (b) { b.classList.remove('active'); });
+
           btn.classList.add('active');
 
+
+
           var filter = btn.getAttribute('data-filter');
+
           var visibleCount = 0;
 
+
+
           items.forEach(function (item) {
+
             var category = item.getAttribute('data-category');
+
             var shouldShow = (filter === 'tumu' || category === filter);
+
             item.style.display = shouldShow ? '' : 'none';
+
             if (shouldShow) visibleCount++;
+
           });
 
+
+
           noResultsMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+
         });
+
       });
+
     });
+
   </script>
-<a href="{{ "odeme/" | relURL }}" id="floating-cart" style="display: none; position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; transition: transform 0.3s;">
-  🛒 Sepetim <span id="cart-count" style="background: white; color: var(--primary); padding: 2px 8px; border-radius: 20px; margin-left: 10px; font-size: 0.9rem;">0</span>
-</a>
 
-<script>
-  // Sepet sayısını güncelleyen fonksiyon
-  function sepetGuncelle() {
-    let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
-    let toplamAdet = sepet.reduce((toplam, urun) => toplam + urun.adet, 0);
-    
-    let cartBtn = document.getElementById('floating-cart');
-    let cartCount = document.getElementById('cart-count');
-    
-    if (toplamAdet > 0) {
-      cartBtn.style.display = 'block'; // Sepet doluysa butonu göster
-      cartCount.innerText = toplamAdet;
-    } else {
-      cartBtn.style.display = 'none'; // Sepet boşsa gizle
-    }
-  }
 
-  // Sayfa yüklendiğinde ve sepete ürün eklendiğinde sayacı güncelle
-  document.addEventListener('DOMContentLoaded', sepetGuncelle);
-  
- 
-</script>
-{{ end }}
+
+{{ end }} 
+

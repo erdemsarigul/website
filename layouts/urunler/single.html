@@ -1,95 +1,68 @@
 {{ define "main" }}
-
-  <!-- PAGE HERO -->
-  <section class="page-hero">
-    <div class="container">
-      <h1>Ürün <span style="color:var(--primary)">Kataloğumuz</span></h1>
-      <p>500'den fazla ürün çeşidi – toptan ve perakende fiyatlarıyla</p>
-      <div class="breadcrumb">
-        <a href="{{ "" | relURL }}">Ana Sayfa</a>
-        <span class="breadcrumb-sep">›</span>
-        <span>Ürünler</span>
-      </div>
+<!-- ÜRÜN DETAY KAHRAMAN ALANI -->
+<section class="page-hero">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    <div class="breadcrumb">
+      <a href="{{ "" | relURL }}">Ana Sayfa</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="{{ "urunler/" | relURL }}">Ürünler</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Detay</span>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- CATALOG -->
-  <section class="catalog-section">
-    <div class="container">
-
-      <!-- Filtreler -->
-      <div class="catalog-filters">
-        <button class="filter-btn active" data-filter="tumu">Tümü</button>
-        <button class="filter-btn" data-filter="kilif">📱 Kılıflar</button>
-        <button class="filter-btn" data-filter="sarj">⚡ Şarj Aletleri</button>
-        <button class="filter-btn" data-filter="ses">🎧 Ses Sistemleri</button>
-        <button class="filter-btn" data-filter="elektronik">📺 Elektronik</button>
-        <button class="filter-btn" data-filter="aksesuar">🔋 Aksesuarlar</button>
-        <button class="filter-btn" data-filter="ekran">🛡 Ekran Koruyucu</button>
-        <button class="filter-btn" data-filter="oyuncak">🧸 Oyuncak</button>
+<!-- ÜRÜN İÇERİK ALANI -->
+<section style="padding: 40px 0; background: var(--dark1, #0d1117);">
+  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start;">
+      
+      <!-- Sol Blok: Resim -->
+      <div style="flex: 1; min-width: 300px; background: var(--dark2, #161b22); padding: 20px; border-radius: var(--radius, 8px); text-align: center; border: 1px solid rgba(255,255,255,0.06);">
+        {{ $imgUrl := "" }}
+        {{ if hasPrefix .Params.image "http" }}
+          {{ $imgUrl = .Params.image }}
+        {{ else }}
+          {{ $imgUrl = printf "images/%s" .Params.image | relURL }}
+        {{ end }}
+        <img src="{{ $imgUrl }}" alt="{{ .Title }}" style="max-width: 100%; max-height: 450px; border-radius: 6px; object-fit: contain;">
       </div>
 
-      <!-- Ürün Listesi -->
-      <div class="catalog-grid" id="catalogGrid">
-        {{ $products := where .Pages "Type" "urunler" }}
-        {{ if eq (len $products) 0 }}
-          {{ $products = .Pages }}
-        {{ end }}
-        {{ range $products }}
-          <div class="catalog-item" data-category="{{ .Params.category }}">
-            {{ partial "product-card.html" . }}
-          </div>
-        {{ end }}
-      </div>
-
-      <!-- Sonuç bulunamadı mesajı (JS ile gösterilir/gizlenir) -->
-      <p id="noResultsMsg" style="display:none;text-align:center;color:var(--text-muted);margin-top:2rem;">
-        Bu kategoride henüz ürün bulunmuyor. Tüm ürünler için bizimle iletişime geçebilirsiniz.
-      </p>
-
-      <!-- Toptan CTA -->
-      <div class="text-center mt-2" style="background:var(--dark2);border-radius:var(--radius);padding:2.5rem;margin-top:3rem;border:1px solid rgba(255,255,255,0.06);">
-        <h3 style="color:var(--white);margin-bottom:0.5rem;">Aradığınız ürünü bulamadınız mı?</h3>
-        <p style="color:var(--text-muted);margin-bottom:1.5rem;">500+ ürünlük stoğumuz için bizimle iletişime geçin. Toptan fiyat listesi için WhatsApp veya e-posta yoluyla ulaşabilirsiniz.</p>
-        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-          {{ if .Site.Params.phone }}
-          <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20tam%20urun%20listesi%20almak%20istiyorum."
-             target="_blank" rel="noopener" class="btn btn-whatsapp">💬 WhatsApp ile Yazın</a>
+      <!-- Sağ Blok: Detaylar ve Fiyat -->
+      <div style="flex: 1; min-width: 300px; color: var(--white, #fff);">
+        <span style="background: var(--primary, #ff4757); color: white; padding: 5px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; text-transform: uppercase;">
+          {{ .Params.category }}
+        </span>
+        
+        <h2 style="font-size: 2.2rem; margin: 15px 0 10px 0;">{{ .Title }}</h2>
+        
+        <div style="margin: 25px 0; background: var(--dark2, #161b22); padding: 20px; border-radius: var(--radius, 8px); border: 1px solid rgba(255,255,255,0.06);">
+          {{ if .Params.price }}
+            <div style="font-size: 2.5rem; font-weight: bold; color: #28a745; margin-bottom: 15px;">{{ .Params.price }} TL</div>
+            <button onclick="sepeteEkle('{{ .Title | safeJS }}', '{{ .Params.price }}', '{{ .Params.code }}', '{{ $imgUrl }}')" class="btn" style="width: 100%; background-color: #28a745; color: white; padding: 15px; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; border: none;">
+              🛒 Sepete Ekle
+            </button>
+          {{ else }}
+            <div style="font-size: 1.5rem; color: #ffc107; margin-bottom: 15px;">Toptan Fiyat İçin İletişime Geçin</div>
           {{ end }}
-          <a href="{{ "iletisim/" | relURL }}" class="btn btn-outline">📩 İletişim Formu</a>
+          
+          <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20{{ .Title | urlquery }}%20urunu%20hakkinda%20bilgi%20almak%20istiyorum." 
+             target="_blank" rel="noopener" class="btn btn-whatsapp" style="width: 100%; margin-top: 10px; text-align: center; display: block; padding: 12px; border-radius: 6px; text-decoration: none; font-weight: bold;">
+            💬 WhatsApp ile Sorun
+          </a>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+
+        <!-- Açıklama Kısmı -->
+        <div style="line-height: 1.6; color: var(--text-muted, #a0a5b5);">
+          <h4 style="color: #fff; margin-bottom: 10px; font-size: 1.2rem;">Ürün Açıklaması</h4>
+          {{ .Content }}
         </div>
       </div>
 
     </div>
-  </section>
-
-  <!-- FİLTRELEME SCRIPT -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var filterBtns = document.querySelectorAll('.filter-btn');
-      var items = document.querySelectorAll('#catalogGrid .catalog-item');
-      var noResultsMsg = document.getElementById('noResultsMsg');
-
-      filterBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          // Aktif buton stilini güncelle
-          filterBtns.forEach(function (b) { b.classList.remove('active'); });
-          btn.classList.add('active');
-
-          var filter = btn.getAttribute('data-filter');
-          var visibleCount = 0;
-
-          items.forEach(function (item) {
-            var category = item.getAttribute('data-category');
-            var shouldShow = (filter === 'tumu' || category === filter);
-            item.style.display = shouldShow ? '' : 'none';
-            if (shouldShow) visibleCount++;
-          });
-
-          noResultsMsg.style.display = visibleCount === 0 ? 'block' : 'none';
-        });
-      });
-    });
-  </script>
-
+  </div>
+</section>
 {{ end }}
