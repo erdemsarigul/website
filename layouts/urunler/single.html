@@ -1,4 +1,5 @@
 {{ define "main" }}
+
 <!-- ÜRÜN DETAY KAHRAMAN ALANI -->
 <section class="page-hero">
   <div class="container">
@@ -8,46 +9,152 @@
       <span class="breadcrumb-sep">›</span>
       <a href="{{ "urunler/" | relURL }}">Ürünler</a>
       <span class="breadcrumb-sep">›</span>
-      <span>Detay</span>
+      <span>{{ .Title }}</span>
     </div>
   </div>
 </section>
 
+<style>
+  .product-slider .slide { display: none; text-align: center; cursor: zoom-in; }
+  .product-slider .slide.active { display: block; }
+  .product-slider .slide img { max-width: 100%; max-height: 450px; object-fit: contain; border-radius: 6px; }
+  .slider-thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 2px solid transparent; opacity: 0.6; }
+  .slider-thumb.active { border-color: var(--primary, #ff4757); opacity: 1; }
+  .slider-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.25); cursor: pointer; display: inline-block; }
+  .slider-dot.active { background: var(--primary, #ff4757); }
+</style>
+
+<!-- SEO: Product structured data -->
+{{ $imgUrl := "" }}
+{{ if hasPrefix .Params.image "http" }}
+  {{ $imgUrl = .Params.image }}
+{{ else }}
+  {{ $imgUrl = printf "images/%s" .Params.image | absURL }}
+{{ end }}
+{{ $stockVar := true }}
+{{ if eq .Params.stock false }}{{ $stockVar = false }}{{ end }}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ .Title | jsonify }},
+  "image": [{{ $imgUrl | jsonify }}],
+  "description": {{ .Params.description | jsonify }},
+  {{ if .Params.code }}"sku": {{ .Params.code | jsonify }},{{ end }}
+  "brand": { "@type": "Brand", "name": "Sarıgül Ticaret" }
+  {{ if .Params.price }}
+  ,"offers": {
+    "@type": "Offer",
+    "priceCurrency": "TRY",
+    "price": {{ .Params.price | jsonify }},
+    "availability": "https://schema.org/{{ if $stockVar }}InStock{{ else }}OutOfStock{{ end }}",
+    "url": {{ .Permalink | jsonify }}
+  }
+  {{ end }}
+}
+</script>
+
 <!-- ÜRÜN İÇERİK ALANI -->
-<section style="padding: 40px 0; background: var(--dark1, #0d1117);">
+<section style="padding: 40px 0 100px; background: var(--dark1, #0d1117);">
   <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
     <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start;">
-      
-      <!-- Sol Blok: Resim -->
-      <div style="flex: 1; min-width: 300px; background: var(--dark2, #161b22); padding: 20px; border-radius: var(--radius, 8px); text-align: center; border: 1px solid rgba(255,255,255,0.06);">
-        {{ $imgUrl := "" }}
-        {{ if hasPrefix .Params.image "http" }}
-          {{ $imgUrl = .Params.image }}
-        {{ else }}
-          {{ $imgUrl = printf "images/%s" .Params.image | relURL }}
-        {{ end }}
-        <img src="{{ $imgUrl }}" alt="{{ .Title }}" style="max-width: 100%; max-height: 450px; border-radius: 6px; object-fit: contain;">
+
+      <!-- Sol Blok: Görsel Galerisi -->
+      <div style="flex: 1; min-width: 300px;">
+        {{ $images := .Params.images }}
+        {{ if not $images }}{{ $images = slice .Params.image }}{{ end }}
+
+        <div id="productSlider" class="product-slider" style="background: var(--dark2, #161b22); padding: 20px; border-radius: var(--radius, 8px); border: 1px solid rgba(255,255,255,0.06); position: relative;">
+
+          <!-- Slides -->
+          <div class="slider-main" style="position: relative; overflow: hidden; border-radius: 6px;">
+            {{ range $i, $img := $images }}
+              {{ $url := "" }}
+              {{ if hasPrefix $img "http" }}
+                {{ $url = $img }}
+              {{ else }}
+                {{ $url = printf "images/%s" $img | relURL }}
+              {{ end }}
+              <div class="slide{{ if eq $i 0 }} active{{ end }}" data-index="{{ $i }}"
+                   onclick="bigZoomAc('{{ $url }}')">
+                <img src="{{ $url }}" alt="{{ $.Title }} - görsel {{ add $i 1 }}" loading="{{ if eq $i 0 }}eager{{ else }}lazy{{ end }}">
+              </div>
+            {{ end }}
+
+            {{ if gt (len $images) 1 }}
+            <button class="slider-prev" aria-label="Önceki görsel" style="position:absolute; left:8px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.5); color:#fff; border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:1.1rem;">‹</button>
+            <button class="slider-next" aria-label="Sonraki görsel" style="position:absolute; right:8px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.5); color:#fff; border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:1.1rem;">›</button>
+            {{ end }}
+          </div>
+
+          {{ if gt (len $images) 1 }}
+          <!-- Küçük görsel önizlemeleri -->
+          <div class="slider-thumbs" style="display:flex; gap:8px; margin-top:12px; justify-content:center; flex-wrap:wrap;">
+            {{ range $i, $img := $images }}
+              {{ $url := "" }}
+              {{ if hasPrefix $img "http" }}
+                {{ $url = $img }}
+              {{ else }}
+                {{ $url = printf "images/%s" $img | relURL }}
+              {{ end }}
+              <img class="slider-thumb{{ if eq $i 0 }} active{{ end }}" data-index="{{ $i }}" src="{{ $url }}" alt="Küçük görsel {{ add $i 1 }}">
+            {{ end }}
+          </div>
+
+          <!-- Noktalar (mobil için) -->
+          <div class="slider-dots" style="display:flex; gap:6px; margin-top:10px; justify-content:center;">
+            {{ range $i, $img := $images }}
+              <span class="slider-dot{{ if eq $i 0 }} active{{ end }}" data-index="{{ $i }}"></span>
+            {{ end }}
+          </div>
+          {{ end }}
+        </div>
+        <p style="text-align:center; color: var(--text-muted, #a0a5b5); font-size: 0.85rem; margin-top: 10px;">🔍 Görsele tıklayarak büyütebilirsiniz</p>
       </div>
 
       <!-- Sağ Blok: Detaylar ve Fiyat -->
       <div style="flex: 1; min-width: 300px; color: var(--white, #fff);">
         <span style="background: var(--primary, #ff4757); color: white; padding: 5px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; text-transform: uppercase;">
-          {{ .Params.category }}
+          {{ .Params.categoryLabel | default .Params.category }}
         </span>
-        
-        <h2 style="font-size: 2.2rem; margin: 15px 0 10px 0;">{{ .Title }}</h2>
-        
-        <div style="margin: 25px 0; background: var(--dark2, #161b22); padding: 20px; border-radius: var(--radius, 8px); border: 1px solid rgba(255,255,255,0.06);">
+
+        <h2 style="font-size: 2.2rem; margin: 15px 0 5px 0;">{{ .Title }}</h2>
+
+        {{ with .Params.code }}
+        <div style="color: var(--text-muted, #a0a5b5); font-size: 0.9rem; margin-bottom: 15px;">Ürün Kodu: <strong>{{ . }}</strong></div>
+        {{ end }}
+
+        <!-- Stok Durumu -->
+        <div style="margin-bottom: 15px;">
+          {{ if $stockVar }}
+            <span style="display:inline-flex; align-items:center; gap:6px; color:#28a745; font-weight:600; font-size:0.95rem;">
+              <span style="width:8px; height:8px; border-radius:50%; background:#28a745; display:inline-block;"></span> Stokta Var
+            </span>
+          {{ else }}
+            <span style="display:inline-flex; align-items:center; gap:6px; color:#dc3545; font-weight:600; font-size:0.95rem;">
+              <span style="width:8px; height:8px; border-radius:50%; background:#dc3545; display:inline-block;"></span> Stokta Yok
+            </span>
+          {{ end }}
+        </div>
+
+        <div id="priceBox" style="margin: 25px 0; background: var(--dark2, #161b22); padding: 20px; border-radius: var(--radius, 8px); border: 1px solid rgba(255,255,255,0.06);">
           {{ if .Params.price }}
             <div style="font-size: 2.5rem; font-weight: bold; color: #28a745; margin-bottom: 15px;">{{ .Params.price }} TL</div>
-            <button onclick="sepeteEkle('{{ .Title | safeJS }}', '{{ .Params.price }}', '{{ .Params.code }}', '{{ $imgUrl }}')" class="btn" style="width: 100%; background-color: #28a745; color: white; padding: 15px; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; border: none;">
+            {{ if $stockVar }}
+            <button onclick="sepeteEklePulse(this, '{{ .Title | safeJS }}', '{{ .Params.price }}', '{{ .Params.code }}', '{{ $imgUrl }}')" class="btn" style="width: 100%; background-color: #28a745; color: white; padding: 15px; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; border: none; transition: transform 0.15s;">
               🛒 Sepete Ekle
             </button>
+            {{ else }}
+            <button disabled style="width: 100%; background-color: #555; color: #aaa; padding: 15px; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: not-allowed; border: none;">
+              Stokta Yok
+            </button>
+            {{ end }}
           {{ else }}
             <div style="font-size: 1.5rem; color: #ffc107; margin-bottom: 15px;">Toptan Fiyat İçin İletişime Geçin</div>
           {{ end }}
-          
-          <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20{{ .Title | urlquery }}%20urunu%20hakkinda%20bilgi%20almak%20istiyorum." 
+
+          <a href="https://wa.me/{{ .Site.Params.phone }}?text=Merhaba%2C%20{{ .Title | urlquery }}%20({{ .Params.code }})%20urunu%20hakkinda%20bilgi%20almak%20istiyorum."
              target="_blank" rel="noopener" class="btn btn-whatsapp" style="width: 100%; margin-top: 10px; text-align: center; display: block; padding: 12px; border-radius: 6px; text-decoration: none; font-weight: bold;">
             💬 WhatsApp ile Sorun
           </a>
@@ -58,11 +165,104 @@
         <!-- Açıklama Kısmı -->
         <div style="line-height: 1.6; color: var(--text-muted, #a0a5b5);">
           <h4 style="color: #fff; margin-bottom: 10px; font-size: 1.2rem;">Ürün Açıklaması</h4>
+          {{ with .Params.description }}<p style="margin-bottom: 12px;">{{ . }}</p>{{ end }}
           {{ .Content }}
         </div>
       </div>
 
     </div>
+
+    <!-- BENZER ÜRÜNLER -->
+    {{ $current := . }}
+    {{ $related := where (where .Site.RegularPages "Type" "urunler") "Params.category" .Params.category }}
+    {{ $related = where $related "RelPermalink" "ne" .RelPermalink }}
+    {{ $related = $related | first 4 }}
+    {{ if gt (len $related) 0 }}
+    <div style="margin-top: 60px;">
+      <h3 style="color: var(--white, #fff); margin-bottom: 20px; font-size: 1.5rem;">Benzer Ürünler</h3>
+      <div class="catalog-grid">
+        {{ range $related }}
+          <div class="catalog-item" data-category="{{ .Params.category }}">
+            {{ partial "product-card.html" . }}
+          </div>
+        {{ end }}
+      </div>
+    </div>
+    {{ end }}
+
   </div>
 </section>
+
+<!-- MOBİL STICKY SEPETE EKLE BARI -->
+{{ if and .Params.price $stockVar }}
+<div id="stickyBuyBar" style="position:fixed; bottom:0; left:0; right:0; background:var(--dark2,#161b22); border-top:1px solid rgba(255,255,255,0.1); padding:12px 16px; display:none; align-items:center; justify-content:space-between; gap:12px; z-index:999; box-shadow:0 -4px 12px rgba(0,0,0,0.3);">
+  <span style="color:#28a745; font-weight:bold; font-size:1.2rem; white-space:nowrap;">{{ .Params.price }} TL</span>
+  <button onclick="sepeteEklePulse(this, '{{ .Title | safeJS }}', '{{ .Params.price }}', '{{ .Params.code }}', '{{ $imgUrl }}')" style="flex:1; background-color:#28a745; color:white; border:none; padding:12px; border-radius:6px; font-weight:bold; cursor:pointer;">
+    🛒 Sepete Ekle
+  </button>
+</div>
+<style>
+  @media (max-width: 768px) {
+    #stickyBuyBar { display: flex !important; }
+  }
+</style>
+{{ end }}
+
+<!-- BÜYÜK GÖRSEL ZOOM (Lightbox) -->
+<div id="bigZoomOverlay" onclick="bigZoomKapat()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:1000; align-items:center; justify-content:center; cursor:zoom-out;">
+  <img id="bigZoomImg" src="" alt="Büyütülmüş görsel" style="max-width:90%; max-height:90%; object-fit:contain; border-radius:6px;">
+  <button onclick="event.stopPropagation(); bigZoomKapat()" aria-label="Kapat" style="position:absolute; top:20px; right:25px; background:none; border:none; color:#fff; font-size:2rem; cursor:pointer;">×</button>
+</div>
+
+<!-- TOAST BİLDİRİM -->
+<div id="cartToast" style="position:fixed; top:90px; right:20px; background:#28a745; color:#fff; padding:14px 20px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.3); font-weight:600; z-index:1001; opacity:0; transform:translateX(20px); transition:opacity 0.3s, transform 0.3s; pointer-events:none; display:flex; align-items:center; gap:8px;">
+  <span>✓</span><span id="cartToastText">Sepete eklendi!</span>
+</div>
+
+<script>
+  function bigZoomAc(url) {
+    document.getElementById('bigZoomImg').src = url;
+    document.getElementById('bigZoomOverlay').style.display = 'flex';
+  }
+  function bigZoomKapat() {
+    document.getElementById('bigZoomOverlay').style.display = 'none';
+  }
+
+  function showCartToast(msg) {
+    var toast = document.getElementById('cartToast');
+    var text = document.getElementById('cartToastText');
+    text.textContent = msg;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(0)';
+    clearTimeout(window._cartToastTimer);
+    window._cartToastTimer = setTimeout(function () {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(20px)';
+    }, 2200);
+  }
+
+  // sepeteEkle() var olan davranışı koruyarak çağırır, alert() yerine toast gösterir.
+  function sepeteEklePulse(btn, isim, fiyat, kod, resim) {
+    if (btn) {
+      btn.style.transform = 'scale(0.96)';
+      setTimeout(function () { btn.style.transform = 'scale(1)'; }, 150);
+    }
+    sepeteEkleSessiz(isim, fiyat, kod, resim);
+    showCartToast(isim + ' sepete eklendi!');
+  }
+
+  // sepeteEkle() ile aynı localStorage mantığı, ama alert() yok.
+  function sepeteEkleSessiz(isim, fiyat, kod, resim) {
+    let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
+    let mevcutUrun = sepet.find(urun => urun.isim === isim);
+    if (mevcutUrun) {
+      mevcutUrun.adet += 1;
+    } else {
+      sepet.push({ isim: isim, fiyat: parseFloat(fiyat), kod: kod, resim: resim, adet: 1 });
+    }
+    localStorage.setItem('sarigul_sepet', JSON.stringify(sepet));
+    if (window.sepetGuncelle) window.sepetGuncelle();
+  }
+</script>
+
 {{ end }}
