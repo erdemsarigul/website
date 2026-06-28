@@ -38,15 +38,15 @@
   </header>
 
   <!-- SEPET PANELİ -->
-  <div id="cart-panel" class="cart-panel" style="display:none;position:fixed;top:0;right:0;width:380px;max-width:100vw;height:100vh;background:var(--dark2);box-shadow:-4px 0 20px rgba(0,0,0,0.3);z-index:9999;flex-direction:column;">
-    <div style="padding:1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center;">
+  <div id="cart-panel" class="cart-panel" style="display:none;position:fixed;top:0;right:0;width:380px;max-width:100vw;height:100vh;height:100dvh;background:var(--dark2);box-shadow:-4px 0 20px rgba(0,0,0,0.3);z-index:9999;flex-direction:column;overflow:hidden;">
+    <div style="flex-shrink:0;padding:1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center;">
       <h3 style="color:var(--white);margin:0;">🛒 Sepetim</h3>
       <button onclick="sepetiAcKapat()" aria-label="Sepeti Kapat" style="background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;line-height:1;">&times;</button>
     </div>
-    <div id="cart-items-container" style="flex:1;overflow-y:auto;padding:1rem 1.5rem;">
+    <div id="cart-items-container" style="flex:1 1 auto;min-height:0;overflow-y:auto;padding:1rem 1.5rem;">
       <!-- Sepet ürünleri JS ile buraya dolacak -->
     </div>
-    <div style="padding:1.5rem;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="flex-shrink:0;padding:1.25rem 1.5rem;border-top:1px solid rgba(255,255,255,0.08);background:var(--dark2);">
       <div style="display:flex;justify-content:space-between;margin-bottom:1rem;">
         <span style="color:var(--white);font-weight:bold;">Toplam:</span>
         <span id="cart-total-price" style="color:var(--primary);font-weight:bold;font-size:1.2rem;">0 TL</span>
@@ -66,7 +66,16 @@
         <button onclick="odemeModalKapat('payment-method-modal')" aria-label="Kapat" style="background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;line-height:1;">&times;</button>
       </div>
 
-      <button onclick="odemeHavale()" style="width:100%;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--white);padding:1rem;border-radius:8px;cursor:pointer;margin-bottom:0.75rem;text-align:left;font-size:1rem;">
+      <label for="sozlesme-onay-checkbox" style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:0.85rem;margin-bottom:1.25rem;cursor:pointer;">
+        <input type="checkbox" id="sozlesme-onay-checkbox" onchange="sozlesmeOnayDegisti()" style="margin-top:3px;width:18px;height:18px;flex-shrink:0;cursor:pointer;accent-color:var(--primary,#ff4757);">
+        <span style="color:var(--text-muted);font-size:0.85rem;line-height:1.5;">
+          <a href="/mesafeli-satis-sozlesmesi/" target="_blank" rel="noopener" style="color:var(--primary);text-decoration:underline;">Mesafeli Satış Sözleşmesi</a>'ni ve
+          <a href="/iade-iptal-kosullari/" target="_blank" rel="noopener" style="color:var(--primary);text-decoration:underline;">İade/İptal Koşullarını</a>
+          okudum, kabul ediyorum.
+        </span>
+      </label>
+
+      <button id="odeme-havale-btn" onclick="odemeHavale()" disabled style="width:100%;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--white);padding:1rem;border-radius:8px;cursor:not-allowed;margin-bottom:0.75rem;text-align:left;font-size:1rem;opacity:0.45;transition:opacity 0.2s;">
         <span style="font-size:1.5rem;">🏦</span>
         <span>
           <strong style="display:block;">EFT / Havale</strong>
@@ -74,13 +83,17 @@
         </span>
       </button>
 
-      <button onclick="odemeKrediKarti()" style="width:100%;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--white);padding:1rem;border-radius:8px;cursor:pointer;text-align:left;font-size:1rem;">
+      <button id="odeme-kart-btn" onclick="odemeKrediKarti()" disabled style="width:100%;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--white);padding:1rem;border-radius:8px;cursor:not-allowed;text-align:left;font-size:1rem;opacity:0.45;transition:opacity 0.2s;">
         <span style="font-size:1.5rem;">💳</span>
         <span>
           <strong style="display:block;">Kredi Kartı</strong>
           <small style="color:var(--text-muted);">Çok yakında aktif olacak</small>
         </span>
       </button>
+
+      <p id="sozlesme-uyari" style="display:none;color:#ffc107;font-size:0.8rem;margin-top:0.85rem;margin-bottom:0;text-align:center;">
+        Devam etmek için lütfen sözleşmeleri onaylayın.
+      </p>
     </div>
   </div>
 

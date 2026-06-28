@@ -138,6 +138,15 @@
           {{ end }}
         </div>
 
+        <!-- Açıklama Kısmı -->
+        <div style="line-height: 1.6; color: var(--text-muted, #a0a5b5); margin-bottom: 20px;">
+          <h4 style="color: #fff; margin-bottom: 10px; font-size: 1.2rem;">Ürün Açıklaması</h4>
+          {{ with .Params.description }}<p style="margin-bottom: 12px;">{{ . }}</p>{{ end }}
+          {{ .Content }}
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+
         <div id="priceBox" style="margin: 25px 0; background: var(--dark2, #161b22); padding: 20px; border-radius: var(--radius, 8px); border: 1px solid rgba(255,255,255,0.06);">
           {{ if .Params.price }}
             <div style="font-size: 2.5rem; font-weight: bold; color: #28a745; margin-bottom: 15px;">{{ .Params.price }} TL</div>
@@ -158,15 +167,6 @@
              target="_blank" rel="noopener" class="btn btn-whatsapp" style="width: 100%; margin-top: 10px; text-align: center; display: block; padding: 12px; border-radius: 6px; text-decoration: none; font-weight: bold;">
             💬 WhatsApp ile Sorun
           </a>
-        </div>
-
-        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
-
-        <!-- Açıklama Kısmı -->
-        <div style="line-height: 1.6; color: var(--text-muted, #a0a5b5);">
-          <h4 style="color: #fff; margin-bottom: 10px; font-size: 1.2rem;">Ürün Açıklaması</h4>
-          {{ with .Params.description }}<p style="margin-bottom: 12px;">{{ . }}</p>{{ end }}
-          {{ .Content }}
         </div>
       </div>
 

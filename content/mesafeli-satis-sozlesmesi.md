@@ -36,4 +36,4 @@ Cayma bildiriminin Satıcı'ya ulaşmasından itibaren en geç **14 (on dört) g
 
 ## 8. İletişim
 
-Sorularınız için bizimle [İletişim]({{ relref "iletisim" }}) sayfasından veya WhatsApp üzerinden iletişime geçebilirsiniz.
+Sorularınız için bizimle [İletişim](/iletisim/) sayfasından veya WhatsApp üzerinden iletişime geçebilirsiniz.

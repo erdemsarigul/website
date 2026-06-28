@@ -11,6 +11,7 @@ description: "Şık tasarımlı, açılır kapanır araç içi telefon numaratö
 featured: false
 weight: 43
 code: "AKS-002"
+price: 100
 images:
   - "IMG-20260308-WA0043.jpg"
 ---

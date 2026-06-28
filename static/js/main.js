@@ -8,6 +8,8 @@
   /* ---- Config ------------------------------------------- */
   const PHONE_NUMBER   = '905427447550';  // WhatsApp numarası
   const COOKIE_KEY     = 'sg_cookie_consent';
+  const SIPARIS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyaSt4YR6TRaxrR6m-QKHKJWiLSHzGQR3W-QMMxLiD4O6LcodU1-PFVpuP8UWXVEI_x/exec';
+  const SIPARIS_GIZLI_ANAHTAR = 'sarigul-2026-siparis-x7k9';
 
   /* ---- DOM Hazır ---------------------------------------- */
   document.addEventListener('DOMContentLoaded', function () {
@@ -329,24 +331,148 @@
     totalEl.innerText = toplam.toLocaleString('tr-TR') + ' TL';
   }
 
-  /* ---- Siparişi Tamamla: Ödeme Yöntemi Seçimi ------------ */
+  /* ---- Siparişi Tamamla: Önce Teslimat/Fatura Bilgileri --- */
   window.siparisiTamamla = function () {
     let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
     if (sepet.length === 0) {
       alert('Sepetiniz boş. Lütfen önce ürün ekleyin.');
       return;
     }
-    var modal = document.getElementById('payment-method-modal');
+
+    // Sepet panelini kapatıp teslimat formunu aç
+    var cartPanel = document.getElementById('cart-panel');
+    var cartOverlay = document.getElementById('cart-overlay');
+    if (cartPanel) cartPanel.style.display = 'none';
+    if (cartOverlay) cartOverlay.style.display = 'none';
+
+    // Önceden kaydedilmiş bilgi varsa formu onunla doldur
+    var kayitli = JSON.parse(localStorage.getItem('sarigul_teslimat_bilgi') || 'null');
+    if (kayitli) {
+      var f = function (id, val) { var el = document.getElementById(id); if (el) el.value = val || ''; };
+      f('tb-adsoyad', kayitli.adsoyad);
+      f('tb-telefon', kayitli.telefon);
+      f('tb-adres', kayitli.adres);
+      f('tb-tckimlik', kayitli.tckimlik);
+      f('tb-firma-unvan', kayitli.firmaUnvan);
+      f('tb-vergi-dairesi', kayitli.vergiDairesi);
+      f('tb-vergi-no', kayitli.vergiNo);
+      var radios = document.querySelectorAll('input[name="tb-fatura-tipi"]');
+      radios.forEach(function (r) { r.checked = (r.value === kayitli.faturaTipi); });
+    }
+    faturaTipiDegisti();
+
+    var uyari = document.getElementById('tb-uyari');
+    if (uyari) uyari.style.display = 'none';
+
+    var modal = document.getElementById('teslimat-bilgi-modal');
     if (modal) modal.style.display = 'flex';
+  };
+
+  /* ---- Fatura Tipi Değişti: Bireysel/Kurumsal Alanları ---- */
+  window.faturaTipiDegisti = function () {
+    var secili = document.querySelector('input[name="tb-fatura-tipi"]:checked');
+    var tip = secili ? secili.value : 'bireysel';
+    var bireysel = document.getElementById('tb-bireysel-alan');
+    var kurumsal = document.getElementById('tb-kurumsal-alan');
+    if (bireysel) bireysel.style.display = (tip === 'bireysel') ? 'block' : 'none';
+    if (kurumsal) kurumsal.style.display = (tip === 'kurumsal') ? 'block' : 'none';
+  };
+
+  /* ---- Teslimat/Fatura Bilgisini Kaydet, Ödeme Modalını Aç -- */
+  window.teslimatBilgisiKaydet = function () {
+    var adsoyad = document.getElementById('tb-adsoyad').value.trim();
+    var telefon = document.getElementById('tb-telefon').value.trim();
+    var adres = document.getElementById('tb-adres').value.trim();
+    var secili = document.querySelector('input[name="tb-fatura-tipi"]:checked');
+    var faturaTipi = secili ? secili.value : 'bireysel';
+
+    var tckimlik = document.getElementById('tb-tckimlik').value.trim();
+    var firmaUnvan = document.getElementById('tb-firma-unvan').value.trim();
+    var vergiDairesi = document.getElementById('tb-vergi-dairesi').value.trim();
+    var vergiNo = document.getElementById('tb-vergi-no').value.trim();
+
+    var uyari = document.getElementById('tb-uyari');
+    var gecerli = adsoyad && telefon && adres;
+    if (faturaTipi === 'kurumsal') {
+      gecerli = gecerli && firmaUnvan && vergiDairesi && vergiNo;
+    }
+
+    if (!gecerli) {
+      if (uyari) uyari.style.display = 'block';
+      return;
+    }
+    if (uyari) uyari.style.display = 'none';
+
+    var bilgi = {
+      adsoyad: adsoyad,
+      telefon: telefon,
+      adres: adres,
+      faturaTipi: faturaTipi,
+      tckimlik: tckimlik,
+      firmaUnvan: firmaUnvan,
+      vergiDairesi: vergiDairesi,
+      vergiNo: vergiNo
+    };
+    localStorage.setItem('sarigul_teslimat_bilgi', JSON.stringify(bilgi));
+
+    // Google Sheets'e gönder (arka planda, sessizce - hata olsa da akışı durdurmaz)
+    fetch(SIPARIS_WEBHOOK_URL, {
+      method: 'POST',
+      body: JSON.stringify(Object.assign({}, bilgi, { anahtar: SIPARIS_GIZLI_ANAHTAR }))
+    }).catch(function (err) {
+      console.warn('Sipariş bilgisi Google Sheets\'e gönderilemedi:', err);
+    });
+
+    var teslimatModal = document.getElementById('teslimat-bilgi-modal');
+    if (teslimatModal) teslimatModal.style.display = 'none';
+
+    // Mevcut ödeme yöntemi modalını aç (sözleşme onayı dahil, değişmedi)
+    var odemeModal = document.getElementById('payment-method-modal');
+    if (odemeModal) {
+      odemeModal.style.display = 'flex';
+      var checkbox = document.getElementById('sozlesme-onay-checkbox');
+      if (checkbox) checkbox.checked = false;
+      var sozlesmeUyari = document.getElementById('sozlesme-uyari');
+      if (sozlesmeUyari) sozlesmeUyari.style.display = 'none';
+      sozlesmeOnayDegisti();
+    }
+  };
+
+  /* ---- Sözleşme Onay Checkbox'ı Değişti ------------------- */
+  window.sozlesmeOnayDegisti = function () {
+    var checkbox = document.getElementById('sozlesme-onay-checkbox');
+    var havaleBtn = document.getElementById('odeme-havale-btn');
+    var kartBtn = document.getElementById('odeme-kart-btn');
+    if (!checkbox || !havaleBtn || !kartBtn) return;
+
+    var onaylandi = checkbox.checked;
+
+    [havaleBtn, kartBtn].forEach(function (btn) {
+      btn.disabled = !onaylandi;
+      btn.style.opacity = onaylandi ? '1' : '0.45';
+      btn.style.cursor = onaylandi ? 'pointer' : 'not-allowed';
+    });
   };
 
   /* ---- Ödeme Yöntemi: Kredi Kartı (yakında) -------------- */
   window.odemeKrediKarti = function () {
+    var checkbox = document.getElementById('sozlesme-onay-checkbox');
+    if (checkbox && !checkbox.checked) {
+      var uyari = document.getElementById('sozlesme-uyari');
+      if (uyari) uyari.style.display = 'block';
+      return;
+    }
     alert('💳 Kredi kartı ile online ödeme sistemimiz şu anda hazırlık aşamasında.\n\nÇok yakında aktif olacak! Şimdilik EFT/Havale veya WhatsApp üzerinden siparişinizi tamamlayabilirsiniz.');
   };
 
   /* ---- Ödeme Yöntemi: EFT/Havale -------------------------- */
   window.odemeHavale = function () {
+    var checkbox = document.getElementById('sozlesme-onay-checkbox');
+    if (checkbox && !checkbox.checked) {
+      var uyari = document.getElementById('sozlesme-uyari');
+      if (uyari) uyari.style.display = 'block';
+      return;
+    }
     var modal = document.getElementById('payment-method-modal');
     if (modal) modal.style.display = 'none';
     var ibanModal = document.getElementById('iban-modal');

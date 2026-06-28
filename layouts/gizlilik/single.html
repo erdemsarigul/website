@@ -80,8 +80,78 @@
           </div>
         </div>
 
+        <div style="background:var(--dark2);border-radius:var(--radius);padding:2rem;border:1px solid rgba(255,255,255,0.06);margin-bottom:2rem;">
+          <h2 style="color:var(--white);margin-bottom:1rem;">3. KVKK Aydınlatma Metni</h2>
+          <p style="color:var(--text-muted);margin-bottom:1rem;">
+            6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, veri sorumlusu sıfatıyla
+            <strong style="color:var(--white);">Sarıgül Ticaret</strong> tarafından aşağıdaki hususlarda bilgilendirilmektesiniz.
+          </p>
+
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">Veri Sorumlusu</h3>
+          <p style="color:var(--text-muted);">
+            Sarıgül Ticaret, {{ .Site.Params.address }} adresinde mukim, kişisel verilerinizin işlenmesi
+            bakımından KVKK kapsamında "veri sorumlusu" sıfatını haizdir.
+          </p>
+
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">İşlenen Kişisel Veriler</h3>
+          <ul style="color:var(--text-muted);padding-left:1.5rem;list-style:disc;">
+            <li>Kimlik ve iletişim bilgileri: ad, soyad, telefon, e-posta, teslimat/fatura adresi</li>
+            <li>Müşteri işlem bilgileri: sipariş içeriği, ödeme yöntemi, sipariş geçmişi</li>
+            <li>İşlem güvenliği bilgileri: IP adresi, tarayıcı bilgisi, çerez verileri</li>
+          </ul>
+
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">Kişisel Verilerin İşlenme Amacı</h3>
+          <p style="color:var(--text-muted);">
+            Kişisel verileriniz; sipariş ve teslimat süreçlerinin yürütülmesi, müşteri talep ve şikayetlerinin
+            yönetilmesi, sözleşmesel yükümlülüklerin ifası, yasal yükümlülüklerin yerine getirilmesi ve
+            site/hizmet kalitesinin geliştirilmesi amaçlarıyla işlenmektedir.
+          </p>
+
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">Hukuki Sebep</h3>
+          <p style="color:var(--text-muted);">
+            Kişisel verileriniz; KVKK madde 5/2 kapsamında bir sözleşmenin kurulması veya ifasıyla doğrudan
+            doğruya ilgili olması, hukuki yükümlülüğün yerine getirilmesi ve veri sorumlusunun meşru menfaati
+            hukuki sebeplerine dayanılarak işlenmektedir.
+          </p>
+
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">Kişisel Verilerin Aktarımı</h3>
+          <p style="color:var(--text-muted);">
+            Kişisel verileriniz; sipariş teslimatının sağlanması amacıyla kargo/lojistik firmalarına, ödeme
+            işlemlerinin gerçekleştirilmesi amacıyla bankalara/ödeme kuruluşlarına ve yasal yükümlülükler
+            kapsamında yetkili kamu kurum ve kuruluşlarına, KVKK'da belirtilen sınırlar dahilinde aktarılabilir.
+            Verileriniz yurt dışına aktarılmamaktadır.
+          </p>
+
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">Veri Toplama Yöntemi</h3>
+          <p style="color:var(--text-muted);">
+            Kişisel verileriniz; internet sitesi üzerindeki iletişim/sipariş formları, WhatsApp ve e-posta
+            yoluyla kurulan iletişim kanalları aracılığıyla, elektronik ortamda toplanmaktadır.
+          </p>
+
+          <h3 style="color:var(--white);margin:1.5rem 0 0.5rem;">İlgili Kişinin Hakları</h3>
+          <p style="color:var(--text-muted);margin-bottom:0.5rem;">
+            KVKK'nın 11. maddesi uyarınca, Sarıgül Ticaret'e başvurarak;
+          </p>
+          <ul style="color:var(--text-muted);padding-left:1.5rem;list-style:disc;">
+            <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme,</li>
+            <li>İşlenmişse buna ilişkin bilgi talep etme,</li>
+            <li>İşlenme amacına uygun kullanılıp kullanılmadığını öğrenme,</li>
+            <li>Yurt içinde/dışında aktarıldığı üçüncü kişileri bilme,</li>
+            <li>Eksik veya yanlış işlenmişse düzeltilmesini isteme,</li>
+            <li>KVKK'da öngörülen şartlarda silinmesini veya yok edilmesini isteme,</li>
+            <li>Düzeltme/silme işlemlerinin aktarılan üçüncü kişilere bildirilmesini isteme,</li>
+            <li>İşlenen verilerin münhasıran otomatik sistemlerle analiz edilmesi sonucu aleyhinize bir sonucun ortaya çıkmasına itiraz etme,</li>
+            <li>Kanuna aykırı işlenmesi sebebiyle zarara uğramanız halinde zararın giderilmesini talep etme</li>
+          </ul>
+          <p style="color:var(--text-muted);margin-top:0.5rem;">
+            haklarına sahipsiniz. Başvurularınızı
+            <a href="mailto:{{ .Site.Params.email }}" style="color:var(--primary);">{{ .Site.Params.email }}</a>
+            adresine iletebilirsiniz.
+          </p>
+        </div>
+
         <div style="background:var(--dark2);border-radius:var(--radius);padding:2rem;border:1px solid rgba(255,255,255,0.06);">
-          <h2 style="color:var(--white);margin-bottom:1rem;">3. İletişim</h2>
+          <h2 style="color:var(--white);margin-bottom:1rem;">4. İletişim</h2>
           <p style="color:var(--text-muted);">Gizlilik politikamız hakkında sorularınız için:</p>
           <ul style="color:var(--text-muted);padding-left:1.5rem;list-style:disc;margin-top:0.5rem;">
             <li>E-posta: <a href="mailto:{{ .Site.Params.email }}" style="color:var(--primary);">{{ .Site.Params.email }}</a></li>
