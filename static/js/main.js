@@ -199,6 +199,7 @@
     let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
     let toplamAdet = sepet.reduce((toplam, urun) => toplam + urun.adet, 0);
     
+    // Eski/alternatif sepet ikonu (varsa)
     let cartBtn = document.getElementById('floating-cart');
     let cartCount = document.getElementById('cart-count');
     
@@ -210,6 +211,20 @@
         cartBtn.style.display = 'none';
       }
     }
+
+    // Header'daki sepet ikonu rozeti
+    let badge = document.getElementById('cart-count-badge');
+    if (badge) {
+      if (toplamAdet > 0) {
+        badge.style.display = 'flex';
+        badge.innerText = toplamAdet;
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    // Sepet paneli açıksa içeriğini de tazele
+    renderCartPanel();
   };
 
   window.sepeteEkle = function(isim, fiyat, kod, resim) {
@@ -231,6 +246,148 @@
     localStorage.setItem('sarigul_sepet', JSON.stringify(sepet));
     alert("🛒 " + isim + " sepete eklendi!");
     window.sepetGuncelle(); // Sepet ikonunu anında güncelle
+  };
+
+  /* ---- Sepet Panelini Aç/Kapat --------------------------- */
+  window.sepetiAcKapat = function () {
+    var panel = document.getElementById('cart-panel');
+    var overlay = document.getElementById('cart-overlay');
+    if (!panel || !overlay) return;
+
+    var isOpen = panel.style.display === 'flex';
+
+    if (isOpen) {
+      panel.style.display = 'none';
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
+    } else {
+      panel.style.display = 'flex';
+      overlay.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      renderCartPanel();
+    }
+  };
+
+  /* ---- Sepetten Ürün Çıkar / Adet Güncelle --------------- */
+  window.sepettenCikar = function (isim) {
+    let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
+    sepet = sepet.filter(function (urun) { return urun.isim !== isim; });
+    localStorage.setItem('sarigul_sepet', JSON.stringify(sepet));
+    window.sepetGuncelle();
+  };
+
+  window.sepetAdetDegistir = function (isim, delta) {
+    let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
+    let urun = sepet.find(function (u) { return u.isim === isim; });
+    if (!urun) return;
+    urun.adet += delta;
+    if (urun.adet <= 0) {
+      sepet = sepet.filter(function (u) { return u.isim !== isim; });
+    }
+    localStorage.setItem('sarigul_sepet', JSON.stringify(sepet));
+    window.sepetGuncelle();
+  };
+
+  /* ---- Sepet Panelinin İçeriğini Çiz --------------------- */
+  function renderCartPanel() {
+    var container = document.getElementById('cart-items-container');
+    var totalEl = document.getElementById('cart-total-price');
+    if (!container || !totalEl) return; // Bu sayfada sepet paneli yoksa çık
+
+    let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
+
+    if (sepet.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-muted);text-align:center;margin-top:2rem;">Sepetiniz boş.</p>';
+      totalEl.innerText = '0 TL';
+      return;
+    }
+
+    var toplam = 0;
+    var html = '';
+
+    sepet.forEach(function (urun) {
+      var satirToplam = urun.fiyat * urun.adet;
+      toplam += satirToplam;
+
+      html += '' +
+        '<div style="display:flex;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid rgba(255,255,255,0.06);align-items:center;">' +
+          '<img src="' + urun.resim + '" alt="' + urun.isim + '" style="width:56px;height:56px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,0.04);flex-shrink:0;">' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div style="color:var(--white);font-size:0.9rem;font-weight:600;margin-bottom:4px;">' + urun.isim + '</div>' +
+            '<div style="color:var(--primary);font-weight:bold;font-size:0.9rem;">' + urun.fiyat + ' TL</div>' +
+            '<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">' +
+              '<button onclick="sepetAdetDegistir(\'' + urun.isim.replace(/'/g, "\\'") + '\', -1)" style="width:24px;height:24px;border-radius:4px;border:none;background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;">−</button>' +
+              '<span style="color:#fff;font-size:0.85rem;min-width:18px;text-align:center;">' + urun.adet + '</span>' +
+              '<button onclick="sepetAdetDegistir(\'' + urun.isim.replace(/'/g, "\\'") + '\', 1)" style="width:24px;height:24px;border-radius:4px;border:none;background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;">+</button>' +
+            '</div>' +
+          '</div>' +
+          '<button onclick="sepettenCikar(\'' + urun.isim.replace(/'/g, "\\'") + '\')" aria-label="Ürünü kaldır" style="background:none;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer;flex-shrink:0;">&times;</button>' +
+        '</div>';
+    });
+
+    container.innerHTML = html;
+    totalEl.innerText = toplam.toLocaleString('tr-TR') + ' TL';
+  }
+
+  /* ---- Siparişi Tamamla: Ödeme Yöntemi Seçimi ------------ */
+  window.siparisiTamamla = function () {
+    let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
+    if (sepet.length === 0) {
+      alert('Sepetiniz boş. Lütfen önce ürün ekleyin.');
+      return;
+    }
+    var modal = document.getElementById('payment-method-modal');
+    if (modal) modal.style.display = 'flex';
+  };
+
+  /* ---- Ödeme Yöntemi: Kredi Kartı (yakında) -------------- */
+  window.odemeKrediKarti = function () {
+    alert('💳 Kredi kartı ile online ödeme sistemimiz şu anda hazırlık aşamasında.\n\nÇok yakında aktif olacak! Şimdilik EFT/Havale veya WhatsApp üzerinden siparişinizi tamamlayabilirsiniz.');
+  };
+
+  /* ---- Ödeme Yöntemi: EFT/Havale -------------------------- */
+  window.odemeHavale = function () {
+    var modal = document.getElementById('payment-method-modal');
+    if (modal) modal.style.display = 'none';
+    var ibanModal = document.getElementById('iban-modal');
+    if (ibanModal) ibanModal.style.display = 'flex';
+  };
+
+  window.ibanKopyala = function () {
+    var ibanText = 'TR81 0020 5000 0918 8856 6000 01';
+    navigator.clipboard.writeText(ibanText.replace(/\s/g, '')).then(function () {
+      var btn = document.getElementById('iban-copy-btn');
+      if (btn) {
+        var oldText = btn.innerText;
+        btn.innerText = '✓ Kopyalandı';
+        setTimeout(function () { btn.innerText = oldText; }, 1800);
+      }
+    });
+  };
+
+  window.havaleWhatsappaGec = function () {
+    let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
+    var toplam = sepet.reduce(function (t, u) { return t + (u.fiyat * u.adet); }, 0);
+
+    var urunSatirlari = sepet.map(function (u) {
+      return '- ' + u.isim + ' x' + u.adet + ' = ' + (u.fiyat * u.adet).toLocaleString('tr-TR') + ' TL';
+    }).join('\n');
+
+    var mesaj = 'Merhaba, EFT/Havale ile siparişimi tamamlamak istiyorum.\n\n' +
+      urunSatirlari + '\n\n' +
+      'Toplam: ' + toplam.toLocaleString('tr-TR') + ' TL\n\n' +
+      'Kuveyt Türk IBAN: TR81 0020 5000 0918 8856 6000 01\n' +
+      'Ödemeyi yaptım, dekontu iletiyorum.';
+
+    window.open('https://wa.me/' + PHONE_NUMBER + '?text=' + encodeURIComponent(mesaj), '_blank', 'noopener');
+
+    var ibanModal = document.getElementById('iban-modal');
+    if (ibanModal) ibanModal.style.display = 'none';
+  };
+
+  window.odemeModalKapat = function (id) {
+    var modal = document.getElementById(id);
+    if (modal) modal.style.display = 'none';
   };
 
   /* ---- Ürün Detay Slider -------------------------------- */
