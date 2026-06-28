@@ -11,6 +11,7 @@ description: "USB-C to USB-A dönüştürücü adaptör, hızlı veri transferi 
 featured: false
 weight: 49
 code: "AKS-018"
+price: 100
 images:
   - "IMG-20260308-WA0049.jpg"
 ---

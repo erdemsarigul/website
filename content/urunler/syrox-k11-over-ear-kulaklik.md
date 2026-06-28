@@ -11,6 +11,7 @@ description: "Extra bass, yumuşak kulak yastıkları, ayarlanabilir kafa bandı
 featured: false
 weight: 35
 code: "SES-008"
+price: 275
 images:
   - "IMG-20260308-WA0035.jpg"
 ---

@@ -11,6 +11,7 @@ description: "Dayanıklı Telefon sabitleme mıknatıs ürünü."
 featured: false
 weight: 46
 code: "AKS-006"
+price: 100
 images:
   - "IMG-20260308-WA0046.jpg"
 ---

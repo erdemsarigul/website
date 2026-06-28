@@ -1,0 +1,15 @@
+{{- $products := where .Site.RegularPages "Type" "urunler" -}}
+[
+{{- range $i, $p := $products -}}
+  {{- if $i }},{{ end -}}
+  {
+    "title": {{ $p.Title | jsonify }},
+    "url": {{ $p.RelPermalink | jsonify }},
+    "code": {{ $p.Params.code | default "" | jsonify }},
+    "category": {{ $p.Params.categoryLabel | default $p.Params.category | default "" | jsonify }},
+    "description": {{ $p.Params.description | default "" | jsonify }},
+    "price": {{ $p.Params.price | default 0 | jsonify }},
+    "image": {{ (cond (hasPrefix ($p.Params.image | default "") "http") ($p.Params.image | default "") (printf "images/%s" ($p.Params.image | default "")) ) | jsonify }}
+  }
+{{- end -}}
+]

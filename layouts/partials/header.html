@@ -58,7 +58,72 @@
   </div>
   <div id="cart-overlay" onclick="sepetiAcKapat()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;"></div>
 
-  <!-- ÖDEME YÖNTEMİ SEÇİM MODAL'I -->
+  <!-- TESLİMAT / FATURA BİLGİLERİ MODAL'I -->
+  <div id="teslimat-bilgi-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10000;align-items:center;justify-content:center;padding:1rem;">
+    <div style="background:var(--dark2);border-radius:var(--radius,8px);padding:2rem;max-width:440px;width:100%;border:1px solid rgba(255,255,255,0.08);max-height:90vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+        <h3 style="color:var(--white);margin:0;font-size:1.2rem;">Teslimat ve Fatura Bilgileri</h3>
+        <button onclick="odemeModalKapat('teslimat-bilgi-modal')" aria-label="Kapat" style="background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;line-height:1;">&times;</button>
+      </div>
+
+      <div style="margin-bottom:0.9rem;">
+        <label style="display:block;color:var(--text-muted);font-size:0.85rem;margin-bottom:5px;">Ad Soyad *</label>
+        <input type="text" id="tb-adsoyad" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:0.65rem 0.8rem;color:var(--white);font-size:0.95rem;">
+      </div>
+
+      <div style="margin-bottom:0.9rem;">
+        <label style="display:block;color:var(--text-muted);font-size:0.85rem;margin-bottom:5px;">Telefon *</label>
+        <input type="tel" id="tb-telefon" placeholder="05XX XXX XX XX" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:0.65rem 0.8rem;color:var(--white);font-size:0.95rem;">
+      </div>
+
+      <div style="margin-bottom:0.9rem;">
+        <label style="display:block;color:var(--text-muted);font-size:0.85rem;margin-bottom:5px;">Teslimat Adresi *</label>
+        <textarea id="tb-adres" rows="3" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:0.65rem 0.8rem;color:var(--white);font-size:0.95rem;resize:vertical;"></textarea>
+      </div>
+
+      <div style="margin-bottom:0.9rem;">
+        <label style="display:block;color:var(--text-muted);font-size:0.85rem;margin-bottom:7px;">Fatura Tipi *</label>
+        <div style="display:flex;gap:1.25rem;">
+          <label style="display:flex;align-items:center;gap:6px;color:var(--white);font-size:0.92rem;cursor:pointer;">
+            <input type="radio" name="tb-fatura-tipi" value="bireysel" checked onchange="faturaTipiDegisti()" style="accent-color:var(--primary,#ff4757);">
+            Bireysel
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;color:var(--white);font-size:0.92rem;cursor:pointer;">
+            <input type="radio" name="tb-fatura-tipi" value="kurumsal" onchange="faturaTipiDegisti()" style="accent-color:var(--primary,#ff4757);">
+            Kurumsal
+          </label>
+        </div>
+      </div>
+
+      <div id="tb-bireysel-alan" style="margin-bottom:0.9rem;">
+        <label style="display:block;color:var(--text-muted);font-size:0.85rem;margin-bottom:5px;">T.C. Kimlik No (opsiyonel)</label>
+        <input type="text" id="tb-tckimlik" maxlength="11" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:0.65rem 0.8rem;color:var(--white);font-size:0.95rem;">
+      </div>
+
+      <div id="tb-kurumsal-alan" style="display:none;">
+        <div style="margin-bottom:0.9rem;">
+          <label style="display:block;color:var(--text-muted);font-size:0.85rem;margin-bottom:5px;">Firma Unvanı *</label>
+          <input type="text" id="tb-firma-unvan" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:0.65rem 0.8rem;color:var(--white);font-size:0.95rem;">
+        </div>
+        <div style="margin-bottom:0.9rem;">
+          <label style="display:block;color:var(--text-muted);font-size:0.85rem;margin-bottom:5px;">Vergi Dairesi *</label>
+          <input type="text" id="tb-vergi-dairesi" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:0.65rem 0.8rem;color:var(--white);font-size:0.95rem;">
+        </div>
+        <div style="margin-bottom:0.9rem;">
+          <label style="display:block;color:var(--text-muted);font-size:0.85rem;margin-bottom:5px;">Vergi No *</label>
+          <input type="text" id="tb-vergi-no" maxlength="10" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:0.65rem 0.8rem;color:var(--white);font-size:0.95rem;">
+        </div>
+      </div>
+
+      <p id="tb-uyari" style="display:none;color:#ffc107;font-size:0.82rem;margin:0.5rem 0 0;text-align:center;">
+        Lütfen zorunlu (*) alanları doldurun.
+      </p>
+
+      <button onclick="teslimatBilgisiKaydet()" class="btn" style="width:100%;background-color:var(--primary,#ff4757);color:white;padding:0.85rem;border-radius:6px;font-size:1rem;font-weight:bold;cursor:pointer;border:none;margin-top:1rem;">
+        Devam Et
+      </button>
+    </div>
+  </div>
   <div id="payment-method-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10000;align-items:center;justify-content:center;padding:1rem;">
     <div style="background:var(--dark2);border-radius:var(--radius,8px);padding:2rem;max-width:380px;width:100%;border:1px solid rgba(255,255,255,0.08);">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">

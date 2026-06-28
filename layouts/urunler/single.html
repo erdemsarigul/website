@@ -139,11 +139,22 @@
         </div>
 
         <!-- Açıklama Kısmı -->
-        <div style="line-height: 1.6; color: var(--text-muted, #a0a5b5); margin-bottom: 20px;">
+        <div style="margin-bottom: 20px;">
           <h4 style="color: #fff; margin-bottom: 10px; font-size: 1.2rem;">Ürün Açıklaması</h4>
-          {{ with .Params.description }}<p style="margin-bottom: 12px;">{{ . }}</p>{{ end }}
-          {{ .Content }}
+          <div class="urun-aciklama-scroll" style="line-height: 1.6; color: var(--text-muted, #a0a5b5); max-height: 260px; overflow-y: auto; padding-right: 10px; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 14px 14px 14px 0; background: rgba(255,255,255,0.02);">
+            <div style="padding-left: 14px;">
+              {{ with .Params.description }}<p style="margin-bottom: 12px;">{{ . }}</p>{{ end }}
+              {{ .Content }}
+            </div>
+          </div>
         </div>
+
+        <style>
+          .urun-aciklama-scroll::-webkit-scrollbar { width: 6px; }
+          .urun-aciklama-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 4px; }
+          .urun-aciklama-scroll::-webkit-scrollbar-thumb { background: var(--primary, #ff4757); border-radius: 4px; }
+          .urun-aciklama-scroll { scrollbar-width: thin; scrollbar-color: var(--primary, #ff4757) rgba(255,255,255,0.04); }
+        </style>
 
         <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
 

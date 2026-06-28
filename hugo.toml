@@ -12,9 +12,14 @@ defaultContentLanguage = 'tr'
   googleTagManagerID = "G-RDSYTYBZHN"
 
 [outputs]
-  home    = ["HTML"]
+  home    = ["HTML", "JSON"]
   page    = ["HTML"]
   section = ["HTML"]
+
+[outputFormats.JSON]
+  mediaType = "application/json"
+  baseName  = "search-index"
+  isPlainText = true
 
 [taxonomies]
   tag = "tags"

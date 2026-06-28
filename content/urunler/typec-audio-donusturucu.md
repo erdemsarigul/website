@@ -11,6 +11,7 @@ description: "USB-C to 3.5mm kulaklık jakı dönüştürücü adaptör."
 featured: false
 weight: 53
 code: "AKS-017"
+price: 120
 images:
   - "IMG-20260308-WA0053.jpg"
 ---

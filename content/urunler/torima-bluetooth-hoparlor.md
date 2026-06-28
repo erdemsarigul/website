@@ -11,6 +11,7 @@ description: "Torima kompakt taşınabilir kablosuz Bluetooth hoparlör, güçl�
 featured: false
 weight: 31
 code: "SES-009"
+price: 500
 images:
   - "IMG-20260308-WA0031.jpg"
 ---

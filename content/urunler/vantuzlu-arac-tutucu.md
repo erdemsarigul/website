@@ -1,5 +1,5 @@
 ---
-title: "Vantuzlu Araç Telefon Tutucu"
+title: "Subzero Hr77 Vantuzlu Arac Tutacağı"
 date: 2026-01-01
 draft: false
 category: "aksesuar"
@@ -11,6 +11,7 @@ description: "270° döndürülebilir vantuzlu araç telefon tutucu, tek elle ku
 featured: false
 weight: 58
 code: "AKS-019"
+price: 400
 images:
   - "IMG-20260308-WA0058.jpg"
 ---
