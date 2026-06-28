@@ -11,7 +11,7 @@ description: "Tek tuşla açılan vantuzlu evrensel araç telefon tutucu, HR82"
 featured: false
 weight: 57
 code: "AKS-015"
-price:400
+price: 400
 images:
   - "IMG-20260308-WA0057.jpg"
 ---
