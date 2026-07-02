@@ -419,9 +419,15 @@
     localStorage.removeItem('sarigul_sepet');
     window.sepetGuncelle();
 
-    // Google Sheets'e arka planda gönder (başarısız olsa da umurumuz yok)
+    // Veriyi form data olarak Google Sheets'e gönder
+    var formData = new FormData();
+    Object.keys(bilgi).forEach(function(key) {
+      formData.append(key, bilgi[key]);
+    });
+    formData.append('anahtar', SIPARIS_GIZLI_ANAHTAR);
+    
     try {
-      navigator.sendBeacon(SIPARIS_WEBHOOK_URL, JSON.stringify(Object.assign({}, bilgi, { anahtar: SIPARIS_GIZLI_ANAHTAR })));
+      navigator.sendBeacon(SIPARIS_WEBHOOK_URL, formData);
     } catch (err) {
       console.warn('Veri gönderilemedi:', err);
     }
