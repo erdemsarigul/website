@@ -418,6 +418,7 @@
     // Google Sheets'e gönder ve başarılı olursa sepeti temizle
     fetch(SIPARIS_WEBHOOK_URL, {
       method: 'POST',
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json'
       },
