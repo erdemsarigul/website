@@ -415,11 +415,21 @@
     };
     localStorage.setItem('sarigul_teslimat_bilgi', JSON.stringify(bilgi));
 
-    // Google Sheets'e gönder (arka planda, sessizce - hata olsa da akışı durdurmaz)
+    // Google Sheets'e gönder ve başarılı olursa sepeti temizle
     fetch(SIPARIS_WEBHOOK_URL, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(Object.assign({}, bilgi, { anahtar: SIPARIS_GIZLI_ANAHTAR }))
-    }).catch(function (err) {
+    })
+    .then(function(response) {
+      // Sipariş başarıyla gönderildi, sepeti temizle
+      localStorage.removeItem('sarigul_sepet');
+      window.sepetGuncelle();
+      return response;
+    })
+    .catch(function (err) {
       console.warn('Sipariş bilgisi Google Sheets\'e gönderilemedi:', err);
     });
 
