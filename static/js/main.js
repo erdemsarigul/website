@@ -8,7 +8,7 @@
   /* ---- Config ------------------------------------------- */
   const PHONE_NUMBER   = '905427447550';  // WhatsApp numarası
   const COOKIE_KEY     = 'sg_cookie_consent';
-  const SIPARIS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxP6mvbRyST3CujOUouaKrQVEeHeutjZnBr6hwU5iM/dev';
+  const SIPARIS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyMwMSSbb-3CCxlzJRC4mZHbKQoFoG8vXX3-AFyyRJopi4SBMBAUetR20Il9G8qjkVb/exec';
   const SIPARIS_GIZLI_ANAHTAR = 'sarigul-2026-siparis-x7k9';
 
   /* ---- DOM Hazır ---------------------------------------- */
