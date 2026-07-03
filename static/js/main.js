@@ -21,7 +21,8 @@
     setActiveNav();
     initWhatsAppLinks();
     initProductSlider();
-    
+    initSearch();
+
     // Sayfa yüklendiğinde sepet ikonunu hemen güncelle
     window.sepetGuncelle(); 
   });
@@ -195,16 +196,13 @@
   };
 
   /* ---- SEPET (CART) FONKSİYONLARI ----------------------- */
-  // HTML'den erişilebilmesi için "window" objesine bağlıyoruz.
-  
   window.sepetGuncelle = function() {
     let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
     let toplamAdet = sepet.reduce((toplam, urun) => toplam + urun.adet, 0);
-    
-    // Eski/alternatif sepet ikonu (varsa)
+
     let cartBtn = document.getElementById('floating-cart');
     let cartCount = document.getElementById('cart-count');
-    
+
     if (cartBtn && cartCount) {
       if (toplamAdet > 0) {
         cartBtn.style.display = 'block';
@@ -214,7 +212,6 @@
       }
     }
 
-    // Header'daki sepet ikonu rozeti
     let badge = document.getElementById('cart-count-badge');
     if (badge) {
       if (toplamAdet > 0) {
@@ -225,16 +222,15 @@
       }
     }
 
-    // Sepet paneli açıksa içeriğini de tazele
     renderCartPanel();
   };
 
   window.sepeteEkle = function(isim, fiyat, kod, resim) {
     let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
-    let mevcutUrun = sepet.find(urun => urun.isim === isim); // İsme göre ara
-    
+    let mevcutUrun = sepet.find(urun => urun.isim === isim);
+
     if (mevcutUrun) {
-      mevcutUrun.adet += 1; // Zaten varsa sayısını artır
+      mevcutUrun.adet += 1;
     } else {
       sepet.push({
         isim: isim,
@@ -244,10 +240,10 @@
         adet: 1
       });
     }
-    
+
     localStorage.setItem('sarigul_sepet', JSON.stringify(sepet));
     alert("🛒 " + isim + " sepete eklendi!");
-    window.sepetGuncelle(); // Sepet ikonunu anında güncelle
+    window.sepetGuncelle();
   };
 
   /* ---- Sepet Panelini Aç/Kapat --------------------------- */
@@ -294,7 +290,7 @@
   function renderCartPanel() {
     var container = document.getElementById('cart-items-container');
     var totalEl = document.getElementById('cart-total-price');
-    if (!container || !totalEl) return; // Bu sayfada sepet paneli yoksa çık
+    if (!container || !totalEl) return;
 
     let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
 
@@ -339,13 +335,11 @@
       return;
     }
 
-    // Sepet panelini kapatıp teslimat formunu aç
     var cartPanel = document.getElementById('cart-panel');
     var cartOverlay = document.getElementById('cart-overlay');
     if (cartPanel) cartPanel.style.display = 'none';
     if (cartOverlay) cartOverlay.style.display = 'none';
 
-    // Önceden kaydedilmiş bilgi varsa formu onunla doldur
     var kayitli = JSON.parse(localStorage.getItem('sarigul_teslimat_bilgi') || 'null');
     if (kayitli) {
       var f = function (id, val) { var el = document.getElementById(id); if (el) el.value = val || ''; };
@@ -413,29 +407,22 @@
       vergiDairesi: vergiDairesi,
       vergiNo: vergiNo
     };
+    // Not: sepet burada KASITLI olarak temizlenmiyor.
+    // Sepet, ancak sipariş fiilen WhatsApp'a gönderildiğinde (havaleWhatsappaGec) temizlenir.
+    // Aksi halde kullanıcı "Kredi Kartı" seçer veya vazgeçerse sepeti boş bulur.
     localStorage.setItem('sarigul_teslimat_bilgi', JSON.stringify(bilgi));
 
-    // Sepeti hemen temizle
-    localStorage.removeItem('sarigul_sepet');
-    window.sepetGuncelle();
-
-    // Veriyi form data olarak Google Sheets'e gönder
-    var formData = new FormData();
-    Object.keys(bilgi).forEach(function(key) {
-      formData.append(key, bilgi[key]);
+    // Google Sheets'e gönder (JSON formatında - Apps Script doPost JSON.parse bekliyor)
+    fetch(SIPARIS_WEBHOOK_URL, {
+      method: 'POST',
+      body: JSON.stringify(Object.assign({}, bilgi, { anahtar: SIPARIS_GIZLI_ANAHTAR }))
+    }).catch(function (err) {
+      console.warn('Sipariş bilgisi Google Sheets\'e gönderilemedi:', err);
     });
-    formData.append('anahtar', SIPARIS_GIZLI_ANAHTAR);
-    
-    try {
-      navigator.sendBeacon(SIPARIS_WEBHOOK_URL, formData);
-    } catch (err) {
-      console.warn('Veri gönderilemedi:', err);
-    }
 
     var teslimatModal = document.getElementById('teslimat-bilgi-modal');
     if (teslimatModal) teslimatModal.style.display = 'none';
 
-    // Mevcut ödeme yöntemi modalını aç (sözleşme onayı dahil, değişmedi)
     var odemeModal = document.getElementById('payment-method-modal');
     if (odemeModal) {
       odemeModal.style.display = 'flex';
@@ -500,13 +487,18 @@
     });
   };
 
+  /* ---- EFT/Havale: WhatsApp'a Geç ve Siparişi Tamamla ----- */
   window.havaleWhatsappaGec = function () {
     let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
     var toplam = sepet.reduce(function (t, u) { return t + (u.fiyat * u.adet); }, 0);
 
     var urunSatirlari = sepet.map(function (u) {
-      return '- ' + u.isim + ' x' + u.adet + ' = ' + (u.fiyat * u.adet).toLocaleString('tr-TR') + ' TL';
-    }).join('\n');
+      var satir = '- ' + u.isim + ' x' + u.adet + ' = ' + (u.fiyat * u.adet).toLocaleString('tr-TR') + ' TL';
+      if (u.resim) {
+        satir += '\n  Görsel: ' + u.resim;
+      }
+      return satir;
+    }).join('\n\n');
 
     var mesaj = 'Merhaba, EFT/Havale ile siparişimi tamamlamak istiyorum.\n\n' +
       urunSatirlari + '\n\n' +
@@ -516,6 +508,11 @@
 
     window.open('https://wa.me/' + PHONE_NUMBER + '?text=' + encodeURIComponent(mesaj), '_blank', 'noopener');
 
+    // Sipariş fiilen WhatsApp'a iletildi - şimdi sepeti temizle
+    localStorage.removeItem('sarigul_sepet');
+    window.sepetGuncelle();
+    alert('✓ Siparişiniz alındı, teşekkürler! WhatsApp üzerinden dekontunuzu iletebilirsiniz.');
+
     var ibanModal = document.getElementById('iban-modal');
     if (ibanModal) ibanModal.style.display = 'none';
   };
@@ -524,6 +521,107 @@
     var modal = document.getElementById(id);
     if (modal) modal.style.display = 'none';
   };
+
+  /* ---- Ürün Arama ---------------------------------------- */
+  var searchIndexCache = null;
+  var searchIndexLoading = false;
+
+  function initSearch() {
+    var iconBtn = document.getElementById('search-icon-btn');
+    var overlay = document.getElementById('search-overlay');
+    var closeBtn = document.getElementById('search-close-btn');
+    var input = document.getElementById('search-input');
+    var resultsBox = document.getElementById('search-results');
+
+    if (!iconBtn || !overlay || !input || !resultsBox) return;
+
+    iconBtn.addEventListener('click', function () {
+      overlay.style.display = 'flex';
+      input.value = '';
+      resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;margin:1.5rem 0;font-size:0.9rem;">Aramaya başlamak için yazın.</p>';
+      setTimeout(function () { input.focus(); }, 50);
+      loadSearchIndex();
+    });
+
+    function kapat() {
+      overlay.style.display = 'none';
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', kapat);
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) kapat();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay.style.display === 'flex') kapat();
+    });
+
+    var debounceTimer = null;
+    input.addEventListener('input', function () {
+      clearTimeout(debounceTimer);
+      var query = input.value.trim();
+      debounceTimer = setTimeout(function () {
+        renderSearchResults(query, resultsBox);
+      }, 150);
+    });
+  }
+
+  function loadSearchIndex() {
+    if (searchIndexCache || searchIndexLoading) return;
+    searchIndexLoading = true;
+    fetch('/search-index.json')
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        searchIndexCache = data;
+        searchIndexLoading = false;
+      })
+      .catch(function (err) {
+        console.warn('Arama indeksi yüklenemedi:', err);
+        searchIndexLoading = false;
+      });
+  }
+
+  function renderSearchResults(query, resultsBox) {
+    if (!query) {
+      resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;margin:1.5rem 0;font-size:0.9rem;">Aramaya başlamak için yazın.</p>';
+      return;
+    }
+    if (!searchIndexCache) {
+      resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;margin:1.5rem 0;font-size:0.9rem;">Yükleniyor...</p>';
+      return;
+    }
+
+    var q = query.toLocaleLowerCase('tr-TR');
+    var sonuclar = searchIndexCache.filter(function (p) {
+      return (p.title || '').toLocaleLowerCase('tr-TR').indexOf(q) !== -1 ||
+             (p.code || '').toLocaleLowerCase('tr-TR').indexOf(q) !== -1 ||
+             (p.category || '').toLocaleLowerCase('tr-TR').indexOf(q) !== -1 ||
+             (p.description || '').toLocaleLowerCase('tr-TR').indexOf(q) !== -1;
+    }).slice(0, 20);
+
+    if (sonuclar.length === 0) {
+      resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;margin:1.5rem 0;font-size:0.9rem;">Sonuç bulunamadı.</p>';
+      return;
+    }
+
+    var html = sonuclar.map(function (p) {
+      var fiyatHtml = p.price && p.price > 0
+        ? '<span style="color:#28a745;font-weight:bold;font-size:0.85rem;">' + p.price + ' TL</span>'
+        : '<span style="color:#ffc107;font-size:0.8rem;">Fiyat için sorun</span>';
+
+      return '' +
+        '<a href="' + p.url + '" style="display:flex;gap:10px;align-items:center;padding:0.6rem;border-radius:6px;text-decoration:none;transition:background 0.15s;" ' +
+           'onmouseover="this.style.background=\'rgba(255,255,255,0.05)\'" onmouseout="this.style.background=\'transparent\'">' +
+          '<img src="' + p.image + '" alt="" style="width:44px;height:44px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,0.04);flex-shrink:0;">' +
+          '<span style="flex:1;min-width:0;">' +
+            '<span style="display:block;color:var(--white);font-size:0.88rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + p.title + '</span>' +
+            '<span style="display:block;color:var(--text-muted);font-size:0.75rem;">' + (p.category || '') + (p.code ? ' · ' + p.code : '') + '</span>' +
+          '</span>' +
+          fiyatHtml +
+        '</a>';
+    }).join('');
+
+    resultsBox.innerHTML = html;
+  }
 
   /* ---- Ürün Detay Slider -------------------------------- */
   function initProductSlider() {
