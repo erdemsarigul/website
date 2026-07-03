@@ -8,7 +8,9 @@
   /* ---- Config ------------------------------------------- */
   const PHONE_NUMBER   = '905427447550';  // WhatsApp numarası
   const COOKIE_KEY     = 'sg_cookie_consent';
-  const SIPARIS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyMwMSSbb-3CCxlzJRC4mZHbKQoFoG8vXX3-AFyyRJopi4SBMBAUetR20Il9G8qjkVb/exec';
+  
+  // 1. DEĞİŞİKLİK: Eski Google Script adresi silindi, yeni yerel sunucumuzun adresi eklendi!
+  const SIPARIS_WEBHOOK_URL = 'http://localhost:3000/api/siparisler';
   const SIPARIS_GIZLI_ANAHTAR = 'sarigul-2026-siparis-x7k9';
 
   /* ---- DOM Hazır ---------------------------------------- */
@@ -397,28 +399,41 @@
     }
     if (uyari) uyari.style.display = 'none';
 
-    var bilgi = {
-      adsoyad: adsoyad,
+    // 2. DEĞİŞİKLİK: Node.js sunucusunun anlayacağı formata (adSoyad, urunler, toplamTutar eklendi) çevrildi.
+    let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
+    let genelToplam = sepet.reduce(function (t, u) { return t + (u.fiyat * u.adet); }, 0);
+
+    var sunucuyaGidecekBilgi = {
+      adSoyad: adsoyad, 
       telefon: telefon,
       adres: adres,
       faturaTipi: faturaTipi,
       tckimlik: tckimlik,
       firmaUnvan: firmaUnvan,
       vergiDairesi: vergiDairesi,
-      vergiNo: vergiNo
+      vergiNo: vergiNo,
+      urunler: sepet,
+      toplamTutar: genelToplam,
+      odemeYontemi: 'Ödeme Bekleniyor'
     };
-    // Not: sepet burada KASITLI olarak temizlenmiyor.
-    // Sepet, ancak sipariş fiilen WhatsApp'a gönderildiğinde (havaleWhatsappaGec) temizlenir.
-    // Aksi halde kullanıcı "Kredi Kartı" seçer veya vazgeçerse sepeti boş bulur.
-    localStorage.setItem('sarigul_teslimat_bilgi', JSON.stringify(bilgi));
 
-    // Google Sheets'e gönder (JSON formatında - Apps Script doPost JSON.parse bekliyor)
+    localStorage.setItem('sarigul_teslimat_bilgi', JSON.stringify({
+      adsoyad: adsoyad, telefon: telefon, adres: adres, faturaTipi: faturaTipi,
+      tckimlik: tckimlik, firmaUnvan: firmaUnvan, vergiDairesi: vergiDairesi, vergiNo: vergiNo
+    }));
+
+    // Yeni arka planımıza güvenli JSON ile veri gönderiyoruz
     fetch(SIPARIS_WEBHOOK_URL, {
       method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify(Object.assign({}, bilgi, { anahtar: SIPARIS_GIZLI_ANAHTAR }))
-    }).catch(function (err) {
-      console.warn('Sipariş bilgisi Google Sheets\'e gönderilemedi:', err);
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(sunucuyaGidecekBilgi)
+    })
+    .then(res => res.json())
+    .then(data => console.log("Sipariş Veznedara iletildi!", data))
+    .catch(function (err) {
+      console.warn('Sipariş arka plana gönderilemedi:', err);
     });
 
     var teslimatModal = document.getElementById('teslimat-bilgi-modal');
