@@ -415,6 +415,7 @@
     // Google Sheets'e gönder (JSON formatında - Apps Script doPost JSON.parse bekliyor)
     fetch(SIPARIS_WEBHOOK_URL, {
       method: 'POST',
+      mode: 'no-cors',
       body: JSON.stringify(Object.assign({}, bilgi, { anahtar: SIPARIS_GIZLI_ANAHTAR }))
     }).catch(function (err) {
       console.warn('Sipariş bilgisi Google Sheets\'e gönderilemedi:', err);
