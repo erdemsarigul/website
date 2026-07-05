@@ -1,0 +1,81 @@
+{{ define "main" }}
+
+<section class="page-hero">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    <div class="breadcrumb">
+      <a href="{{ "" | relURL }}">Ana Sayfa</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Hesabım</span>
+    </div>
+  </div>
+</section>
+
+<section style="padding: 40px 0 100px; background: var(--dark1, #0d1117);">
+  <div class="container" style="max-width: 600px; margin: 0 auto; padding: 0 20px;">
+
+    <!-- GİRİŞ / KAYIT FORMLARI (giriş yapılmamışsa görünür) -->
+    <div id="hesap-auth-alani">
+
+      <div style="display:flex; gap:0; margin-bottom:24px; border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);">
+        <button id="tab-giris-btn" onclick="hesapTabDegistir('giris')" style="flex:1; padding:14px; background:var(--primary,#ff4757); color:#fff; border:none; cursor:pointer; font-weight:bold;">Giriş Yap</button>
+        <button id="tab-kayit-btn" onclick="hesapTabDegistir('kayit')" style="flex:1; padding:14px; background:rgba(255,255,255,0.05); color:var(--text-muted,#a0a5b5); border:none; cursor:pointer; font-weight:bold;">Kayıt Ol</button>
+      </div>
+
+      <!-- GİRİŞ FORMU -->
+      <div id="giris-formu" style="background:var(--dark2,#161b22); border-radius:8px; padding:24px; border:1px solid rgba(255,255,255,0.06);">
+        <div style="margin-bottom:14px;">
+          <label style="display:block; color:var(--text-muted); font-size:0.85rem; margin-bottom:5px;">E-posta</label>
+          <input type="email" id="giris-email" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:0.65rem 0.8rem; color:#fff; box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block; color:var(--text-muted); font-size:0.85rem; margin-bottom:5px;">Şifre</label>
+          <input type="password" id="giris-sifre" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:0.65rem 0.8rem; color:#fff; box-sizing:border-box;">
+        </div>
+        <p id="giris-hata" style="display:none; color:#ff6b6b; font-size:0.85rem; margin-bottom:10px;"></p>
+        <button onclick="girisYapTikla()" style="width:100%; background:var(--primary,#ff4757); color:#fff; border:none; padding:0.85rem; border-radius:6px; font-weight:bold; cursor:pointer;">Giriş Yap</button>
+      </div>
+
+      <!-- KAYIT FORMU -->
+      <div id="kayit-formu" style="display:none; background:var(--dark2,#161b22); border-radius:8px; padding:24px; border:1px solid rgba(255,255,255,0.06);">
+        <div style="margin-bottom:14px;">
+          <label style="display:block; color:var(--text-muted); font-size:0.85rem; margin-bottom:5px;">Ad Soyad</label>
+          <input type="text" id="kayit-adsoyad" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:0.65rem 0.8rem; color:#fff; box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block; color:var(--text-muted); font-size:0.85rem; margin-bottom:5px;">E-posta</label>
+          <input type="email" id="kayit-email" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:0.65rem 0.8rem; color:#fff; box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block; color:var(--text-muted); font-size:0.85rem; margin-bottom:5px;">Telefon</label>
+          <input type="tel" id="kayit-telefon" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:0.65rem 0.8rem; color:#fff; box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block; color:var(--text-muted); font-size:0.85rem; margin-bottom:5px;">Şifre (en az 6 karakter)</label>
+          <input type="password" id="kayit-sifre" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:0.65rem 0.8rem; color:#fff; box-sizing:border-box;">
+        </div>
+        <p id="kayit-hata" style="display:none; color:#ff6b6b; font-size:0.85rem; margin-bottom:10px;"></p>
+        <button onclick="kayitOlTikla()" style="width:100%; background:var(--primary,#ff4757); color:#fff; border:none; padding:0.85rem; border-radius:6px; font-weight:bold; cursor:pointer;">Kayıt Ol</button>
+      </div>
+    </div>
+
+    <!-- GİRİŞ YAPILMIŞSA GÖRÜNÜR: HESAP + SİPARİŞLER -->
+    <div id="hesap-panel-alani" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; background:var(--dark2,#161b22); border-radius:8px; padding:18px 24px; border:1px solid rgba(255,255,255,0.06); margin-bottom:24px;">
+        <div>
+          <div style="color:#fff; font-weight:bold; font-size:1.1rem;" id="hesap-adsoyad">-</div>
+          <div style="color:var(--text-muted); font-size:0.85rem;" id="hesap-email">-</div>
+        </div>
+        <button onclick="cikisYapTikla()" style="background:rgba(255,255,255,0.08); color:#fff; border:none; padding:0.6rem 1rem; border-radius:6px; cursor:pointer; font-size:0.85rem;">Çıkış Yap</button>
+      </div>
+
+      <h3 style="color:#fff; margin-bottom:16px;">Siparişlerim</h3>
+      <div id="siparislerim-listesi">
+        <p style="color:var(--text-muted); text-align:center;">Yükleniyor...</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{{ end }}
