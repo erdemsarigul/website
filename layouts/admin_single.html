@@ -1,0 +1,34 @@
+{{ define "main" }}
+
+<section class="page-hero">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+  </div>
+</section>
+
+<section style="padding: 40px 0 100px; background: var(--dark1, #0d1117);">
+  <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 0 20px;">
+
+    <!-- ANAHTAR GİRİŞ EKRANI -->
+    <div id="admin-giris-alani" style="max-width:400px; margin:0 auto; background:var(--dark2,#161b22); border-radius:8px; padding:24px; border:1px solid rgba(255,255,255,0.06);">
+      <label style="display:block; color:var(--text-muted); font-size:0.85rem; margin-bottom:5px;">Yönetici Anahtarı</label>
+      <input type="password" id="admin-anahtar-input" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:0.65rem 0.8rem; color:#fff; box-sizing:border-box; margin-bottom:12px;">
+      <p id="admin-giris-hata" style="display:none; color:#ff6b6b; font-size:0.85rem; margin-bottom:10px;"></p>
+      <button onclick="adminGirisTikla()" style="width:100%; background:var(--primary,#ff4757); color:#fff; border:none; padding:0.85rem; border-radius:6px; font-weight:bold; cursor:pointer;">Panele Gir</button>
+    </div>
+
+    <!-- SİPARİŞ LİSTESİ (anahtar doğrulandıktan sonra görünür) -->
+    <div id="admin-panel-alani" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h3 style="color:#fff; margin:0;">Tüm Siparişler</h3>
+        <button onclick="adminSiparisleriYukle()" style="background:rgba(255,255,255,0.08); color:#fff; border:none; padding:0.5rem 1rem; border-radius:6px; cursor:pointer; font-size:0.85rem;">🔄 Yenile</button>
+      </div>
+      <div id="admin-siparis-listesi">
+        <p style="color:var(--text-muted); text-align:center;">Yükleniyor...</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{{ end }}
