@@ -8,9 +8,7 @@
   /* ---- Config ------------------------------------------- */
   const PHONE_NUMBER   = '905427447550';  // WhatsApp numarası
   const COOKIE_KEY     = 'sg_cookie_consent';
-  
-  // 1. DEĞİŞİKLİK: Eski Google Script adresi silindi, yeni yerel sunucumuzun adresi eklendi!
-  const SIPARIS_WEBHOOK_URL = 'http://localhost:3000/api/siparisler';
+  const SIPARIS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyaSt4YR6TRaxrR6m-QKHKJWiLSHzGQR3W-QMMxLiD4O6LcodU1-PFVpuP8UWXVEI_x/exec';
   const SIPARIS_GIZLI_ANAHTAR = 'sarigul-2026-siparis-x7k9';
 
   /* ---- DOM Hazır ---------------------------------------- */
@@ -399,41 +397,55 @@
     }
     if (uyari) uyari.style.display = 'none';
 
-    // 2. DEĞİŞİKLİK: Node.js sunucusunun anlayacağı formata (adSoyad, urunler, toplamTutar eklendi) çevrildi.
-    let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
-    let genelToplam = sepet.reduce(function (t, u) { return t + (u.fiyat * u.adet); }, 0);
-
-    var sunucuyaGidecekBilgi = {
-      adSoyad: adsoyad, 
+    var bilgi = {
+      adsoyad: adsoyad,
       telefon: telefon,
       adres: adres,
       faturaTipi: faturaTipi,
       tckimlik: tckimlik,
       firmaUnvan: firmaUnvan,
       vergiDairesi: vergiDairesi,
-      vergiNo: vergiNo,
-      urunler: sepet,
-      toplamTutar: genelToplam,
-      odemeYontemi: 'Ödeme Bekleniyor'
+      vergiNo: vergiNo
     };
+    // Not: sepet burada KASITLI olarak temizlenmiyor.
+    // Sepet, ancak sipariş fiilen WhatsApp'a gönderildiğinde (havaleWhatsappaGec) temizlenir.
+    // Aksi halde kullanıcı "Kredi Kartı" seçer veya vazgeçerse sepeti boş bulur.
+    localStorage.setItem('sarigul_teslimat_bilgi', JSON.stringify(bilgi));
 
-    localStorage.setItem('sarigul_teslimat_bilgi', JSON.stringify({
-      adsoyad: adsoyad, telefon: telefon, adres: adres, faturaTipi: faturaTipi,
-      tckimlik: tckimlik, firmaUnvan: firmaUnvan, vergiDairesi: vergiDairesi, vergiNo: vergiNo
-    }));
-
-    // Yeni arka planımıza güvenli JSON ile veri gönderiyoruz
+    // Google Sheets'e gönder (JSON formatında - Apps Script doPost JSON.parse bekliyor)
     fetch(SIPARIS_WEBHOOK_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(sunucuyaGidecekBilgi)
-    })
-    .then(res => res.json())
-    .then(data => console.log("Sipariş Veznedara iletildi!", data))
-    .catch(function (err) {
-      console.warn('Sipariş arka plana gönderilemedi:', err);
+      mode: 'no-cors',
+      body: JSON.stringify(Object.assign({}, bilgi, { anahtar: SIPARIS_GIZLI_ANAHTAR }))
+    }).catch(function (err) {
+      console.warn('Sipariş bilgisi Google Sheets\'e gönderilemedi:', err);
+    });
+
+    // Veznedar backend'ine de gönder (hesap sistemi + sipariş takibi için)
+    var sepetVeznedar = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
+    var toplamVeznedar = sepetVeznedar.reduce(function (t, u) { return t + (u.fiyat * u.adet); }, 0);
+    var veznedarHeaders = { 'Content-Type': 'application/json' };
+    var tokenVarsa = (typeof veznedarTokenAl === 'function') ? veznedarTokenAl() : null;
+    if (tokenVarsa) veznedarHeaders['Authorization'] = 'Bearer ' + tokenVarsa;
+
+    fetch(VEZNEDAR_API_URL + '/api/siparisler', {
+      method: 'POST',
+      headers: veznedarHeaders,
+      body: JSON.stringify({
+        adSoyad: bilgi.adsoyad,
+        telefon: bilgi.telefon,
+        adres: bilgi.adres,
+        faturaTipi: bilgi.faturaTipi,
+        tckimlik: bilgi.tckimlik,
+        firmaUnvan: bilgi.firmaUnvan,
+        vergiDairesi: bilgi.vergiDairesi,
+        vergiNo: bilgi.vergiNo,
+        urunler: sepetVeznedar,
+        toplamTutar: toplamVeznedar,
+        odemeYontemi: 'Belirlenmedi'
+      })
+    }).catch(function (err) {
+      console.warn('Sipariş bilgisi Veznedar\'a gönderilemedi:', err);
     });
 
     var teslimatModal = document.getElementById('teslimat-bilgi-modal');
@@ -700,5 +712,297 @@
       }
     }, { passive: true });
   }
+
+  /* =========================================================
+     VEZNEDAR BACKEND ENTEGRASYONU (Hesap + Sipariş Takibi)
+     ========================================================= */
+  var VEZNEDAR_API_URL = 'https://sarigul-pos-backend.onrender.com';
+
+  /* ---- Yardımcı: kayıtlı token/kullanıcıyı oku -------------- */
+  function veznedarTokenAl() {
+    return localStorage.getItem('sarigul_token') || null;
+  }
+  function veznedarKullaniciAl() {
+    try { return JSON.parse(localStorage.getItem('sarigul_kullanici') || 'null'); }
+    catch (e) { return null; }
+  }
+
+  /* ---- KAYIT OL --------------------------------------------- */
+  window.kayitOlTikla = function () {
+    var adSoyad = document.getElementById('kayit-adsoyad').value.trim();
+    var email = document.getElementById('kayit-email').value.trim();
+    var telefon = document.getElementById('kayit-telefon').value.trim();
+    var sifre = document.getElementById('kayit-sifre').value;
+    var hataEl = document.getElementById('kayit-hata');
+
+    if (!adSoyad || !email || !sifre) {
+      hataEl.textContent = 'Lütfen tüm zorunlu alanları doldurun.';
+      hataEl.style.display = 'block';
+      return;
+    }
+
+    fetch(VEZNEDAR_API_URL + '/api/kayit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adSoyad: adSoyad, email: email, telefon: telefon, sifre: sifre })
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+      .then(function (res) {
+        if (!res.ok) {
+          hataEl.textContent = res.data.hata || 'Kayıt sırasında bir hata oluştu.';
+          hataEl.style.display = 'block';
+          return;
+        }
+        hataEl.style.display = 'none';
+        localStorage.setItem('sarigul_token', res.data.token);
+        localStorage.setItem('sarigul_kullanici', JSON.stringify(res.data.kullanici));
+        hesapDurumunuGoster();
+      })
+      .catch(function () {
+        hataEl.textContent = 'Sunucuya ulaşılamadı. Lütfen tekrar deneyin.';
+        hataEl.style.display = 'block';
+      });
+  };
+
+  /* ---- GİRİŞ YAP ---------------------------------------------- */
+  window.girisYapTikla = function () {
+    var email = document.getElementById('giris-email').value.trim();
+    var sifre = document.getElementById('giris-sifre').value;
+    var hataEl = document.getElementById('giris-hata');
+
+    if (!email || !sifre) {
+      hataEl.textContent = 'E-posta ve şifre gereklidir.';
+      hataEl.style.display = 'block';
+      return;
+    }
+
+    fetch(VEZNEDAR_API_URL + '/api/giris', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, sifre: sifre })
+    })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+      .then(function (res) {
+        if (!res.ok) {
+          hataEl.textContent = res.data.hata || 'Giriş başarısız.';
+          hataEl.style.display = 'block';
+          return;
+        }
+        hataEl.style.display = 'none';
+        localStorage.setItem('sarigul_token', res.data.token);
+        localStorage.setItem('sarigul_kullanici', JSON.stringify(res.data.kullanici));
+        hesapDurumunuGoster();
+      })
+      .catch(function () {
+        hataEl.textContent = 'Sunucuya ulaşılamadı. Lütfen tekrar deneyin.';
+        hataEl.style.display = 'block';
+      });
+  };
+
+  /* ---- ÇIKIŞ YAP ------------------------------------------------ */
+  window.cikisYapTikla = function () {
+    localStorage.removeItem('sarigul_token');
+    localStorage.removeItem('sarigul_kullanici');
+    hesapDurumunuGoster();
+  };
+
+  /* ---- Sekme değiştir (Giriş / Kayıt) -------------------------- */
+  window.hesapTabDegistir = function (hangisi) {
+    var girisBtn = document.getElementById('tab-giris-btn');
+    var kayitBtn = document.getElementById('tab-kayit-btn');
+    var girisForm = document.getElementById('giris-formu');
+    var kayitForm = document.getElementById('kayit-formu');
+    if (!girisBtn) return;
+
+    if (hangisi === 'giris') {
+      girisForm.style.display = 'block';
+      kayitForm.style.display = 'none';
+      girisBtn.style.background = 'var(--primary,#ff4757)';
+      girisBtn.style.color = '#fff';
+      kayitBtn.style.background = 'rgba(255,255,255,0.05)';
+      kayitBtn.style.color = 'var(--text-muted,#a0a5b5)';
+    } else {
+      girisForm.style.display = 'none';
+      kayitForm.style.display = 'block';
+      kayitBtn.style.background = 'var(--primary,#ff4757)';
+      kayitBtn.style.color = '#fff';
+      girisBtn.style.background = 'rgba(255,255,255,0.05)';
+      girisBtn.style.color = 'var(--text-muted,#a0a5b5)';
+    }
+  };
+
+  /* ---- Hesabım sayfası: giriş durumuna göre görünüm ayarla ----- */
+  function hesapDurumunuGoster() {
+    var authAlani = document.getElementById('hesap-auth-alani');
+    var panelAlani = document.getElementById('hesap-panel-alani');
+    if (!authAlani || !panelAlani) return; // Bu sayfada değilsek çık
+
+    var token = veznedarTokenAl();
+    var kullanici = veznedarKullaniciAl();
+
+    if (token && kullanici) {
+      authAlani.style.display = 'none';
+      panelAlani.style.display = 'block';
+      document.getElementById('hesap-adsoyad').textContent = kullanici.adSoyad;
+      document.getElementById('hesap-email').textContent = kullanici.email;
+      siparislerimYukle();
+    } else {
+      authAlani.style.display = 'block';
+      panelAlani.style.display = 'none';
+    }
+  }
+
+  /* ---- Müşterinin kendi siparişlerini yükle --------------------- */
+  function siparislerimYukle() {
+    var liste = document.getElementById('siparislerim-listesi');
+    if (!liste) return;
+    var token = veznedarTokenAl();
+    if (!token) return;
+
+    fetch(VEZNEDAR_API_URL + '/api/siparislerim', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data.siparisler || data.siparisler.length === 0) {
+          liste.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Henüz siparişiniz yok.</p>';
+          return;
+        }
+        liste.innerHTML = data.siparisler.map(function (s) {
+          var urunler = s.urunler || [];
+          var urunSatirlari = urunler.map(function (u) {
+            return '<div style="color:var(--text-muted); font-size:0.85rem;">' + u.isim + ' x' + u.adet + ' — ' + (u.fiyat * u.adet).toLocaleString('tr-TR') + ' TL</div>';
+          }).join('');
+          var tarih = new Date(s.olusturulma_tarihi).toLocaleDateString('tr-TR');
+          return '' +
+            '<div style="background:var(--dark2,#161b22); border-radius:8px; padding:16px 20px; border:1px solid rgba(255,255,255,0.06); margin-bottom:12px;">' +
+              '<div style="display:flex; justify-content:space-between; margin-bottom:8px;">' +
+                '<strong style="color:#fff;">' + s.siparis_no + '</strong>' +
+                '<span style="color:var(--primary,#ff4757); font-size:0.85rem; font-weight:bold;">' + s.durum + '</span>' +
+              '</div>' +
+              urunSatirlari +
+              '<div style="display:flex; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06);">' +
+                '<span style="color:var(--text-muted); font-size:0.8rem;">' + tarih + '</span>' +
+                '<strong style="color:#28a745;">' + Number(s.toplam_tutar).toLocaleString('tr-TR') + ' TL</strong>' +
+              '</div>' +
+            '</div>';
+        }).join('');
+      })
+      .catch(function () {
+        liste.innerHTML = '<p style="color:#ff6b6b; text-align:center;">Siparişler yüklenirken bir hata oluştu.</p>';
+      });
+  }
+
+  /* =========================================================
+     YÖNETİCİ PANELİ
+     ========================================================= */
+  function adminAnahtarAl() {
+    return sessionStorage.getItem('sarigul_admin_anahtar') || null;
+  }
+
+  window.adminGirisTikla = function () {
+    var anahtar = document.getElementById('admin-anahtar-input').value.trim();
+    var hataEl = document.getElementById('admin-giris-hata');
+    if (!anahtar) return;
+
+    fetch(VEZNEDAR_API_URL + '/api/admin/siparisler', {
+      headers: { 'x-admin-anahtar': anahtar }
+    })
+      .then(function (r) {
+        if (!r.ok) throw new Error('yetkisiz');
+        return r.json();
+      })
+      .then(function (data) {
+        sessionStorage.setItem('sarigul_admin_anahtar', anahtar);
+        document.getElementById('admin-giris-alani').style.display = 'none';
+        document.getElementById('admin-panel-alani').style.display = 'block';
+        adminSiparisleriCiz(data.siparisler);
+      })
+      .catch(function () {
+        hataEl.textContent = 'Anahtar hatalı veya sunucuya ulaşılamadı.';
+        hataEl.style.display = 'block';
+      });
+  };
+
+  window.adminSiparisleriYukle = function () {
+    var anahtar = adminAnahtarAl();
+    if (!anahtar) return;
+    fetch(VEZNEDAR_API_URL + '/api/admin/siparisler', {
+      headers: { 'x-admin-anahtar': anahtar }
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) { adminSiparisleriCiz(data.siparisler); });
+  };
+
+  function adminSiparisleriCiz(siparisler) {
+    var liste = document.getElementById('admin-siparis-listesi');
+    if (!liste) return;
+    if (!siparisler || siparisler.length === 0) {
+      liste.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Henüz sipariş yok.</p>';
+      return;
+    }
+
+    var durumlar = ['Ödeme Bekleniyor', 'Ödeme Alındı', 'Hazırlanıyor', 'Kargoya Verildi', 'Teslim Edildi', 'İptal Edildi'];
+
+    liste.innerHTML = siparisler.map(function (s) {
+      var urunler = s.urunler || [];
+      var urunSatirlari = urunler.map(function (u) {
+        return '<div style="color:var(--text-muted); font-size:0.85rem;">' + u.isim + ' x' + u.adet + '</div>';
+      }).join('');
+      var tarih = new Date(s.olusturulma_tarihi).toLocaleString('tr-TR');
+      var secenekler = durumlar.map(function (d) {
+        return '<option value="' + d + '"' + (d === s.durum ? ' selected' : '') + '>' + d + '</option>';
+      }).join('');
+
+      return '' +
+        '<div style="background:var(--dark2,#161b22); border-radius:8px; padding:18px 20px; border:1px solid rgba(255,255,255,0.06); margin-bottom:14px;">' +
+          '<div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;">' +
+            '<strong style="color:#fff;">' + s.siparis_no + '</strong>' +
+            '<span style="color:var(--text-muted); font-size:0.8rem;">' + tarih + '</span>' +
+          '</div>' +
+          '<div style="color:#fff; font-size:0.9rem; margin-bottom:4px;">' + s.ad_soyad + ' — ' + s.telefon + '</div>' +
+          '<div style="color:var(--text-muted); font-size:0.85rem; margin-bottom:8px;">' + s.adres + '</div>' +
+          urunSatirlari +
+          '<div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06); flex-wrap:wrap; gap:10px;">' +
+            '<strong style="color:#28a745;">' + Number(s.toplam_tutar).toLocaleString('tr-TR') + ' TL</strong>' +
+            '<select onchange="adminDurumGuncelle(\'' + s.siparis_no + '\', this.value)" style="background:rgba(255,255,255,0.05); color:#fff; border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:0.4rem 0.6rem;">' +
+              secenekler +
+            '</select>' +
+          '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  window.adminDurumGuncelle = function (siparisNo, yeniDurum) {
+    var anahtar = adminAnahtarAl();
+    if (!anahtar) return;
+    fetch(VEZNEDAR_API_URL + '/api/admin/siparisler/' + encodeURIComponent(siparisNo), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'x-admin-anahtar': anahtar },
+      body: JSON.stringify({ durum: yeniDurum })
+    }).catch(function () {
+      alert('Durum güncellenirken bir hata oluştu.');
+    });
+  };
+
+  /* ---- Sayfa yüklenince hesap durumunu kontrol et --------------- */
+  document.addEventListener('DOMContentLoaded', function () {
+    hesapDurumunuGoster();
+    // Yönetici sayfasında oturum zaten açıksa doğrudan paneli göster
+    var adminAlan = document.getElementById('admin-panel-alani');
+    if (adminAlan) {
+      var kayitliAnahtar = adminAnahtarAl();
+      if (kayitliAnahtar) {
+        fetch(VEZNEDAR_API_URL + '/api/admin/siparisler', { headers: { 'x-admin-anahtar': kayitliAnahtar } })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            document.getElementById('admin-giris-alani').style.display = 'none';
+            adminAlan.style.display = 'block';
+            adminSiparisleriCiz(data.siparisler);
+          })
+          .catch(function () {});
+      }
+    }
+  });
 
 })();
