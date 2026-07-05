@@ -951,7 +951,7 @@
       }).join('');
       var tarih = new Date(s.olusturulma_tarihi).toLocaleString('tr-TR');
       var secenekler = durumlar.map(function (d) {
-        return '<option value="' + d + '"' + (d === s.durum ? ' selected' : '') + '>' + d + '</option>';
+        return '<option value="' + d + '" style="background:#161b22; color:#fff;"' + (d === s.durum ? ' selected' : '') + '>' + d + '</option>';
       }).join('');
 
       return '' +
@@ -965,7 +965,7 @@
           urunSatirlari +
           '<div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06); flex-wrap:wrap; gap:10px;">' +
             '<strong style="color:#28a745;">' + Number(s.toplam_tutar).toLocaleString('tr-TR') + ' TL</strong>' +
-            '<select onchange="adminDurumGuncelle(\'' + s.siparis_no + '\', this.value)" style="background:rgba(255,255,255,0.05); color:#fff; border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:0.4rem 0.6rem;">' +
+            '<select onchange="adminDurumGuncelle(\'' + s.siparis_no + '\', this.value)" style="background:#161b22; color:#fff; border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:0.4rem 0.6rem;">' +
               secenekler +
             '</select>' +
           '</div>' +
