@@ -41,9 +41,9 @@
     </div>
 
     {{ if .Params.price }}
-    <button onclick="sepeteEkle('{{ .Title | safeJS }}', '{{ .Params.price }}', '{{ .Params.code }}', '{{ $imgUrl }}'); event.preventDefault();" style="width: 100%; background-color: #28a745; color: white; border: none; padding: 10px; border-radius: var(--radius, 4px); font-weight: bold; cursor: pointer; transition: background 0.3s; margin-top: 5px;">
+    <a href="{{ .RelPermalink }}" style="width: 100%; background-color: #28a745; color: white; border: none; padding: 10px; border-radius: var(--radius, 4px); font-weight: bold; cursor: pointer; transition: background 0.3s; margin-top: 5px; text-align: center; text-decoration: none; display: block;">
       🛒 Sepete Ekle
-    </button>
+    </a>
     {{ end }}
     
   </div>
