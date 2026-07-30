@@ -352,7 +352,8 @@
     sepet.push({ 
       isim: isim, 
       fiyat: parseFloat(fiyat), 
-      kod: kod, 
+      kod: kod,
+      slug: "{{ .Params.slug }}",
       resim: resim, 
       adet: adet,
       varyantlar: varyantlar
@@ -374,3 +375,4 @@
 </script>
 
 {{ end }}
+  
