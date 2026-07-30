@@ -272,6 +272,12 @@
       variants['Paket'] = paket_match[1].split(',').map(s => s.trim());
     }
 
+    // Tip: Type-C, Lightning, Mikro USB şeklinde arama
+    const tip_match = contentText.match(/Tip:\s*(.+?)(?:\n|$)/i);
+    if (tip_match) {
+      variants['Tip'] = tip_match[1].split(',').map(s => s.trim());
+    }
+
     // HTML oluştur
     if (Object.keys(variants).length > 0) {
       Object.entries(variants).forEach(([label, options]) => {
