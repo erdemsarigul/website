@@ -253,6 +253,12 @@
   // GLOBAL DEĞIŞKENLER
   window.pageSlug = "{{ .Params.slug }}";
   
+  // PAKET FİYAT MAPPING
+  window.paketFiyatlar = {
+    'Kutulu': 1400,
+    'Bezli': 1500
+  };
+  
   // MARKDOWN'DAN VARYANTLARI PARSE ET
   function parseVariantsFromContent() {
     const container = document.getElementById('variantsContainer');
@@ -300,6 +306,37 @@
   }
 
   document.addEventListener('DOMContentLoaded', parseVariantsFromContent);
+
+  // PAKET SEÇİMİNDE FİYAT GÜNCELLE
+  function updateFiyatByPaket() {
+    const paketSelect = document.getElementById('variant-paket');
+    const fiyatElements = document.querySelectorAll('[style*="font-size: 2.5rem"]');
+    
+    if (paketSelect && fiyatElements.length > 0) {
+      const paket = paketSelect.value;
+      let yeniFiyat = 1400; // Kutulu default
+      
+      if (paket === 'Bezli') {
+        yeniFiyat = 1500; // Bezli fiyatı
+      } else if (paket === 'Kutulu') {
+        yeniFiyat = 1400; // Kutulu fiyatı
+      }
+      
+      fiyatElements.forEach(el => {
+        el.textContent = yeniFiyat + ' TL';
+      });
+    }
+  }
+
+  // Paket dropdown'unda değişim dinle
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      const paketSelect = document.getElementById('variant-paket');
+      if (paketSelect) {
+        paketSelect.addEventListener('change', updateFiyatByPaket);
+      }
+    }, 200);
+  });
 
   function adetArtir() {
     let input = document.getElementById('adet-input');
