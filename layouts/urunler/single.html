@@ -250,6 +250,9 @@
 </div>
 
 <script>
+  // GLOBAL DEĞIŞKENLER
+  window.pageSlug = "{{ .Params.slug }}";
+  
   // MARKDOWN'DAN VARYANTLARI PARSE ET
   function parseVariantsFromContent() {
     const container = document.getElementById('variantsContainer');
@@ -353,7 +356,7 @@
       isim: isim, 
       fiyat: parseFloat(fiyat), 
       kod: kod,
-      slug: "{{ .Params.slug }}",
+      slug: window.pageSlug,
       resim: resim, 
       adet: adet,
       varyantlar: varyantlar
@@ -375,4 +378,3 @@
 </script>
 
 {{ end }}
-  

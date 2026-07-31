@@ -11,9 +11,9 @@ weight: 100
 code: "SRJ-BIC-001"
 price: 1400
 stock: true
-image: "https://i.ibb.co/FbhHvzRM/1784756960047.png"
+image: "https://i.ibb.co/WJJw1S2/mizan-b-ak-set.png"
 images:
-  - "https://i.ibb.co/FbhHvzRM/1784756960047.png"
+  - "https://i.ibb.co/WJJw1S2/mizan-b-ak-set.png"
   - "https://i.ibb.co/G3FZ64vJ/mizan-b-ak-set-mavi.png"
   - "https://i.ibb.co/rKsVMczp/bezli-b-ak-set-k-rm-z.png"
   - "https://i.ibb.co/tMKtws7R/bezli-b-ak-set-mavi.jpg"
