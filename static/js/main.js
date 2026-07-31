@@ -309,13 +309,9 @@
 
       html += '' +
         '<div style="display:flex;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid rgba(255,255,255,0.06);align-items:center;">' +
-          '<a href="/urunler/' + urun.kod.toLowerCase() + '/" style="text-decoration:none; cursor:pointer; flex-shrink:0;">' +
-            '<img src="' + urun.resim + '" alt="' + urun.isim + '" style="width:56px;height:56px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,0.04);">' +
-          '</a>' +
+          '<img src="' + urun.resim + '" alt="' + urun.isim + '" style="width:56px;height:56px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,0.04);flex-shrink:0;">' +
           '<div style="flex:1;min-width:0;">' +
-            '<a href="/urunler/' + urun.kod.toLowerCase() + '/" style="text-decoration:none; color:inherit; cursor:pointer;">' +
-              '<div style="color:var(--white);font-size:0.9rem;font-weight:600;margin-bottom:4px;">' + urun.isim + '</div>' +
-            '</a>' +
+            '<div style="color:var(--white);font-size:0.9rem;font-weight:600;margin-bottom:4px;">' + urun.isim + '</div>' +
             '<div style="color:var(--primary);font-weight:bold;font-size:0.9rem;">' + urun.fiyat + ' TL</div>' +
             '<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">' +
               '<button onclick="sepetAdetDegistir(\'' + urun.isim.replace(/'/g, "\\'") + '\', -1)" style="width:24px;height:24px;border-radius:4px;border:none;background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;">−</button>' +

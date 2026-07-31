@@ -4,6 +4,7 @@ date: 2026-01-15
 draft: false
 category: "sarj"
 categoryLabel: "Kablo"
+slug: "noise-cable-typec"
 image: "https://i.ibb.co/fdK2smrq/TYPEC.png"
 images:
   - "https://i.ibb.co/fdK2smrq/TYPEC.png"

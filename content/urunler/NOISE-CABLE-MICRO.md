@@ -4,6 +4,7 @@ date: 2026-01-15
 draft: false
 category: "sarj"
 categoryLabel: "Kablo"
+slug: "noise-cable-micro"
 image: "https://i.ibb.co/9mkHFRCc/MCRO.png"
 images:
   - "https://i.ibb.co/9mkHFRCc/MCRO.png"

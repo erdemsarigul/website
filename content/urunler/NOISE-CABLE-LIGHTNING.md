@@ -4,6 +4,7 @@ date: 2026-01-15
 draft: false
 category: "sarj"
 categoryLabel: "Kablo"
+slug: "noise-cable-lightning"
 image: "https://i.ibb.co/QvXzgK4z/LGHTNNG.png"
 images:
   - "https://i.ibb.co/QvXzgK4z/LGHTNNG.png"
