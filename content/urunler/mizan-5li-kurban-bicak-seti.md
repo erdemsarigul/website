@@ -17,42 +17,71 @@ images:
   - "https://i.ibb.co/G3FZ64vJ/mizan-b-ak-set-mavi.png"
   - "https://i.ibb.co/rKsVMczp/bezli-b-ak-set-k-rm-z.png"
   - "https://i.ibb.co/tMKtws7R/bezli-b-ak-set-mavi.jpg"
+variants:
+  - name: "Kutulu Kırmızı"
+    paket: "Kutulu"
+    renk: "Kırmızı"
+    price: 1400
+    code: "SRJ-BIC-001-KK"
+    image: "https://i.ibb.co/WJJw1S2/mizan-b-ak-set.png"
+    slug: "mizan-kutulu-kirmizi"
+  
+  - name: "Kutulu Mavi"
+    paket: "Kutulu"
+    renk: "Mavi"
+    price: 1400
+    code: "SRJ-BIC-001-KM"
+    image: "https://i.ibb.co/G3FZ64vJ/mizan-b-ak-set-mavi.png"
+    slug: "mizan-kutulu-mavi"
+  
+  - name: "Bezli Kırmızı"
+    paket: "Bezli"
+    renk: "Kırmızı"
+    price: 1500
+    code: "SRJ-BIC-002-BK"
+    image: "https://i.ibb.co/rKsVMczp/bezli-b-ak-set-k-rm-z.png"
+    slug: "mizan-bezli-kirmizi"
+  
+  - name: "Bezli Mavi"
+    paket: "Bezli"
+    renk: "Mavi"
+    price: 1500
+    code: "SRJ-BIC-002-BM"
+    image: "https://i.ibb.co/tMKtws7R/bezli-b-ak-set-mavi.jpg"
+    slug: "mizan-bezli-mavi"
 ---
 
-**Paket:** Kutulu, Bezli
-**Renk:** Kırmızı, Mavi
-
-🔪 Mizan 5'li Kurban Bıçak Seti – Profesyonel Kesim, Şık Kutulu Sunum
+🔪 **Mizan 5'li Kurban Bıçak Seti – Profesyonel Kesim, Şık Kutolu Sunum**
 
 Kurban Bayramı ve tüm et işleme süreçleri için özel olarak hazırlanan Mizan 5'li Kurban Bıçak Seti, güçlü yapısı, dengeli kesimi ve ergonomik tasarımıyla hem profesyonellerin hem de ev kullanıcılarının beklentilerini fazlasıyla karşılar. Şık kutusu sayesinde düzenli, güvenli ve prestijli bir kullanım sunar.
 
-📦 Set İçeriği
-- 5 adet Mizan Profesyonel Kurban Bıçağı
-- Özel tasarım sert ve şık kutu
-- Set içerisindeki tüm bıçaklar aynı kalite ve keskinlik standardına sahiptir
+📦 **Set İçeriği**
+* 5 adet Mizan Profesyonel Kurban Bıçağı
+* Özel tasarım sert ve şık kutu
+* Set içerisindeki tüm bıçaklar aynı kalite ve keskinlik standardına sahiptir
 
 Bu sayede birden fazla kişinin aynı anda rahatlıkla kullanabileceği ideal bir settir.
 
-🗡 Yüksek Keskinlik & Dayanıklılık
-- Güçlü ve sağlam çelik yapı
-- Uzun süre keskinliğini koruyan bıçak yüzeyi
-- Et, yağ ve deri ayırmada yüksek performans
-- Dengeli ağırlık dağılımı ile kontrollü kesim
-- Kesim sırasında daha az güçle, daha temiz kesimler
+🗡 **Yüksek Keskinlik & Dayanıklılık**
+* Güçlü ve sağlam çelik yapı
+* Uzun süre keskinliğini koruyan bıçak yüzeyi
+* Et, yağ ve deri ayırmada yüksek performans
+* Dengeli ağırlık dağılımı ile kontrollü kesim
+* Kesim sırasında daha az güçle, daha temiz kesimler
 
-✋ Ergonomik ve Kaymaz Sap
-- Siyah–kırmızı modern tasarım
-- Ele tam oturan ergonomik form
-- Islak elde dahi kayma yapmayan yapı
-- Uzun süreli kullanımlarda el yorgunluğunu azaltır
+✋ **Ergonomik ve Kaymaz Sap**
+* Siyah–kırmızı modern tasarım
+* Ele tam oturan ergonomik form
+* Islak elde dahi kayma yapmayan yapı
+* Uzun süreli kullanımlarda el yorgunluğunu azaltır
 
-🎯 Kullanım Alanları
-- Kurban Bayramı kesimleri
-- Kasap ve profesyonel et işleme
-- Evde et parçalama ve doğrama
-- Toplu kesim organizasyonları
+🎯 **Kullanım Alanları**
+* Kurban Bayramı kesimleri
+* Kasap ve profesyonel et işleme
+* Evde et parçalama ve doğrama
+* Toplu kesim organizasyonları
 
-⭐ Neden Mizan 5'li Kurban Seti?
+⭐ **Neden Mizan 5'li Kurban Seti?**
 ✔ 5 adet aynı kalitede profesyonel bıçak
 ✔ Şık ve düzenli saklama kutusu
 ✔ Dayanıklı, keskin ve uzun ömürlü
