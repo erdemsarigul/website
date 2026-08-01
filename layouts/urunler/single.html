@@ -1,12 +1,15 @@
 {{ define "main" }}
 
-<!-- GLOBAL DEĞIŞKENLER -->
+<!-- GLOBAL DEĞİŞKENLER -->
 {{ $imgUrl := "" }}
-{{ if hasPrefix .Params.image "http" }}
-  {{ $imgUrl = .Params.image }}
-{{ else }}
-  {{ $imgUrl = printf "images/%s" .Params.image | absURL }}
+{{ with .Params.image }}
+  {{ if hasPrefix . "http" }}
+    {{ $imgUrl = . }}
+  {{ else }}
+    {{ $imgUrl = printf "images/%s" . | absURL }}
+  {{ end }}
 {{ end }}
+
 {{ $stockVar := true }}
 {{ if eq .Params.stock false }}{{ $stockVar = false }}{{ end }}
 
@@ -41,9 +44,9 @@
   "@type": "Product",
   "name": {{ .Title | jsonify }},
   "image": [{{ $imgUrl | jsonify }}],
-  "description": {{ .Params.description | jsonify }},
-  {{ if .Params.code }}"sku": {{ .Params.code | jsonify }},{{ end }}
-  "brand": { "@type": "Brand", "name": "Sarıgül Ticaret" }
+  "description": {{ .Params.description | default "" | jsonify }}
+  {{ with .Params.code }},"sku": {{ . | jsonify }}{{ end }}
+  ,"brand": { "@type": "Brand", "name": "Sarıgül Ticaret" }
   {{ if .Params.price }}
   ,"offers": {
     "@type": "Offer",
@@ -72,14 +75,13 @@
           <div class="slider-main" style="position: relative; overflow: hidden; border-radius: 6px;">
             {{ range $i, $img := $images }}
               {{ $url := "" }}
-              {{ if hasPrefix $img "http" }}
+              {{ if and $img (hasPrefix $img "http") }}
                 {{ $url = $img }}
-              {{ else }}
+              {{ else if $img }}
                 {{ $url = printf "images/%s" $img | relURL }}
               {{ end }}
-              <div class="slide{{ if eq $i 0 }} active{{ end }}" data-index="{{ $i }}"
-                   onclick="bigZoomAc('{{ $url }}')">
-                <img src="{{ $url }}" alt="{{ $.Title }} - görsel {{ add $i 1 }}" loading="{{ if eq $i 0 }}eager{{ else }}lazy{{ end }}">
+              <div class="slide{{ if eq $i 0 }} active{{ end }}" data-index="{{ $i }}" onclick="bigZoomAc('{{ $url }}')">
+                <img src="{{ $url }}" alt="Görsel {{ add $i 1 }}" loading="{{ if eq $i 0 }}eager{{ else }}lazy{{ end }}">
               </div>
             {{ end }}
 
@@ -94,9 +96,9 @@
           <div class="slider-thumbs" style="display:flex; gap:8px; margin-top:12px; justify-content:center; flex-wrap:wrap;">
             {{ range $i, $img := $images }}
               {{ $url := "" }}
-              {{ if hasPrefix $img "http" }}
+              {{ if and $img (hasPrefix $img "http") }}
                 {{ $url = $img }}
-              {{ else }}
+              {{ else if $img }}
                 {{ $url = printf "images/%s" $img | relURL }}
               {{ end }}
               <img class="slider-thumb{{ if eq $i 0 }} active{{ end }}" data-index="{{ $i }}" src="{{ $url }}" alt="Küçük görsel {{ add $i 1 }}">
@@ -179,9 +181,16 @@
 
         <div id="priceBox" style="margin: 20px 0; background: var(--dark2, #161b22); padding: 20px; border-radius: var(--radius, 8px); border: 1px solid rgba(255,255,255,0.06);">
           {{ if .Params.price }}
-            <div style="font-size: 2.5rem; font-weight: bold; color: #28a745; margin-bottom: 15px;">{{ .Params.price }} TL</div>
+            <div style="font-size: 2.5rem; font-weight: bold; color: #28a745; margin-bottom: 15px;">
+              <span id="gosterilenFiyat">{{ .Params.price }}</span> TL
+            </div>
+            
             {{ if $stockVar }}
-            <button onclick="sepeteEkleVaryant(this, '{{ .Title | safeJS }}', '{{ .Params.price }}', '{{ .Params.code }}', '{{ $imgUrl }}')" class="btn" style="width: 100%; background-color: #28a745; color: white; padding: 15px; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; border: none; transition: transform 0.15s;">
+            <button id="mainSepeteEkleBtn" 
+                    data-isim="{{ .Title | htmlEscape }}" 
+                    data-kod="{{ .Params.code | default "" | htmlEscape }}" 
+                    data-resim="{{ $imgUrl | htmlEscape }}"
+                    class="btn" style="width: 100%; background-color: #28a745; color: white; padding: 15px; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; border: none; transition: transform 0.15s;">
               🛒 Sepete Ekle
             </button>
             {{ else }}
@@ -203,7 +212,6 @@
     </div>
 
     <!-- BENZER ÜRÜNLER -->
-    {{ $current := . }}
     {{ $related := where (where .Site.RegularPages "Type" "urunler") "Params.category" .Params.category }}
     {{ $related = where $related "RelPermalink" "ne" .RelPermalink }}
     {{ $related = $related | first 4 }}
@@ -226,8 +234,13 @@
 <!-- MOBİL STICKY SEPETE EKLE BARI -->
 {{ if and .Params.price $stockVar }}
 <div id="stickyBuyBar" style="position:fixed; bottom:0; left:0; right:0; background:var(--dark2,#161b22); border-top:1px solid rgba(255,255,255,0.1); padding:12px 16px; display:none; align-items:center; justify-content:space-between; gap:12px; z-index:999; box-shadow:0 -4px 12px rgba(0,0,0,0.3);">
-  <span style="color:#28a745; font-weight:bold; font-size:1.2rem; white-space:nowrap;">{{ .Params.price }} TL</span>
-  <button onclick="sepeteEkleVaryant(this, '{{ .Title | safeJS }}', '{{ .Params.price }}', '{{ .Params.code }}', '{{ $imgUrl }}')" style="flex:1; background-color:#28a745; color:white; border:none; padding:12px; border-radius:6px; font-weight:bold; cursor:pointer;">
+  <span style="color:#28a745; font-weight:bold; font-size:1.2rem; white-space:nowrap;"><span id="stickyFiyat">{{ .Params.price }}</span> TL</span>
+  
+  <button id="stickySepeteEkleBtn" 
+          data-isim="{{ .Title | htmlEscape }}" 
+          data-kod="{{ .Params.code | default "" | htmlEscape }}" 
+          data-resim="{{ $imgUrl | htmlEscape }}"
+          style="flex:1; background-color:#28a745; color:white; border:none; padding:12px; border-radius:6px; font-weight:bold; cursor:pointer;">
     🛒 Sepete Ekle
   </button>
 </div>
@@ -250,15 +263,13 @@
 </div>
 
 <script>
-  // GLOBAL DEĞIŞKENLER
-  window.pageSlug = "{{ .Params.slug }}";
+ // GÜVENLİ GLOBAL DEĞİŞKEN TANIMLAMALARI (Hugo + VS Code Uyumu)
+  window.pageSlug = "{{ .Params.slug | default .Slug }}";
+  window.baseFiyat = parseFloat("{{ .Params.price | default 0 }}") || 0;
   
-  // PAKET FİYAT MAPPING
-  window.paketFiyatlar = {
-    'Kutulu': 1400,
-    'Bezli': 1500
-  };
-  
+  // VS Code'un hata vermemesi için veriyi önce metin olarak alıp sonra JSON'a çeviriyoruz
+  const paketFiyatlarRaw = '{{ .Params.paket_fiyatlari | default dict | jsonify }}';
+  window.paketFiyatlar = (paketFiyatlarRaw !== 'null' && paketFiyatlarRaw !== '{}') ? JSON.parse(paketFiyatlarRaw) : null;
   // MARKDOWN'DAN VARYANTLARI PARSE ET
   function parseVariantsFromContent() {
     const container = document.getElementById('variantsContainer');
@@ -266,102 +277,83 @@
 
     const contentDiv = document.querySelector('.urun-aciklama-scroll');
     const contentText = contentDiv ? contentDiv.innerText : '';
-
     const variants = {};
 
-    // Renk: Kırmızı, Mavi şeklinde arama (innerText'te ** yok, sadece "Renk:" vardır)
-    const renk_match = contentText.match(/Renk:\s*(.+?)(?:\n|$)/i);
-    if (renk_match) {
-      variants['Renk'] = renk_match[1].split(',').map(s => s.trim());
-    }
+    const renk_match = contentText.match(/Renk:\s*([^\n\r]+)/i);
+    if (renk_match && renk_match[1]) variants['Renk'] = renk_match[1].split(',').map(s => s.trim());
 
-    // Paket: Kutulu, Kutusuz şeklinde arama
-    const paket_match = contentText.match(/Paket:\s*(.+?)(?:\n|$)/i);
-    if (paket_match) {
-      variants['Paket'] = paket_match[1].split(',').map(s => s.trim());
-    }
+    const paket_match = contentText.match(/Paket:\s*([^\n\r]+)/i);
+    if (paket_match && paket_match[1]) variants['Paket'] = paket_match[1].split(',').map(s => s.trim());
 
-    // Tip: Type-C, Lightning, Mikro USB şeklinde arama
-    const tip_match = contentText.match(/Tip:\s*(.+?)(?:\n|$)/i);
-    if (tip_match) {
-      variants['Tip'] = tip_match[1].split(',').map(s => s.trim());
-    }
+    const tip_match = contentText.match(/Tip:\s*([^\n\r]+)/i);
+    if (tip_match && tip_match[1]) variants['Tip'] = tip_match[1].split(',').map(s => s.trim());
 
-    // HTML oluştur
     if (Object.keys(variants).length > 0) {
+      let html = '';
       Object.entries(variants).forEach(([label, options]) => {
         const selectId = 'variant-' + label.toLowerCase();
-        const selectHTML = `
+        html += `
           <div style="margin-bottom: 18px;">
             <label style="display: block; color: #fff; font-weight: 600; margin-bottom: 8px;">${label}</label>
             <select id="${selectId}" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: var(--dark1, #0d1117); color: #fff; font-size: 1rem; cursor: pointer;">
-              <option value="">-- Seç --</option>
               ${options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
             </select>
           </div>
         `;
-        container.innerHTML += selectHTML;
       });
+      container.innerHTML = html;
     }
+    updateFiyatByPaket();
   }
 
-  document.addEventListener('DOMContentLoaded', parseVariantsFromContent);
-
-  // PAKET SEÇİMİNDE FİYAT GÜNCELLE
-  function updateFiyatByPaket() {
+  // DİNAMİK FİYAT HESAPLAYICI
+  function getGuncelFiyat() {
     const paketSelect = document.getElementById('variant-paket');
-    const fiyatElements = document.querySelectorAll('[style*="font-size: 2.5rem"]');
-    
-    if (paketSelect && fiyatElements.length > 0) {
-      const paket = paketSelect.value;
-      let yeniFiyat = 1400; // Kutulu default
-      
-      if (paket === 'Bezli') {
-        yeniFiyat = 1500; // Bezli fiyatı
-      } else if (paket === 'Kutulu') {
-        yeniFiyat = 1400; // Kutulu fiyatı
-      }
-      
-      fiyatElements.forEach(el => {
-        el.textContent = yeniFiyat + ' TL';
-      });
+    if (paketSelect && window.paketFiyatlar && window.paketFiyatlar[paketSelect.value]) {
+      return parseFloat(window.paketFiyatlar[paketSelect.value]);
     }
+    return window.baseFiyat;
   }
 
-  // Paket dropdown'unda değişim dinle
-  document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(function() {
-      const paketSelect = document.getElementById('variant-paket');
-      if (paketSelect) {
-        paketSelect.addEventListener('change', updateFiyatByPaket);
-      }
-    }, 200);
-  });
+  function updateFiyatByPaket() {
+    const yeniFiyat = getGuncelFiyat();
+    const gosterilenFiyatEl = document.getElementById('gosterilenFiyat');
+    const stickyFiyatEl = document.getElementById('stickyFiyat');
+    
+    if(gosterilenFiyatEl) gosterilenFiyatEl.textContent = yeniFiyat;
+    if(stickyFiyatEl) stickyFiyatEl.textContent = yeniFiyat;
+  }
 
   function adetArtir() {
     let input = document.getElementById('adet-input');
-    input.value = parseInt(input.value) + 1;
+    if(input) input.value = parseInt(input.value || 1) + 1;
   }
 
   function adetAzalt() {
     let input = document.getElementById('adet-input');
-    if (parseInt(input.value) > 1) {
+    if(input && parseInt(input.value) > 1) {
       input.value = parseInt(input.value) - 1;
     }
   }
 
   function bigZoomAc(url) {
-    document.getElementById('bigZoomImg').src = url;
-    document.getElementById('bigZoomOverlay').style.display = 'flex';
+    const img = document.getElementById('bigZoomImg');
+    const overlay = document.getElementById('bigZoomOverlay');
+    if(img && overlay) {
+      img.src = url;
+      overlay.style.display = 'flex';
+    }
   }
 
   function bigZoomKapat() {
-    document.getElementById('bigZoomOverlay').style.display = 'none';
+    const overlay = document.getElementById('bigZoomOverlay');
+    if(overlay) overlay.style.display = 'none';
   }
 
   function showCartToast(msg) {
     var toast = document.getElementById('cartToast');
     var text = document.getElementById('cartToastText');
+    if(!toast || !text) return;
     text.textContent = msg;
     toast.style.opacity = '1';
     toast.style.transform = 'translateX(0)';
@@ -372,46 +364,72 @@
     }, 2200);
   }
 
-  function sepeteEkleVaryant(btn, isim, fiyat, kod, resim) {
-    if (btn) {
-      btn.style.transform = 'scale(0.96)';
-      setTimeout(function () { btn.style.transform = 'scale(1)'; }, 150);
+  // DOM YÜKLENDİKTEN SONRA ÇALIŞACAK KISIM
+  document.addEventListener('DOMContentLoaded', function() {
+    parseVariantsFromContent();
+
+    const paketSelect = document.getElementById('variant-paket');
+    if (paketSelect) {
+      paketSelect.addEventListener('change', updateFiyatByPaket);
     }
 
-    let adet = parseInt(document.getElementById('adet-input').value) || 1;
-    let varyantlar = {};
+    const mainBtn = document.getElementById('mainSepeteEkleBtn');
+    const stickyBtn = document.getElementById('stickySepeteEkleBtn');
 
-    document.querySelectorAll('[id^="variant-"]').forEach(el => {
-      if (el.value) {
-        let label = el.id.replace('variant-', '').charAt(0).toUpperCase() + el.id.replace('variant-', '').slice(1);
-        varyantlar[label] = el.value;
+    function sepeteEkleTetikle(e) {
+      const btn = e.currentTarget;
+      btn.style.transform = 'scale(0.96)';
+      setTimeout(function () { btn.style.transform = 'scale(1)'; }, 150);
+
+      const isim = btn.getAttribute('data-isim');
+      const kod = btn.getAttribute('data-kod');
+      const resim = btn.getAttribute('data-resim');
+      
+      const adetInput = document.getElementById('adet-input');
+      let eklenecekAdet = adetInput ? (parseInt(adetInput.value) || 1) : 1;
+      let varyantlar = {};
+      let varyantIsimEki = "";
+
+      document.querySelectorAll('[id^="variant-"]').forEach(el => {
+        if (el.value) {
+          let label = el.id.replace('variant-', '');
+          label = label.charAt(0).toUpperCase() + label.slice(1);
+          varyantlar[label] = el.value;
+          varyantIsimEki += ` (${el.value})`;
+        }
+      });
+
+      let gercekFiyat = getGuncelFiyat();
+      let tamIsim = isim + varyantIsimEki;
+
+      let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
+      let mevcutUrunIndex = sepet.findIndex(u => u.isim === tamIsim);
+
+      if (mevcutUrunIndex > -1) {
+        sepet[mevcutUrunIndex].adet += eklenecekAdet;
+      } else {
+        sepet.push({ 
+          isim: tamIsim, 
+          fiyat: parseFloat(gercekFiyat), 
+          kod: kod,
+          slug: window.pageSlug,
+          resim: resim, 
+          adet: eklenecekAdet,
+          varyantlar: varyantlar
+        });
       }
-    });
 
-    let sepet = JSON.parse(localStorage.getItem('sarigul_sepet')) || [];
-    sepet.push({ 
-      isim: isim, 
-      fiyat: parseFloat(fiyat), 
-      kod: kod,
-      slug: window.pageSlug,
-      resim: resim, 
-      adet: adet,
-      varyantlar: varyantlar
-    });
-    localStorage.setItem('sarigul_sepet', JSON.stringify(sepet));
-    
-    if (window.sepetGuncelle) window.sepetGuncelle();
-    showCartToast(adet + 'x ' + isim + ' sepete eklendi!');
-  }
+      localStorage.setItem('sarigul_sepet', JSON.stringify(sepet));
+      
+      if (typeof window.sepetGuncelle === 'function') {
+        window.sepetGuncelle();
+      }
+      showCartToast(eklenecekAdet + 'x ' + tamIsim + ' sepete eklendi!');
+    }
 
-  // Geriye uyumluluk
-  function sepeteEklePulse(btn, isim, fiyat, kod, resim) {
-    sepeteEkleVaryant(btn, isim, fiyat, kod, resim);
-  }
-
-  function sepeteEkleSessiz(isim, fiyat, kod, resim) {
-    sepeteEkleVaryant(null, isim, fiyat, kod, resim);
-  }
+    if (mainBtn) mainBtn.addEventListener('click', sepeteEkleTetikle);
+    if (stickyBtn) stickyBtn.addEventListener('click', sepeteEkleTetikle);
+  });
 </script>
 
 {{ end }}
