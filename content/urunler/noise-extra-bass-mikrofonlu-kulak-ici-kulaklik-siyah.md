@@ -1,20 +1,20 @@
 ---
-title: "Noise Extra Bass Mikrofonlu Kulak İçi Kulaklık"
-date: 2026-08-04T03:00:10+03:00
+title: "Noise Extra Bass Mikrofonlu Kulak İçi Kulaklık (Siyah)"
+date: 2026-08-04T03:24:00+03:00
 draft: false
-category: "kulaklik"
+category: "ses-sistemleri"
 categoryLabel: "Kulaklık"
-slug: "noise-extra-bass-mikrofonlu-kulak-ici-kulaklik"
-description: "Noise Extra Bass Mikrofonlu Kulak İçi Kulaklık, derin bas performansı, dahili mikrofonu ve ergonomik tasarımıyla yüksek kaliteli müzik ve kesintisiz iletişim deneyimi sunar."
+slug: "noise-extra-bass-mikrofonlu-kulak-ici-kulaklik-siyah"
+description: "Noise Extra Bass Mikrofonlu Kulak İçi Kulaklık (Siyah), derin bas performansı, dahili mikrofonu ve ergonomik tasarımıyla yüksek kaliteli müzik ve kesintisiz iletişim deneyimi sunar."
 featured: false
 weight: 100
-code: "KLK-NOS-EXB"
+code: "KLK-NOS-EXB-SYH"
 price: 125
 stock: true
-image: "https://i.ibb.co/6RsTb2gs/file-0000000012a481f4a448f4ccf4681651.png"
+image: "https://i.ibb.co/0yx9js7B/file-000000009b8c81f4b0b9999f5050c0be.png"
 images:
-  - "https://i.ibb.co/6RsTb2gs/file-0000000012a481f4a448f4ccf4681651.png"
-  - "https://i.ibb.co/G3xxqw9m/file-000000008528820ab41c415595261940.png"
+  - "https://i.ibb.co/0yx9js7B/file-000000009b8c81f4b0b9999f5050c0be.png"
+  - "https://i.ibb.co/bjVh0tnt/file-0000000027f881f48c6620153f804742.png"
 ---
 
 🎧 **Noise Extra Bass Mikrofonlu Kulak İçi Kulaklık ile Ritmi Hissedin!**
@@ -29,6 +29,6 @@ Müziğin sadece duyulan değil, hissedilen bir deneyim olduğuna inananlar içi
 * **✨ Ergonomik ve Şık Tasarım:** Uzun süreli kullanımlarda bile kulağı yormayan, dışarıdan gelen gürültüyü minimuma indiren konforlu yapı.
 
 **Neden Noise Extra Bass?**
-Sadece bir kulaklık değil, gün boyu yanınızdan ayırmak istemeyeceğiniz bir yol arkadaşı. Sağlam kablo yapısı ve şık beyaz tasarımıyla tarzınızı yansıtırken, üstün ses kalitesiyle beklentilerinizin ötesine geçer.
+Sadece bir kulaklık değil, gün boyu yanınızdan ayırmak istemeyeceğiniz bir yol arkadaşı. Sağlam kablo yapısı ve şık siyah tasarımıyla tarzınızı yansıtırken, üstün ses kalitesiyle beklentilerinizin ötesine geçer.
 
 *(Not: Bu ürün toptan satışa uygundur. Toptan alımlarınız için sayfa altındaki WhatsApp butonundan iletişime geçebilirsiniz.)*
