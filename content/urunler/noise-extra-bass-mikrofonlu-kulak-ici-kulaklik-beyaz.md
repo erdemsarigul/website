@@ -2,7 +2,7 @@
 title: "Noise Extra Bass Mikrofonlu Kulak İçi Kulaklık (Beyaz)"
 date: 2026-08-04T03:00:10+03:00
 draft: false
-category: "ses-sistemleri"
+category: "ses"
 categoryLabel: "Kulaklık"
 slug: "noise-extra-bass-mikrofonlu-kulak-ici-kulaklik-beyaz"
 description: "Noise Extra Bass Mikrofonlu Kulak İçi Kulaklık (Beyaz), derin bas performansı, dahili mikrofonu ve ergonomik tasarımıyla yüksek kaliteli müzik ve kesintisiz iletişim deneyimi sunar."
