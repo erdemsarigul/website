@@ -32,8 +32,5 @@ Klasik kapaklı şişelerin aksine özel **sprey mekanizmasına** sahip olan bu 
 * ✔ **Limon Ferahlığı:** Uzun süre kalıcı, taze ve canlandırıcı limon aroması.
 * ✔ **Çok Yönlü Kullanım:** Evde, arabada, çantada, seyahatlerde ve toplu alanlarda hızlı ferahlık.
 
-### Kutu İçeriği
-
-* 1 Adet Ceran 50 ml Spreyli 80° Limon Kolonyası
 
 *(Not: Bu ürün toptan satışa uygundur. Toptan alımlarınız için sayfa altındaki WhatsApp butonundan iletişime geçebilirsiniz.)*
