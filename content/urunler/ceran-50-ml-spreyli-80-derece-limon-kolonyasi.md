@@ -2,7 +2,7 @@
 title: "Ceran 50 ml Spreyli 80° Limon Kolonyası"
 date: 2026-08-05T06:22:00+03:00
 draft: false
-category: "kisisel-bakim"
+category: "kozmetik"
 categoryLabel: "Kolonya"
 slug: "ceran-50-ml-spreyli-80-derece-limon-kolonyasi"
 description: "Ceran 50 ml spreyli 80 derece limon kolonyası; pratik sprey başlığı, cep ve çanta boyu taşınabilir tasarımıyla ferahlığı her an yanınızda taşır."
