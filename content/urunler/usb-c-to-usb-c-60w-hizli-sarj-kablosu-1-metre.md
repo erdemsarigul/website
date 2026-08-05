@@ -2,7 +2,7 @@
 title: "USB-C to USB-C 60W Hızlı Şarj Kablosu (1 Metre)"
 date: 2026-08-05T23:15:00+03:00
 draft: false
-category: "sarj-aletleri"
+category: "sarj"
 categoryLabel: "Şarj Kablosu"
 slug: "usb-c-to-usb-c-60w-hizli-sarj-kablosu-1-metre"
 description: "60W USB-C to USB-C hızlı şarj kablosu; telefon, tablet ve laptoplar için yüksek hızlı şarj, PD desteği, hızlı veri aktarımı ve dayanıklı yapısıyla ideal bir tercihtir."
